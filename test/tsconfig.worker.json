@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "strict": true,
+    "skipLibCheck": false,
+    "types": [],
+    "lib": ["ES2023"]
+  },
+  "files": ["worker-specs.ts", "worker-smoke.ts"]
+}

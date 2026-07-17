@@ -1,10 +1,12 @@
 # Gap report
 
-Generated 2026-07-17T18:43:10.023Z from TypeScript-DOM-lib-generator `a193ecb2b75a`.
+Generated 2026-07-17T19:41:47.320Z from TypeScript-DOM-lib-generator `a193ecb2b75a`.
 
-These are declarations present when the two-engine rule is relaxed to **one** stable engine, but absent from the stock `lib.dom` baseline.
+These are declarations present when the two-engine rule is relaxed to **one** stable engine, but absent from the stock baseline. Each scope augments a different TypeScript lib (`DOM` for window, `WebWorker` for worker).
 
-## Totals
+## window scope (lib `DOM`)
+
+Entry points: `modern-web-types` (all via `index.d.ts`).
 
 | Category | Count |
 | --- | ---: |
@@ -13,16 +15,9 @@ These are declarations present when the two-engine rule is relaxed to **one** st
 | New global vars | 214 |
 | New global functions | 8 |
 | Members added to existing interfaces | 336 |
-| Spec files emitted | 136 |
 | Skipped (unmergeable) | 10 |
 
-## Spec files
-
-`EXT_disjoint_timer_query`, `EXT_disjoint_timer_query_webgl2`, `IndexedDB`, `SVG`, `accelerometer`, `anchors`, `anonymous-iframe`, `audio-output`, `audio-session`, `autoplay-detection`, `background-fetch`, `background-sync`, `battery-status`, `capture-handle-identity`, `clipboard-apis`, `compute-pressure`, `contact-picker`, `content-index`, `crash-reporting`, `credential-management`, `csp-embedded-enforcement`, `css-animations-2`, `css-conditional-5`, `css-fonts`, `css-fonts-5`, `css-mixins`, `css-pseudo`, `css-scroll-snap-2`, `css-transitions-2`, `css-view-transitions`, `css-viewport`, `cssom`, `cssom-view`, `datacue`, `device-memory`, `device-posture`, `digital-goods`, `dom`, `edit-context`, `element-capture`, `element-timing`, `eyedropper-api`, `fedcm`, `fenced-frame`, `fetch`, `file-system-access`, `filter-effects`, `gamepad`, `gamepad-extensions`, `generic-sensor`, `geolocation-element`, `get-installed-related-apps`, `gpc`, `gyroscope`, `html`, `idle-detection`, `image-capture`, `image-resource`, `ink-enhancement`, `input-device-capabilities`, `intersection-observer`, `is-input-pending`, `js-self-profiling`, `keyboard-lock`, `keyboard-map`, `layout-instability`, `local-font-access`, `local-network-access`, `long-animation-frames`, `longtasks`, `managed-configuration`, `manifest-incubations`, `media-source`, `mediacapture-region`, `mediacapture-streams`, `mediasession`, `mediastream-recording`, `misc`, `navigation-timing`, `netinfo`, `notifications`, `observable`, `orientation-sensor`, `page-lifecycle`, `performance-measure-memory`, `periodic-background-sync`, `prerendering-revamped`, `presentation-api`, `private-click-measurement`, `prompt-api`, `raw-camera-access`, `resource-timing`, `saa-non-cookie-storage`, `savedata`, `screen-capture`, `secure-payment-confirmation`, `shape-detection-api`, `speech-api`, `storage-buckets`, `svg-animations`, `svg-paths`, `touch-events`, `translation-api`, `trust-token-api`, `ua-client-hints`, `virtual-keyboard`, `web-animations-2`, `web-app-launch`, `web-based-payment-handler`, `web-bluetooth`, `web-nfc`, `web-otp`, `webaudio`, `webcodecs`, `webgl1`, `webgpu`, `webhid`, `webidl`, `webmidi`, `webrtc`, `webrtc-identity`, `webrtc-priority`, `webtransport`, `webusb`, `webxr`, `webxr-ar-module`, `webxr-depth-sensing`, `webxr-dom-overlays`, `webxr-hand-input`, `webxr-hit-test`, `webxr-lighting-estimation`, `webxr-plane-detection`, `webxrlayers`, `window-controls-overlay`, `window-management`, `writing-assistance-apis`
-
-## New interfaces
-
-<details><summary>431 interfaces</summary>
+<details><summary>431 new interfaces</summary>
 
 - `AbsoluteOrientationSensor`
 - `Accelerometer`
@@ -458,9 +453,9 @@ These are declarations present when the two-engine rule is relaxed to **one** st
 
 </details>
 
-## Skipped (cannot merge into lib.dom)
+<details><summary>10 skipped (cannot merge)</summary>
 
-These differ from an existing lib.dom declaration in a way that declaration merging can't express (a changed property type, a widened type alias, or a re-typed `declare var`). Handle with a manual override if needed.
+Each differs from an existing lib declaration in a way declaration merging can't express (a changed property type, a widened type alias, a re-typed `declare var`, a maplike mutator, or an `extends` base that doesn't exist in this scope). Handle with a manual override if needed.
 
 - `TrackEventInit.track` — property-type-changed
 - `CSSFontFeatureValuesMap` — maplike-mutator-dropped
@@ -473,9 +468,182 @@ These differ from an existing lib.dom declaration in a way that declaration merg
 - `ReadableStream` — var-changed
 - `WebTransport` — var-changed
 
+</details>
+
+## worker scope (lib `WebWorker`)
+
+Entry points: `modern-web-types/….worker` (all via `worker.d.ts`).
+
+| Category | Count |
+| --- | ---: |
+| New interfaces | 141 |
+| New type aliases | 34 |
+| New global vars | 55 |
+| New global functions | 1 |
+| Members added to existing interfaces | 63 |
+| Skipped (unmergeable) | 5 |
+
+<details><summary>141 new interfaces</summary>
+
+- `AddressErrors`
+- `AddressInit`
+- `BackgroundFetchEvent`
+- `BackgroundFetchEventInit`
+- `BackgroundFetchManager`
+- `BackgroundFetchOptions`
+- `BackgroundFetchRecord`
+- `BackgroundFetchRegistration`
+- `BackgroundFetchRegistrationEventMap`
+- `BackgroundFetchUIOptions`
+- `BackgroundFetchUpdateUIEvent`
+- `BackgroundSyncOptions`
+- `BarcodeDetector`
+- `BarcodeDetectorOptions`
+- `BufferedChangeEvent`
+- `BufferedChangeEventInit`
+- `CanMakePaymentEvent`
+- `CatchCallback`
+- `ContentDescription`
+- `ContentIndex`
+- `ContentIndexEvent`
+- `ContentIndexEventInit`
+- `CropTarget`
+- `DetectedBarcode`
+- `EXT_disjoint_timer_query`
+- `EXT_disjoint_timer_query_webgl2`
+- `FileSystemHandlePermissionDescriptor`
+- `GlobalPrivacyControl`
+- `HID`
+- `HIDCollectionInfo`
+- `HIDConnectionEvent`
+- `HIDConnectionEventInit`
+- `HIDDevice`
+- `HIDDeviceEventMap`
+- `HIDEventMap`
+- `HIDInputReportEvent`
+- `HIDInputReportEventInit`
+- `HIDReportInfo`
+- `HIDReportItem`
+- `IDBGetAllOptions`
+- `IDBRecord`
+- `IdleDetector`
+- `IdleDetectorEventMap`
+- `IdleOptions`
+- `ImageResource`
+- `InstallEvent`
+- `ManagedMediaSource`
+- `ManagedMediaSourceEventMap`
+- `ManagedSourceBuffer`
+- `ManagedSourceBufferEventMap`
+- `Mapper`
+- `MemoryAttribution`
+- `MemoryAttributionContainer`
+- `MemoryBreakdownEntry`
+- `MemoryMeasurement`
+- `NavigatorDeviceMemory`
+- `NavigatorNetworkInformation`
+- `NavigatorStorageBuckets`
+- `NavigatorUA`
+- `NavigatorUABrandVersion`
+- `NavigatorUAData`
+- `NetworkInformation`
+- `NetworkInformationEventMap`
+- `NetworkInformationSaveData`
+- `Observable`
+- `ObservableEventListenerOptions`
+- `ObservableInspector`
+- `ObservableInspectorAbortHandler`
+- `ObservableSubscriptionCallback`
+- `PaymentCurrencyAmount`
+- `PaymentDetailsModifier`
+- `PaymentHandlerResponse`
+- `PaymentItem`
+- `PaymentMethodData`
+- `PaymentOptions`
+- `PaymentRequestDetailsUpdate`
+- `PaymentRequestEvent`
+- `PaymentRequestEventInit`
+- `PaymentShippingOption`
+- `PeriodicSyncEvent`
+- `PeriodicSyncEventInit`
+- `PeriodicSyncManager`
+- `Point2D`
+- `Predicate`
+- `PressureObserver`
+- `PressureObserverOptions`
+- `PressureRecord`
+- `PressureUpdateCallback`
+- `PrivateToken`
+- `Profiler`
+- `ProfilerFrame`
+- `ProfilerInitOptions`
+- `ProfilerSample`
+- `ProfilerStack`
+- `ProfilerTrace`
+- `QuotaExceededError`
+- `QuotaExceededErrorOptions`
+- `Reducer`
+- `RestrictionTarget`
+- `RouterCondition`
+- `RouterRule`
+- `RouterSourceDict`
+- `Sensor`
+- `SensorErrorEvent`
+- `SensorErrorEventInit`
+- `SensorEventMap`
+- `StorageBucket`
+- `StorageBucketManager`
+- `StorageBucketOptions`
+- `SubscribeCallback`
+- `SubscribeOptions`
+- `Subscriber`
+- `SubscriptionObserver`
+- `SyncEvent`
+- `SyncEventInit`
+- `SyncManager`
+- `UADataValues`
+- `UALowEntropyJSON`
+- `USB`
+- `USBAlternateInterface`
+- `USBConfiguration`
+- `USBConnectionEvent`
+- `USBConnectionEventInit`
+- `USBControlTransferParameters`
+- `USBDevice`
+- `USBEndpoint`
+- `USBEventMap`
+- `USBInTransferResult`
+- `USBInterface`
+- `USBIsochronousInTransferPacket`
+- `USBIsochronousInTransferResult`
+- `USBIsochronousOutTransferPacket`
+- `USBIsochronousOutTransferResult`
+- `USBOutTransferResult`
+- `VideoFrameMetadata`
+- `VideoTrackGenerator`
+- `Visitor`
+- `WebGLObject`
+- `WebGLTimerQueryEXT`
+- `WebTransportDatagramsWritable`
+- `WebTransportSendGroup`
+
+</details>
+
+<details><summary>5 skipped (cannot merge)</summary>
+
+Each differs from an existing lib declaration in a way declaration merging can't express (a changed property type, a widened type alias, a re-typed `declare var`, a maplike mutator, or an `extends` base that doesn't exist in this scope). Handle with a manual override if needed.
+
+- `ManagedMediaSource` — heritage-base-unresolved (MediaSource)
+- `ManagedSourceBuffer` — heritage-base-unresolved (SourceBuffer)
+- `Transferable` — type-alias-changed
+- `ReadableStream` — var-changed
+- `WebTransport` — var-changed
+
+</details>
+
 ## Unknown-type fallbacks
 
-The relaxed build referenced types the emitter couldn't resolve (usually because a referenced feature is itself single-engine and its own definition is elsewhere in the delta). These were emitted as `any`; most resolve once their defining spec file is also included.
+The relaxed build referenced types the emitter couldn't resolve — usually a referenced feature whose own definition was dropped or renamed upstream. These were emitted as `any` (e.g. `getDigitalGoodsService(): Promise<any>`).
 
 ```
 MWT: unknown DOM type ContactAddress, emitting "any"

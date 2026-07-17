@@ -44,10 +44,15 @@ generator** and diffs it against itself:
    grouped using [`@webref/idl`](https://www.npmjs.com/package/@webref/idl)
    ([`scripts/emit.ts`](scripts/emit.ts)).
 
-The delta is expressed in forms that merge cleanly into your existing
-`lib.dom`: whole new interfaces (with their `declare var` constructors), extra
-members on existing interfaces (via declaration merging), new type aliases, and
-new globals.
+Every step runs once per **scope**: `window` (augments `lib.dom`, ~430
+interfaces) and `worker` (augments `lib.webworker`, ~140 interfaces — the
+ServiceWorker events, static routing / `addRoutes`, `VideoTrackGenerator`, etc.
+that never appear on the Window global).
+
+The delta is expressed in forms that merge cleanly into your existing lib:
+whole new interfaces (with their `declare var` constructors), extra members on
+existing interfaces (via declaration merging), new type aliases, and new
+globals.
 
 See [`report.md`](report.md) for the current gap — totals, the full spec list,
 and anything that couldn't be represented.
@@ -79,21 +84,34 @@ Entry-point names match the spec shortnames listed in `report.md` (e.g.
 `modern-web-types/webgpu`, `modern-web-types/web-bluetooth`,
 `modern-web-types/css-view-transitions`).
 
+**Worker code** — worker-scope globals augment `lib.webworker` and live behind
+a parallel set of entry points. Reference `modern-web-types/worker` for all of
+them, or `modern-web-types/<spec>.worker` for one:
+
+```ts
+/// <reference types="modern-web-types/worker" />
+
+// e.g. ServiceWorker static routing, a worker-only API:
+self.addEventListener("install", (event) => {
+  event.addRoutes({ condition: { urlPattern: "/api/*" }, source: "network" });
+});
+```
+
 ## Caveats
 
 - **These are ahead of the standards process.** A single-engine API can change
   shape — or be removed — before it reaches cross-browser status. Types may
   shift between releases to match.
-- **Window scope only** for now (no Worker / Worklet libs).
 - **Recent TypeScript recommended.** The types augment your `lib.dom`; a few
   specs reference platform types (typedefs, enums) that only exist in a recent
   `lib.dom`. On an older TypeScript, pair with a current
   [`@types/web`](https://www.npmjs.com/package/@types/web).
 - **A handful of declarations can't be represented** and are omitted — see the
   "Skipped" section of `report.md`. These are cases where the generator's
-  output conflicts with an existing `lib.dom` declaration in a way TypeScript's
+  output conflicts with an existing lib declaration in a way TypeScript's
   declaration merging can't express (a changed property type, a widened type
-  alias, a maplike interface that redeclares `Map.set`).
+  alias, a maplike interface that redeclares `Map.set`, or an `extends` base
+  that doesn't exist in that scope).
 
 ## Development
 
@@ -105,7 +123,10 @@ npm test         # typecheck the generated package + guard the delta size
 Individual steps: `npm run fetch-upstream`, `npm run build`, `npm run diff`,
 `npm run emit`, `npm run report`. The pinned generator is cloned into
 `upstream/` (gitignored) and patched on fetch. Intermediate build artifacts go
-in `build/` (gitignored); the published files live in [`pkg/`](pkg/).
+in `build/` (gitignored); the published files live in [`pkg/`](pkg/) —
+`<spec>.d.ts` / `index.d.ts` for window scope, `<spec>.worker.d.ts` /
+`worker.d.ts` for worker scope. Scopes are configured in
+[`scripts/util.ts`](scripts/util.ts); each is a separate build/diff/emit pass.
 
 A weekly GitHub Actions workflow
 ([`.github/workflows/update.yml`](.github/workflows/update.yml)) bumps the

@@ -1,10 +1,10 @@
-// Structurally diffs build/full.d.ts against build/baseline.d.ts and writes
-// the additions to build/delta.json.
+// For each scope, structurally diffs its full build against its baseline and
+// writes the additions to build/<scope>.delta.json.
 //
 // Both files come from the same emitter run against the same data snapshot,
 // so declaration text is byte-identical wherever the two agree — exact-text
 // comparison is reliable. The delta is expressed in forms that merge cleanly
-// into an existing lib.dom via declaration merging:
+// into an existing lib via declaration merging:
 //   - whole new interfaces (plus their companion `declare var`)
 //   - extra members on existing interfaces (same-name `interface X { … }`)
 //   - new type aliases, global functions, and namespace members
@@ -13,7 +13,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import ts from "typescript";
-import { buildDir, rootDir } from "./util.ts";
+import { buildDir, rootDir, scopes, type Scope } from "./util.ts";
 
 interface DeltaItem {
   kind: "interface" | "alias" | "var" | "function";
@@ -46,6 +46,7 @@ interface InterfaceInfo {
   pos: number;
   members: Map<string, MemberInfo[]>;
   heritage: Set<string>;
+  typeParams: string; // e.g. "<T>", empty for non-generic interfaces
 }
 interface FileIndex {
   interfaces: Map<string, InterfaceInfo>;
@@ -89,6 +90,9 @@ function indexFile(file: string): FileIndex {
         pos: stmt.pos,
         members: new Map(),
         heritage: new Set(),
+        typeParams: stmt.typeParameters
+          ? `<${stmt.typeParameters.map((p) => p.getText()).join(", ")}>`
+          : "",
       };
       info.texts.push(fullText(stmt, sf));
       for (const clause of stmt.heritageClauses ?? []) {
@@ -133,13 +137,41 @@ function indexFile(file: string): FileIndex {
   return index;
 }
 
-const baseline = indexFile(path.join(buildDir, "baseline.d.ts"));
-const full = indexFile(path.join(buildDir, "full.d.ts"));
+const upstreamSha = JSON.parse(
+  fs.readFileSync(path.join(rootDir, "upstream.json"), "utf8"),
+).sha;
+
+function computeDelta(scope: Scope) {
+const baseline = indexFile(path.join(buildDir, scope.baseline));
+const full = indexFile(path.join(buildDir, scope.full));
 
 const items: DeltaItem[] = [];
 const augments: Augment[] = [];
 const namespaceAugments: NamespaceAugment[] = [];
 const skipped: Skipped[] = [];
+
+// Every type name resolvable in this scope: the scope's baseline plus
+// everything the full build adds (which becomes the delta), plus the built-in
+// collections used in maplike/setlike heritage. Used to detect `extends`
+// clauses that reference a base absent from the scope (e.g. a worker-exposed
+// interface that extends a Window-only base).
+const available = new Set<string>([
+  ...baseline.interfaces.keys(),
+  ...full.interfaces.keys(),
+  ...baseline.aliases.keys(),
+  ...full.aliases.keys(),
+  // ECMAScript / TypeScript lib types the generator uses in heritage.
+  "Map",
+  "ReadonlyMap",
+  "Set",
+  "ReadonlySet",
+  "WeakMap",
+  "WeakSet",
+  "IteratorObject",
+  "AsyncIteratorObject",
+  "Error",
+]);
+const baseName = (heritage: string) => heritage.replace(/<.*/, "").trim();
 
 // A brand-new interface that extends a mutable built-in collection and
 // redeclares one of its mutators with a non-`this` return can't be expressed
@@ -156,39 +188,53 @@ const COLLECTION_MUTATORS: Record<string, string[]> = {
 function conflictingMutators(iface: InterfaceInfo): string[] {
   const conflicts: string[] = [];
   for (const h of iface.heritage) {
-    const base = h.replace(/<.*/, "").trim();
-    for (const m of COLLECTION_MUTATORS[base] ?? []) {
+    for (const m of COLLECTION_MUTATORS[baseName(h)] ?? []) {
       if (iface.members.has(m)) conflicts.push(m);
     }
   }
   return conflicts;
 }
+function unresolvedHeritage(iface: InterfaceInfo): string[] {
+  return [...iface.heritage].filter((h) => !available.has(baseName(h)));
+}
 function reconstructInterface(
   name: string,
   iface: InterfaceInfo,
-  exclude: Set<string>,
+  excludeMembers: Set<string>,
+  excludeHeritage: Set<string>,
 ): string {
-  const heritage = iface.heritage.size
-    ? ` extends ${[...iface.heritage].join(", ")}`
-    : "";
+  const kept = [...iface.heritage].filter((h) => !excludeHeritage.has(h));
+  const heritage = kept.length ? ` extends ${kept.join(", ")}` : "";
   const body: string[] = [];
   for (const [key, members] of iface.members) {
-    if (exclude.has(key)) continue;
+    if (excludeMembers.has(key)) continue;
     for (const m of members) body.push(m.text.replace(/^/gm, "    "));
   }
-  return `interface ${name}${heritage} {\n${body.join("\n")}\n}`;
+  return `interface ${name}${iface.typeParams}${heritage} {\n${body.join("\n")}\n}`;
 }
 
 for (const [name, iface] of full.interfaces) {
   const base = baseline.interfaces.get(name);
   if (!base) {
     const conflicts = conflictingMutators(iface);
-    if (conflicts.length) {
-      skipped.push({ reason: "maplike-mutator-dropped", name });
+    const danglingBases = unresolvedHeritage(iface);
+    if (conflicts.length || danglingBases.length) {
+      if (conflicts.length)
+        skipped.push({ reason: "maplike-mutator-dropped", name });
+      if (danglingBases.length)
+        skipped.push({
+          reason: `heritage-base-unresolved (${danglingBases.map(baseName).join(", ")})`,
+          name,
+        });
       items.push({
         kind: "interface",
         name,
-        text: reconstructInterface(name, iface, new Set(conflicts)),
+        text: reconstructInterface(
+          name,
+          iface,
+          new Set(conflicts),
+          new Set(danglingBases),
+        ),
         pos: iface.pos,
       });
       continue;
@@ -256,24 +302,21 @@ for (const [name, ns] of full.namespaces) {
   }
 }
 
-const upstreamSha = JSON.parse(
-  fs.readFileSync(path.join(rootDir, "upstream.json"), "utf8"),
-).sha;
-
 const delta = {
-  meta: { upstreamSha, generatedAt: new Date().toISOString() },
+  meta: { scope: scope.name, upstreamSha, generatedAt: new Date().toISOString() },
   items,
   augments,
   namespaceAugments,
   skipped,
 };
 fs.writeFileSync(
-  path.join(buildDir, "delta.json"),
+  path.join(buildDir, scope.delta),
   JSON.stringify(delta, null, 2),
 );
 
 console.log(
-  `Delta: ${items.filter((i) => i.kind === "interface").length} interfaces, ` +
+  `[${scope.name}] ` +
+    `${items.filter((i) => i.kind === "interface").length} interfaces, ` +
     `${items.filter((i) => i.kind === "alias").length} aliases, ` +
     `${items.filter((i) => i.kind === "var").length} vars, ` +
     `${items.filter((i) => i.kind === "function").length} functions, ` +
@@ -281,3 +324,6 @@ console.log(
     `${namespaceAugments.length} namespace augments, ` +
     `${skipped.length} skipped`,
 );
+}
+
+for (const scope of scopes) computeDelta(scope);

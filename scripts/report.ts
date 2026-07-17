@@ -1,12 +1,9 @@
-// Writes report.md: a human-readable summary of the current gap between
-// what ships in >=1 stable engine and what lib.dom exposes.
+// Writes report.md: a human-readable summary, per scope, of the gap between
+// what ships in >=1 stable engine and what the stock lib exposes.
 import fs from "node:fs";
 import path from "node:path";
-import { buildDir, pkgDir, rootDir } from "./util.ts";
+import { buildDir, rootDir, scopes } from "./util.ts";
 
-const delta = JSON.parse(
-  fs.readFileSync(path.join(buildDir, "delta.json"), "utf8"),
-);
 const warnings = fs.existsSync(path.join(buildDir, "warnings.txt"))
   ? fs
       .readFileSync(path.join(buildDir, "warnings.txt"), "utf8")
@@ -14,87 +11,96 @@ const warnings = fs.existsSync(path.join(buildDir, "warnings.txt"))
       .filter(Boolean)
   : [];
 
-const specFiles = fs
-  .readdirSync(pkgDir)
-  .filter((f) => f.endsWith(".d.ts") && f !== "index.d.ts")
-  .map((f) => f.replace(/\.d\.ts$/, ""))
-  .sort();
-
-const newInterfaces = delta.items
-  .filter((i: any) => i.kind === "interface")
-  .map((i: any) => i.name)
-  .sort();
+const first = JSON.parse(
+  fs.readFileSync(path.join(buildDir, scopes[0].delta), "utf8"),
+);
 
 const lines: string[] = [];
 lines.push("# Gap report");
 lines.push("");
 lines.push(
-  `Generated ${delta.meta.generatedAt} from TypeScript-DOM-lib-generator ` +
-    `\`${delta.meta.upstreamSha.slice(0, 12)}\`.`,
+  `Generated ${first.meta.generatedAt} from TypeScript-DOM-lib-generator ` +
+    `\`${first.meta.upstreamSha.slice(0, 12)}\`.`,
 );
 lines.push("");
 lines.push(
   "These are declarations present when the two-engine rule is relaxed to " +
-    "**one** stable engine, but absent from the stock `lib.dom` baseline.",
+    "**one** stable engine, but absent from the stock baseline. Each scope " +
+    "augments a different TypeScript lib (`DOM` for window, `WebWorker` for " +
+    "worker).",
 );
-lines.push("");
-lines.push("## Totals");
-lines.push("");
-lines.push(`| Category | Count |`);
-lines.push(`| --- | ---: |`);
-lines.push(`| New interfaces | ${newInterfaces.length} |`);
-lines.push(
-  `| New type aliases | ${delta.items.filter((i: any) => i.kind === "alias").length} |`,
-);
-lines.push(
-  `| New global vars | ${delta.items.filter((i: any) => i.kind === "var").length} |`,
-);
-lines.push(
-  `| New global functions | ${delta.items.filter((i: any) => i.kind === "function").length} |`,
-);
-lines.push(`| Members added to existing interfaces | ${delta.augments.length} |`);
-lines.push(`| Spec files emitted | ${specFiles.length} |`);
-lines.push(`| Skipped (unmergeable) | ${delta.skipped.length} |`);
 lines.push("");
 
-lines.push("## Spec files");
-lines.push("");
-lines.push(specFiles.map((s) => `\`${s}\``).join(", "));
-lines.push("");
+const count = (delta: any, kind: string) =>
+  delta.items.filter((i: any) => i.kind === kind).length;
 
-lines.push("## New interfaces");
-lines.push("");
-lines.push("<details><summary>" + newInterfaces.length + " interfaces</summary>");
-lines.push("");
-lines.push(newInterfaces.map((n: string) => `- \`${n}\``).join("\n"));
-lines.push("");
-lines.push("</details>");
-lines.push("");
+for (const scope of scopes) {
+  const delta = JSON.parse(
+    fs.readFileSync(path.join(buildDir, scope.delta), "utf8"),
+  );
+  const newInterfaces = delta.items
+    .filter((i: any) => i.kind === "interface")
+    .map((i: any) => i.name)
+    .sort();
+  const specShortnames = [
+    ...new Set(delta.items.map((i: any) => i.name)),
+  ].length;
 
-if (delta.skipped.length) {
-  lines.push("## Skipped (cannot merge into lib.dom)");
+  lines.push(`## ${scope.name} scope (lib \`${scope.lib}\`)`);
   lines.push("");
   lines.push(
-    "These differ from an existing lib.dom declaration in a way that " +
-      "declaration merging can't express (a changed property type, a widened " +
-      "type alias, or a re-typed `declare var`). Handle with a manual override " +
-      "if needed.",
+    `Entry points: \`modern-web-types${scope.suffix ? "/…" + scope.suffix : ""}\` ` +
+      `(all via \`${scope.index}\`).`,
   );
   lines.push("");
-  for (const s of delta.skipped) {
-    lines.push(`- \`${s.name}\` — ${s.reason}`);
-  }
+  lines.push(`| Category | Count |`);
+  lines.push(`| --- | ---: |`);
+  lines.push(`| New interfaces | ${newInterfaces.length} |`);
+  lines.push(`| New type aliases | ${count(delta, "alias")} |`);
+  lines.push(`| New global vars | ${count(delta, "var")} |`);
+  lines.push(`| New global functions | ${count(delta, "function")} |`);
+  lines.push(
+    `| Members added to existing interfaces | ${delta.augments.length} |`,
+  );
+  lines.push(`| Skipped (unmergeable) | ${delta.skipped.length} |`);
   lines.push("");
+
+  lines.push(
+    `<details><summary>${newInterfaces.length} new interfaces</summary>`,
+  );
+  lines.push("");
+  lines.push(newInterfaces.map((n: string) => `- \`${n}\``).join("\n"));
+  lines.push("");
+  lines.push("</details>");
+  lines.push("");
+
+  if (delta.skipped.length) {
+    lines.push(
+      `<details><summary>${delta.skipped.length} skipped (cannot merge)</summary>`,
+    );
+    lines.push("");
+    lines.push(
+      "Each differs from an existing lib declaration in a way declaration " +
+        "merging can't express (a changed property type, a widened type alias, " +
+        "a re-typed `declare var`, a maplike mutator, or an `extends` base that " +
+        "doesn't exist in this scope). Handle with a manual override if needed.",
+    );
+    lines.push("");
+    for (const s of delta.skipped) lines.push(`- \`${s.name}\` — ${s.reason}`);
+    lines.push("");
+    lines.push("</details>");
+    lines.push("");
+  }
 }
 
 if (warnings.length) {
   lines.push("## Unknown-type fallbacks");
   lines.push("");
   lines.push(
-    "The relaxed build referenced types the emitter couldn't resolve " +
-      "(usually because a referenced feature is itself single-engine and its " +
-      "own definition is elsewhere in the delta). These were emitted as " +
-      "`any`; most resolve once their defining spec file is also included.",
+    "The relaxed build referenced types the emitter couldn't resolve — " +
+      "usually a referenced feature whose own definition was dropped or renamed " +
+      "upstream. These were emitted as `any` (e.g. `getDigitalGoodsService(): " +
+      "Promise<any>`).",
   );
   lines.push("");
   lines.push("```");
@@ -104,4 +110,15 @@ if (warnings.length) {
 }
 
 fs.writeFileSync(path.join(rootDir, "report.md"), lines.join("\n"));
-console.log(`Wrote report.md (${newInterfaces.length} new interfaces)`);
+console.log(
+  `Wrote report.md (` +
+    scopes
+      .map((s) => {
+        const d = JSON.parse(
+          fs.readFileSync(path.join(buildDir, s.delta), "utf8"),
+        );
+        return `${s.name}: ${count(d, "interface")} interfaces`;
+      })
+      .join(", ") +
+    ")",
+);
