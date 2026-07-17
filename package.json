@@ -13,7 +13,7 @@
     "emit-lib": "node scripts/emit-lib.ts",
     "report": "node scripts/report.ts",
     "update": "npm run fetch-upstream && npm run build && npm run diff && npm run emit && npm run emit-lib && npm run report",
-    "test": "tsc -p test/tsconfig.json && tsc -p test/tsconfig.worker.json && tsc -p test/tsconfig.lib.json && tsc -p test/tsconfig.lib-worker.json && node scripts/check-delta.ts"
+    "test": "tsc -p test/tsconfig.json && tsc -p test/tsconfig.worker.json && tsc -p test/tsconfig.lib.json && tsc -p test/tsconfig.lib-worker.json && node scripts/check-libs.ts && node scripts/check-delta.ts"
   },
   "devDependencies": {
     "@webref/idl": "^3.82.0",

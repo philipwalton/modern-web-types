@@ -10,44 +10,86 @@ export const upstreamDir = path.join(rootDir, "upstream");
 export const buildDir = path.join(rootDir, "build");
 export const pkgDir = path.join(rootDir, "pkg");
 
-// The pipeline runs once per global scope. Each scope maps an upstream
-// generated lib to its own build artifacts, package entry point, and the
-// TypeScript lib a consumer augments (`DOM` for Window, `WebWorker` for
-// Workers). Worker files get a `.worker` suffix so both can live in one
-// package (e.g. `modern-web-types/webusb` vs `modern-web-types/worker`).
-export interface Scope {
-  name: "window" | "worker";
-  generated: string; // filename under upstream/generated/
-  baseline: string; // filename under build/
-  full: string; // filename under build/
-  delta: string; // filename under build/
-  suffix: string; // appended to per-spec pkg files
+// The pipeline runs once per environment. The upstream generator emits a
+// separate lib per global scope; we mirror all five.
+//
+// Every environment ships in **replace** mode — a complete lib the consumer
+// uses in place of TypeScript's built-in (or, for the standalone worker
+// variants, in place of the corresponding @types/* package). `dom` and
+// `webworker` also ship in **augment** mode — per-spec files that merge the
+// single-engine delta into the consumer's existing lib.dom / lib.webworker.
+//
+// `webworker` is the combined worker lib (it defines the dedicated, shared,
+// and service worker global scopes, exactly like TypeScript's bundled
+// lib.webworker). `serviceworker` and `sharedworker` are narrower subsets for
+// projects that want only that one global scope; `audioworklet` is a distinct,
+// restricted environment.
+export interface AugmentConfig {
+  baseline: string; // build/ filename of the two-engine build
+  delta: string; // build/ filename of the computed delta
+  suffix: string; // appended to per-spec pkg files ("" or ".worker")
   index: string; // aggregate entry point under pkg/
-  lib: string; // TypeScript lib a consumer merges these into
+}
+export interface Scope {
+  name: string;
+  generated: string; // filename under upstream/generated/
+  full: string; // build/ filename of the one-engine build
+  lib: string; // TypeScript lib name; also the replace-lib basename
+  augment?: AugmentConfig; // present only for envs with a built-in lib to merge into
+}
+
+// The replace-mode lib filename for a scope, e.g. "lib.dom.d.ts".
+export function replaceLib(scope: Scope): string {
+  return `lib.${scope.lib.toLowerCase()}.d.ts`;
 }
 
 export const scopes: Scope[] = [
   {
-    name: "window",
+    name: "dom",
     generated: "dom.generated.d.ts",
-    baseline: "baseline.d.ts",
-    full: "full.d.ts",
-    delta: "delta.json",
-    suffix: "",
-    index: "index.d.ts",
+    full: "dom.full.d.ts",
     lib: "DOM",
+    augment: {
+      baseline: "dom.baseline.d.ts",
+      delta: "dom.delta.json",
+      suffix: "",
+      index: "index.d.ts",
+    },
   },
   {
-    name: "worker",
+    name: "webworker",
     generated: "webworker.generated.d.ts",
-    baseline: "worker-baseline.d.ts",
-    full: "worker-full.d.ts",
-    delta: "worker-delta.json",
-    suffix: ".worker",
-    index: "worker.d.ts",
+    full: "webworker.full.d.ts",
     lib: "WebWorker",
+    augment: {
+      baseline: "webworker.baseline.d.ts",
+      delta: "webworker.delta.json",
+      suffix: ".worker",
+      index: "worker.d.ts",
+    },
+  },
+  {
+    name: "serviceworker",
+    generated: "serviceworker.generated.d.ts",
+    full: "serviceworker.full.d.ts",
+    lib: "ServiceWorker",
+  },
+  {
+    name: "sharedworker",
+    generated: "sharedworker.generated.d.ts",
+    full: "sharedworker.full.d.ts",
+    lib: "SharedWorker",
+  },
+  {
+    name: "audioworklet",
+    generated: "audioworklet.generated.d.ts",
+    full: "audioworklet.full.d.ts",
+    lib: "AudioWorklet",
   },
 ];
+
+// The subset of environments that also produce augment-mode output.
+export const augmentScopes = scopes.filter((s) => s.augment);
 
 // Runs a command, returning combined stdout + stderr. Throws on failure.
 export function run(

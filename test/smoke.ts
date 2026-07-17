@@ -1,7 +1,7 @@
 // Exercises representative APIs from the delta to prove the globals and their
 // signatures actually resolve and merge. None of these compile against a stock
 // lib.dom; they compile only because the generated types are referenced.
-/// <reference path="../build/baseline.d.ts" />
+/// <reference path="../build/dom.baseline.d.ts" />
 /// <reference path="../pkg/index.d.ts" />
 
 // View Transitions: instance method + return type merged onto Element.

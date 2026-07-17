@@ -13,7 +13,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import ts from "typescript";
-import { buildDir, rootDir, scopes, type Scope } from "./util.ts";
+import { buildDir, rootDir, augmentScopes, type Scope } from "./util.ts";
 
 interface DeltaItem {
   kind: "interface" | "alias" | "var" | "function";
@@ -142,7 +142,8 @@ const upstreamSha = JSON.parse(
 ).sha;
 
 function computeDelta(scope: Scope) {
-const baseline = indexFile(path.join(buildDir, scope.baseline));
+const augment = scope.augment!;
+const baseline = indexFile(path.join(buildDir, augment.baseline));
 const full = indexFile(path.join(buildDir, scope.full));
 
 const items: DeltaItem[] = [];
@@ -310,7 +311,7 @@ const delta = {
   skipped,
 };
 fs.writeFileSync(
-  path.join(buildDir, scope.delta),
+  path.join(buildDir, augment.delta),
   JSON.stringify(delta, null, 2),
 );
 
@@ -326,4 +327,4 @@ console.log(
 );
 }
 
-for (const scope of scopes) computeDelta(scope);
+for (const scope of augmentScopes) computeDelta(scope);

@@ -1,14 +1,22 @@
 # Gap report
 
-Generated 2026-07-17T22:23:31.400Z from TypeScript-DOM-lib-generator `a193ecb2b75a`.
+Generated 2026-07-17T22:55:39.852Z from TypeScript-DOM-lib-generator `a193ecb2b75a`.
 
-These are declarations present when the two-engine rule is relaxed to **one** stable engine, but absent from the stock baseline. Each scope augments a different TypeScript lib (`DOM` for window, `WebWorker` for worker).
+These are declarations present when the two-engine rule is relaxed to **one** stable engine, but absent from the stock baseline.
 
-The package ships in two flavors: **augment** (per-spec `.d.ts` files that merge these additions into your existing lib) and **replace** (a complete `lib.dom.d.ts` / `lib.webworker.d.ts` you use in place of TypeScript's, the `@types/web` model). The counts below describe the augment delta.
+The package ships in two flavors. **Replace** provides a complete lib for each environment, used in place of TypeScript's built-in (`@types/web` model):
 
-## window scope (lib `DOM`)
+- `modern-web-types/lib.dom` — replaces `DOM`
+- `modern-web-types/lib.webworker` — replaces `WebWorker`
+- `modern-web-types/lib.serviceworker` — replaces `ServiceWorker` (standalone; not a built-in TypeScript lib)
+- `modern-web-types/lib.sharedworker` — replaces `SharedWorker` (standalone; not a built-in TypeScript lib)
+- `modern-web-types/lib.audioworklet` — replaces `AudioWorklet` (standalone; not a built-in TypeScript lib)
 
-Entry points: `modern-web-types` (all via `index.d.ts`).
+**Augment** ships per-spec files that merge the single-engine delta into your existing lib; it covers the two environments with a built-in TypeScript lib (`DOM`, `WebWorker`). The per-scope counts below describe that delta.
+
+## dom scope (lib `DOM`)
+
+Augment entry points: `modern-web-types` (all via `index.d.ts`).
 
 | Category | Count |
 | --- | ---: |
@@ -472,9 +480,9 @@ Each differs from an existing lib declaration in a way declaration merging can't
 
 </details>
 
-## worker scope (lib `WebWorker`)
+## webworker scope (lib `WebWorker`)
 
-Entry points: `modern-web-types/….worker` (all via `worker.d.ts`).
+Augment entry points: `modern-web-types/….worker` (all via `worker.d.ts`).
 
 | Category | Count |
 | --- | ---: |

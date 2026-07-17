@@ -1,9 +1,9 @@
 // Runs the upstream generator twice:
 //   1. baseline — stock behavior (a feature needs 2+ browser engines)
 //   2. full     — MWT_MIN_ENGINES=1 (any feature shipped in 1+ stable engine)
-// and copies each configured scope's output of both runs into build/. The
-// difference between a scope's two files is exactly the set of declarations
-// the two-engine rule excludes from that scope.
+// The full build of every environment is copied into build/ (it feeds both
+// replace mode and, for augment environments, the diff). The baseline build is
+// copied only for augment environments, whose delta is full − baseline.
 import fs from "node:fs";
 import path from "node:path";
 import { buildDir, upstreamDir, run, scopes } from "./util.ts";
@@ -19,9 +19,12 @@ function build(variant: "baseline" | "full") {
       : {};
   const output = run("node", ["./src/build.ts"], { cwd: upstreamDir, env });
   for (const scope of scopes) {
+    const dest =
+      variant === "full" ? scope.full : scope.augment?.baseline;
+    if (!dest) continue; // replace-only envs need no baseline
     fs.copyFileSync(
       path.join(generatedDir, scope.generated),
-      path.join(buildDir, scope[variant]),
+      path.join(buildDir, dest),
     );
   }
 
@@ -45,7 +48,6 @@ function build(variant: "baseline" | "full") {
 build("baseline");
 build("full");
 console.log(
-  "Done: " +
-    scopes.map((s) => `${s.baseline}/${s.full}`).join(", ") +
-    ` in ${path.relative(process.cwd(), buildDir)}/`,
+  `Done: ${scopes.length} full builds + ${scopes.filter((s) => s.augment).length} baselines in ` +
+    `${path.relative(process.cwd(), buildDir)}/`,
 );

@@ -2,7 +2,7 @@
 // what ships in >=1 stable engine and what the stock lib exposes.
 import fs from "node:fs";
 import path from "node:path";
-import { buildDir, rootDir, scopes } from "./util.ts";
+import { buildDir, rootDir, scopes, augmentScopes, replaceLib } from "./util.ts";
 
 const warnings = fs.existsSync(path.join(buildDir, "warnings.txt"))
   ? fs
@@ -12,7 +12,7 @@ const warnings = fs.existsSync(path.join(buildDir, "warnings.txt"))
   : [];
 
 const first = JSON.parse(
-  fs.readFileSync(path.join(buildDir, scopes[0].delta), "utf8"),
+  fs.readFileSync(path.join(buildDir, augmentScopes[0].augment!.delta), "utf8"),
 );
 
 const lines: string[] = [];
@@ -25,25 +25,37 @@ lines.push(
 lines.push("");
 lines.push(
   "These are declarations present when the two-engine rule is relaxed to " +
-    "**one** stable engine, but absent from the stock baseline. Each scope " +
-    "augments a different TypeScript lib (`DOM` for window, `WebWorker` for " +
-    "worker).",
+    "**one** stable engine, but absent from the stock baseline.",
 );
 lines.push("");
 lines.push(
-  "The package ships in two flavors: **augment** (per-spec `.d.ts` files that " +
-    "merge these additions into your existing lib) and **replace** (a complete " +
-    "`lib.dom.d.ts` / `lib.webworker.d.ts` you use in place of TypeScript's, " +
-    "the `@types/web` model). The counts below describe the augment delta.",
+  "The package ships in two flavors. **Replace** provides a complete lib for " +
+    "each environment, used in place of TypeScript's built-in (`@types/web` " +
+    "model):",
+);
+lines.push("");
+for (const s of scopes) {
+  lines.push(
+    `- \`modern-web-types/${replaceLib(s).replace(/\.d\.ts$/, "")}\` — replaces \`${s.lib}\`` +
+      (s.augment ? "" : " (standalone; not a built-in TypeScript lib)"),
+  );
+}
+lines.push("");
+lines.push(
+  "**Augment** ships per-spec files that merge the single-engine delta into " +
+    "your existing lib; it covers the two environments with a built-in " +
+    "TypeScript lib (`DOM`, `WebWorker`). The per-scope counts below describe " +
+    "that delta.",
 );
 lines.push("");
 
 const count = (delta: any, kind: string) =>
   delta.items.filter((i: any) => i.kind === kind).length;
 
-for (const scope of scopes) {
+for (const scope of augmentScopes) {
+  const augment = scope.augment!;
   const delta = JSON.parse(
-    fs.readFileSync(path.join(buildDir, scope.delta), "utf8"),
+    fs.readFileSync(path.join(buildDir, augment.delta), "utf8"),
   );
   const newInterfaces = delta.items
     .filter((i: any) => i.kind === "interface")
@@ -56,8 +68,8 @@ for (const scope of scopes) {
   lines.push(`## ${scope.name} scope (lib \`${scope.lib}\`)`);
   lines.push("");
   lines.push(
-    `Entry points: \`modern-web-types${scope.suffix ? "/…" + scope.suffix : ""}\` ` +
-      `(all via \`${scope.index}\`).`,
+    `Augment entry points: \`modern-web-types${augment.suffix ? "/…" + augment.suffix : ""}\` ` +
+      `(all via \`${augment.index}\`).`,
   );
   lines.push("");
   lines.push(`| Category | Count |`);
@@ -119,10 +131,10 @@ if (warnings.length) {
 fs.writeFileSync(path.join(rootDir, "report.md"), lines.join("\n"));
 console.log(
   `Wrote report.md (` +
-    scopes
+    augmentScopes
       .map((s) => {
         const d = JSON.parse(
-          fs.readFileSync(path.join(buildDir, s.delta), "utf8"),
+          fs.readFileSync(path.join(buildDir, s.augment!.delta), "utf8"),
         );
         return `${s.name}: ${count(d, "interface")} interfaces`;
       })

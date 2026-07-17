@@ -1,7 +1,7 @@
 // Exercises Worker-scope APIs that exist only off a worker global and so are
 // unreachable from the Window build. None compile against the stock WebWorker
 // lib; they compile only because the generated worker types are referenced.
-/// <reference path="../build/worker-baseline.d.ts" />
+/// <reference path="../build/webworker.baseline.d.ts" />
 /// <reference path="../pkg/worker.d.ts" />
 
 // ServiceWorker static routing: InstallEvent.addRoutes with RouterRule.

@@ -92,8 +92,25 @@ this lib also includes single-engine APIs. Drop `"DOM"` from
 Because this *replaces* your DOM lib rather than merging into it, it can't
 conflict with — or dangle against — whatever version of `lib.dom` your
 TypeScript happens to ship. It's self-contained and works the same on any
-supported TypeScript. For workers, drop `"WebWorker"` and reference
-`modern-web-types/lib.webworker`.
+supported TypeScript.
+
+A complete lib is provided for each global scope; drop the matching built-in
+from `lib` and reference the replacement:
+
+| Entry point | Replaces |
+| --- | --- |
+| `modern-web-types/lib.dom` | `"DOM"` |
+| `modern-web-types/lib.webworker` | `"WebWorker"` (dedicated + shared + service worker) |
+| `modern-web-types/lib.serviceworker` | `@types/serviceworker` (service worker only) |
+| `modern-web-types/lib.sharedworker` | `@types/sharedworker` (shared worker only) |
+| `modern-web-types/lib.audioworklet` | `@types/audioworklet` |
+
+`lib.webworker` is the combined worker lib and is what most worker projects
+want; the standalone `serviceworker` / `sharedworker` libs exist for projects
+that want to expose only that one global scope. When a worker API references a
+Window-only type (e.g. `ManagedMediaSource extends MediaSource`), that
+dependency is carried along as a type-only declaration, so the lib stays
+self-contained without exposing a constructor that isn't available there.
 
 ### Augment mode
 
@@ -172,12 +189,16 @@ cloned into `upstream/` (gitignored) and patched on fetch. Intermediate build
 artifacts go in `build/` (gitignored); the published files live in
 [`pkg/`](pkg/):
 
-- augment mode — `<spec>.d.ts` / `index.d.ts` (window), `<spec>.worker.d.ts` /
-  `worker.d.ts` (worker), from `emit`;
-- replace mode — `lib.dom.d.ts`, `lib.webworker.d.ts`, from `emit-lib`.
+- augment mode — `<spec>.d.ts` / `index.d.ts` (dom), `<spec>.worker.d.ts` /
+  `worker.d.ts` (webworker), from `emit`;
+- replace mode — `lib.dom.d.ts`, `lib.webworker.d.ts`, `lib.serviceworker.d.ts`,
+  `lib.sharedworker.d.ts`, `lib.audioworklet.d.ts`, from `emit-lib`.
 
-Scopes are configured in [`scripts/util.ts`](scripts/util.ts); each is a
-separate build/diff/emit pass.
+Environments are configured in [`scripts/util.ts`](scripts/util.ts). All five
+get a replace lib; the two with a built-in TypeScript lib (`dom`, `webworker`)
+also get the augment delta. `scripts/check-libs.ts` typechecks every replace lib
+standalone (lib `ESNext`, no built-in DOM/Worker lib) to guarantee each is
+self-contained.
 
 A weekly GitHub Actions workflow
 ([`.github/workflows/update.yml`](.github/workflows/update.yml)) bumps the
