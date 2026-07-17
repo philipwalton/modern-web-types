@@ -61,98 +61,83 @@ and anything that couldn't be represented.
 
 ## Install & use
 
+The recommended way is **replace mode** — use the generated lib *in place of*
+TypeScript's built-in `lib.dom`, the same approach as
+[`@types/web`](https://www.npmjs.com/package/@types/web), except this lib also
+includes single-engine APIs. Because it *replaces* your DOM lib rather than
+merging into it, it can't conflict with — or dangle against — whatever version
+of `lib.dom` your TypeScript ships; it's self-contained on any TypeScript.
+
+There are two equivalent ways to opt in, plus an augment mode for granular use.
+
+### Lib replacement (zero config — recommended)
+
+Install the package under TypeScript's lib-override alias. That's it — no
+`tsconfig` change; keep `"lib": ["DOM"]` (or the default) and TypeScript
+transparently swaps its bundled `lib.dom` for this one:
+
 ```sh
-npm install --save-dev modern-web-types
+npm install --save-dev @typescript/lib-dom@npm:modern-web-types
 ```
 
-There are two ways to consume it. **Replace** is the "set and forget" option and
-is recommended; **augment** is more granular.
+### tsconfig `types` (explicit)
 
-### Replace mode (recommended)
-
-Use the generated lib *in place of* TypeScript's built-in `lib.dom` — the same
-approach as [`@types/web`](https://www.npmjs.com/package/@types/web), except
-this lib also includes single-engine APIs. Drop `"DOM"` from
-`compilerOptions.lib` and reference the replacement:
+Or wire it up in `tsconfig.json`: drop the built-in lib and pull the package's
+types in. The package root is the DOM lib; each other environment is a subpath.
 
 ```jsonc
-// tsconfig.json
-{
-  "compilerOptions": {
-    "lib": ["ESNext"] // note: no "DOM"
-  }
-}
+// window / DOM project
+{ "compilerOptions": { "lib": ["ESNext"], "types": ["modern-web-types"] } }
 ```
 
-```ts
-// any .d.ts file in your project, e.g. src/modern-web-types.d.ts
-/// <reference types="modern-web-types/lib.dom" />
+```jsonc
+// service worker (compile separately — DOM and worker globals can't mix)
+{ "compilerOptions": { "lib": ["ESNext"], "types": ["modern-web-types/webworker"] } }
 ```
 
-Because this *replaces* your DOM lib rather than merging into it, it can't
-conflict with — or dangle against — whatever version of `lib.dom` your
-TypeScript happens to ship. It's self-contained and works the same on any
-supported TypeScript.
-
-A complete lib is provided for each global scope; drop the matching built-in
-from `lib` and reference the replacement:
+A complete lib is provided for every global scope:
 
 | Entry point | Replaces |
 | --- | --- |
-| `modern-web-types/lib.dom` | `"DOM"` |
-| `modern-web-types/lib.webworker` | `"WebWorker"` (dedicated + shared + service worker) |
-| `modern-web-types/lib.serviceworker` | `@types/serviceworker` (service worker only) |
-| `modern-web-types/lib.sharedworker` | `@types/sharedworker` (shared worker only) |
-| `modern-web-types/lib.audioworklet` | `@types/audioworklet` |
+| `modern-web-types` | `"DOM"` |
+| `modern-web-types/webworker` | `"WebWorker"` (dedicated + shared + service worker) |
+| `modern-web-types/serviceworker` | `@types/serviceworker` (service worker only) |
+| `modern-web-types/sharedworker` | `@types/sharedworker` (shared worker only) |
+| `modern-web-types/audioworklet` | `@types/audioworklet` |
 
-`lib.webworker` is the combined worker lib and is what most worker projects
-want; the standalone `serviceworker` / `sharedworker` libs exist for projects
-that want to expose only that one global scope. When a worker API references a
-Window-only type (e.g. `ManagedMediaSource extends MediaSource`), that
-dependency is carried along as a type-only declaration, so the lib stays
-self-contained without exposing a constructor that isn't available there.
+`webworker` is the combined worker lib and is what most worker projects want;
+the standalone `serviceworker` / `sharedworker` libs exist for projects that
+want to expose only that one global scope. A single package can only satisfy one
+`@typescript/lib-*` alias, so worker projects use the `types` form above. When a
+worker API references a Window-only type (e.g. `ManagedMediaSource extends
+MediaSource`), that dependency is carried along as a type-only declaration, so
+the lib stays self-contained without exposing a constructor that isn't available
+there.
+
+See [`../modern-web-types-example`](../modern-web-types-example) for a working
+project wired up this way.
 
 ### Augment mode
 
-Layer the additions onto your existing `lib.dom` instead of replacing it. Good
-when you only want one feature, or want to keep TypeScript's own DOM types as
-the base. Note that a few specs reference platform typedefs that only exist in a
-recent `lib.dom`, so augment mode wants an up-to-date TypeScript (replace mode
-has no such requirement).
-
-**Everything at once** — reference the package from any `.ts` file, or add it to
-`compilerOptions.types`:
+Layer the additions onto your existing `lib.dom` instead of replacing it — good
+when you only want one feature, or want to keep TypeScript's own DOM types as the
+base. Everything lives under the `augment/` subpath. Note that a few specs
+reference platform typedefs that only exist in a recent `lib.dom`, so augment
+mode wants an up-to-date TypeScript (replace mode has no such requirement).
 
 ```ts
-/// <reference types="modern-web-types" />
-```
+// everything at once
+/// <reference types="modern-web-types/augment" />
 
-**Just one feature** — import a single spec's entry point so you only pull in
-the globals you actually use:
-
-```ts
-/// <reference types="modern-web-types/eyedropper-api" />
+// or just one feature (spec shortnames are listed in report.md)
+/// <reference types="modern-web-types/augment/eyedropper-api" />
 
 const dropper = new EyeDropper();
 const { sRGBHex } = await dropper.open();
 ```
 
-Entry-point names match the spec shortnames listed in `report.md` (e.g.
-`modern-web-types/webgpu`, `modern-web-types/web-bluetooth`,
-`modern-web-types/css-view-transitions`).
-
-**Worker code** — worker-scope globals augment `lib.webworker` and live behind
-a parallel set of entry points. Reference `modern-web-types/worker` for all of
-them, or `modern-web-types/<spec>.worker` for one:
-
-```ts
-/// <reference types="modern-web-types/worker" />
-
-// e.g. ServiceWorker static routing, a worker-only API:
-self.addEventListener("install", (event) => {
-  event.addRoutes({ condition: { urlPattern: "/api/*" }, source: "network" });
-});
-```
+Worker-scope augments live under `modern-web-types/augment/worker` (all) or
+`modern-web-types/augment/<spec>.worker` (one).
 
 ## Caveats
 

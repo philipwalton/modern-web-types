@@ -2,7 +2,7 @@
 // what ships in >=1 stable engine and what the stock lib exposes.
 import fs from "node:fs";
 import path from "node:path";
-import { buildDir, rootDir, scopes, augmentScopes, replaceLib } from "./util.ts";
+import { buildDir, rootDir, scopes, augmentScopes } from "./util.ts";
 
 const warnings = fs.existsSync(path.join(buildDir, "warnings.txt"))
   ? fs
@@ -34,18 +34,20 @@ lines.push(
     "model):",
 );
 lines.push("");
+const replaceEntry = (s: (typeof scopes)[number]) =>
+  s.name === "dom" ? "modern-web-types" : `modern-web-types/${s.name}`;
 for (const s of scopes) {
   lines.push(
-    `- \`modern-web-types/${replaceLib(s).replace(/\.d\.ts$/, "")}\` — replaces \`${s.lib}\`` +
+    `- \`${replaceEntry(s)}\` — replaces \`${s.lib}\`` +
       (s.augment ? "" : " (standalone; not a built-in TypeScript lib)"),
   );
 }
 lines.push("");
 lines.push(
-  "**Augment** ships per-spec files that merge the single-engine delta into " +
-    "your existing lib; it covers the two environments with a built-in " +
-    "TypeScript lib (`DOM`, `WebWorker`). The per-scope counts below describe " +
-    "that delta.",
+  "**Augment** ships per-spec files (under the `augment/` subpath) that merge " +
+    "the single-engine delta into your existing lib; it covers the two " +
+    "environments with a built-in TypeScript lib (`DOM`, `WebWorker`). The " +
+    "per-scope counts below describe that delta.",
 );
 lines.push("");
 
@@ -68,8 +70,7 @@ for (const scope of augmentScopes) {
   lines.push(`## ${scope.name} scope (lib \`${scope.lib}\`)`);
   lines.push("");
   lines.push(
-    `Augment entry points: \`modern-web-types${augment.suffix ? "/…" + augment.suffix : ""}\` ` +
-      `(all via \`${augment.index}\`).`,
+    `Augment entry points: \`modern-web-types/augment${scope.name === "webworker" ? "/…worker" : "/…"}\`.`,
   );
   lines.push("");
   lines.push(`| Category | Count |`);

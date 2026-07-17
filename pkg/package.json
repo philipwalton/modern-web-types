@@ -2,15 +2,33 @@
   "name": "modern-web-types",
   "version": "0.0.0",
   "description": "TypeScript types for web platform APIs that ship in one browser engine but aren't yet in lib.dom.",
-  "types": "index.d.ts",
+  "types": "./lib.dom.d.ts",
   "exports": {
     ".": {
+      "types": "./lib.dom.d.ts"
+    },
+    "./webworker": {
+      "types": "./lib.webworker.d.ts"
+    },
+    "./serviceworker": {
+      "types": "./lib.serviceworker.d.ts"
+    },
+    "./sharedworker": {
+      "types": "./lib.sharedworker.d.ts"
+    },
+    "./audioworklet": {
+      "types": "./lib.audioworklet.d.ts"
+    },
+    "./augment": {
       "types": "./index.d.ts"
     },
-    "./package.json": "./package.json",
-    "./*": {
+    "./augment/worker": {
+      "types": "./worker.d.ts"
+    },
+    "./augment/*": {
       "types": "./*.d.ts"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "*.d.ts"

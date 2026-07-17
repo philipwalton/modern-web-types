@@ -6,17 +6,17 @@ These are declarations present when the two-engine rule is relaxed to **one** st
 
 The package ships in two flavors. **Replace** provides a complete lib for each environment, used in place of TypeScript's built-in (`@types/web` model):
 
-- `modern-web-types/lib.dom` — replaces `DOM`
-- `modern-web-types/lib.webworker` — replaces `WebWorker`
-- `modern-web-types/lib.serviceworker` — replaces `ServiceWorker` (standalone; not a built-in TypeScript lib)
-- `modern-web-types/lib.sharedworker` — replaces `SharedWorker` (standalone; not a built-in TypeScript lib)
-- `modern-web-types/lib.audioworklet` — replaces `AudioWorklet` (standalone; not a built-in TypeScript lib)
+- `modern-web-types` — replaces `DOM`
+- `modern-web-types/webworker` — replaces `WebWorker`
+- `modern-web-types/serviceworker` — replaces `ServiceWorker` (standalone; not a built-in TypeScript lib)
+- `modern-web-types/sharedworker` — replaces `SharedWorker` (standalone; not a built-in TypeScript lib)
+- `modern-web-types/audioworklet` — replaces `AudioWorklet` (standalone; not a built-in TypeScript lib)
 
-**Augment** ships per-spec files that merge the single-engine delta into your existing lib; it covers the two environments with a built-in TypeScript lib (`DOM`, `WebWorker`). The per-scope counts below describe that delta.
+**Augment** ships per-spec files (under the `augment/` subpath) that merge the single-engine delta into your existing lib; it covers the two environments with a built-in TypeScript lib (`DOM`, `WebWorker`). The per-scope counts below describe that delta.
 
 ## dom scope (lib `DOM`)
 
-Augment entry points: `modern-web-types` (all via `index.d.ts`).
+Augment entry points: `modern-web-types/augment/…`.
 
 | Category | Count |
 | --- | ---: |
@@ -482,7 +482,7 @@ Each differs from an existing lib declaration in a way declaration merging can't
 
 ## webworker scope (lib `WebWorker`)
 
-Augment entry points: `modern-web-types/….worker` (all via `worker.d.ts`).
+Augment entry points: `modern-web-types/augment/…worker`.
 
 | Category | Count |
 | --- | ---: |
