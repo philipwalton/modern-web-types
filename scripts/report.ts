@@ -30,6 +30,13 @@ lines.push(
     "worker).",
 );
 lines.push("");
+lines.push(
+  "The package ships in two flavors: **augment** (per-spec `.d.ts` files that " +
+    "merge these additions into your existing lib) and **replace** (a complete " +
+    "`lib.dom.d.ts` / `lib.webworker.d.ts` you use in place of TypeScript's, " +
+    "the `@types/web` model). The counts below describe the augment delta.",
+);
+lines.push("");
 
 const count = (delta: any, kind: string) =>
   delta.items.filter((i: any) => i.kind === kind).length;

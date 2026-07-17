@@ -1,8 +1,10 @@
 # Gap report
 
-Generated 2026-07-17T19:41:47.320Z from TypeScript-DOM-lib-generator `a193ecb2b75a`.
+Generated 2026-07-17T22:23:31.400Z from TypeScript-DOM-lib-generator `a193ecb2b75a`.
 
 These are declarations present when the two-engine rule is relaxed to **one** stable engine, but absent from the stock baseline. Each scope augments a different TypeScript lib (`DOM` for window, `WebWorker` for worker).
+
+The package ships in two flavors: **augment** (per-spec `.d.ts` files that merge these additions into your existing lib) and **replace** (a complete `lib.dom.d.ts` / `lib.webworker.d.ts` you use in place of TypeScript's, the `@types/web` model). The counts below describe the augment delta.
 
 ## window scope (lib `DOM`)
 

@@ -42,7 +42,9 @@ generator** and diffs it against itself:
    the difference is exactly *what the two-engine rule removed*.
 4. **Emit** the delta as global-augmentation `.d.ts` files, one per spec,
    grouped using [`@webref/idl`](https://www.npmjs.com/package/@webref/idl)
-   ([`scripts/emit.ts`](scripts/emit.ts)).
+   ([`scripts/emit.ts`](scripts/emit.ts)) — this is **augment mode**. In
+   parallel, [`scripts/emit-lib.ts`](scripts/emit-lib.ts) ships the complete
+   one-engine lib as a drop-in `lib.dom` replacement — **replace mode**.
 
 Every step runs once per **scope**: `window` (augments `lib.dom`, ~430
 interfaces) and `worker` (augments `lib.webworker`, ~140 interfaces — the
@@ -62,6 +64,44 @@ and anything that couldn't be represented.
 ```sh
 npm install --save-dev modern-web-types
 ```
+
+There are two ways to consume it. **Replace** is the "set and forget" option and
+is recommended; **augment** is more granular.
+
+### Replace mode (recommended)
+
+Use the generated lib *in place of* TypeScript's built-in `lib.dom` — the same
+approach as [`@types/web`](https://www.npmjs.com/package/@types/web), except
+this lib also includes single-engine APIs. Drop `"DOM"` from
+`compilerOptions.lib` and reference the replacement:
+
+```jsonc
+// tsconfig.json
+{
+  "compilerOptions": {
+    "lib": ["ESNext"] // note: no "DOM"
+  }
+}
+```
+
+```ts
+// any .d.ts file in your project, e.g. src/modern-web-types.d.ts
+/// <reference types="modern-web-types/lib.dom" />
+```
+
+Because this *replaces* your DOM lib rather than merging into it, it can't
+conflict with — or dangle against — whatever version of `lib.dom` your
+TypeScript happens to ship. It's self-contained and works the same on any
+supported TypeScript. For workers, drop `"WebWorker"` and reference
+`modern-web-types/lib.webworker`.
+
+### Augment mode
+
+Layer the additions onto your existing `lib.dom` instead of replacing it. Good
+when you only want one feature, or want to keep TypeScript's own DOM types as
+the base. Note that a few specs reference platform typedefs that only exist in a
+recent `lib.dom`, so augment mode wants an up-to-date TypeScript (replace mode
+has no such requirement).
 
 **Everything at once** — reference the package from any `.ts` file, or add it to
 `compilerOptions.types`:
@@ -102,31 +142,42 @@ self.addEventListener("install", (event) => {
 - **These are ahead of the standards process.** A single-engine API can change
   shape — or be removed — before it reaches cross-browser status. Types may
   shift between releases to match.
-- **Recent TypeScript recommended.** The types augment your `lib.dom`; a few
-  specs reference platform types (typedefs, enums) that only exist in a recent
-  `lib.dom`. On an older TypeScript, pair with a current
-  [`@types/web`](https://www.npmjs.com/package/@types/web).
-- **A handful of declarations can't be represented** and are omitted — see the
-  "Skipped" section of `report.md`. These are cases where the generator's
-  output conflicts with an existing lib declaration in a way TypeScript's
-  declaration merging can't express (a changed property type, a widened type
-  alias, a maplike interface that redeclares `Map.set`, or an `extends` base
-  that doesn't exist in that scope).
+- **In replace mode, you take our DOM types wholesale** — from the pinned
+  generator, not TypeScript's bundle. The weekly regeneration keeps them
+  current, but if TypeScript's own `lib.dom` leads ours in some area you won't
+  see that until the next regen.
+- **Augment mode wants a recent TypeScript.** A few specs reference platform
+  typedefs/enums that only exist in a recent `lib.dom`; on an older TypeScript,
+  pair augment mode with a current
+  [`@types/web`](https://www.npmjs.com/package/@types/web), or just use replace
+  mode (which has no such dependency).
+- **A handful of declarations can't be represented in augment mode** and are
+  omitted — see the "Skipped" section of `report.md`. These are cases where the
+  generator's output conflicts with an existing lib declaration in a way
+  TypeScript's declaration merging can't express (a changed property type, a
+  widened type alias, a maplike interface that redeclares `Map.set`, or an
+  `extends` base absent from the scope). Replace mode has none of these gaps —
+  it ships the complete lib.
 
 ## Development
 
 ```sh
-npm run update   # fetch-upstream -> build -> diff -> emit -> report
-npm test         # typecheck the generated package + guard the delta size
+npm run update   # fetch-upstream -> build -> diff -> emit -> emit-lib -> report
+npm test         # typecheck every generated flavor + guard the delta size
 ```
 
 Individual steps: `npm run fetch-upstream`, `npm run build`, `npm run diff`,
-`npm run emit`, `npm run report`. The pinned generator is cloned into
-`upstream/` (gitignored) and patched on fetch. Intermediate build artifacts go
-in `build/` (gitignored); the published files live in [`pkg/`](pkg/) —
-`<spec>.d.ts` / `index.d.ts` for window scope, `<spec>.worker.d.ts` /
-`worker.d.ts` for worker scope. Scopes are configured in
-[`scripts/util.ts`](scripts/util.ts); each is a separate build/diff/emit pass.
+`npm run emit`, `npm run emit-lib`, `npm run report`. The pinned generator is
+cloned into `upstream/` (gitignored) and patched on fetch. Intermediate build
+artifacts go in `build/` (gitignored); the published files live in
+[`pkg/`](pkg/):
+
+- augment mode — `<spec>.d.ts` / `index.d.ts` (window), `<spec>.worker.d.ts` /
+  `worker.d.ts` (worker), from `emit`;
+- replace mode — `lib.dom.d.ts`, `lib.webworker.d.ts`, from `emit-lib`.
+
+Scopes are configured in [`scripts/util.ts`](scripts/util.ts); each is a
+separate build/diff/emit pass.
 
 A weekly GitHub Actions workflow
 ([`.github/workflows/update.yml`](.github/workflows/update.yml)) bumps the

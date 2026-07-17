@@ -10,9 +10,10 @@
     "build": "node scripts/build.ts",
     "diff": "node scripts/diff.ts",
     "emit": "node scripts/emit.ts",
+    "emit-lib": "node scripts/emit-lib.ts",
     "report": "node scripts/report.ts",
-    "update": "npm run fetch-upstream && npm run build && npm run diff && npm run emit && npm run report",
-    "test": "tsc -p test/tsconfig.json && tsc -p test/tsconfig.worker.json && node scripts/check-delta.ts"
+    "update": "npm run fetch-upstream && npm run build && npm run diff && npm run emit && npm run emit-lib && npm run report",
+    "test": "tsc -p test/tsconfig.json && tsc -p test/tsconfig.worker.json && tsc -p test/tsconfig.lib.json && tsc -p test/tsconfig.lib-worker.json && node scripts/check-delta.ts"
   },
   "devDependencies": {
     "@webref/idl": "^3.82.0",
