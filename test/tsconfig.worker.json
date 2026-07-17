@@ -4,7 +4,7 @@
     "strict": true,
     "skipLibCheck": false,
     "types": [],
-    "lib": ["ES2023"]
+    "lib": ["ESNext"]
   },
   "files": ["worker-specs.ts", "worker-smoke.ts"]
 }
