@@ -1,0 +1,22 @@
+{
+  "name": "modern-web-types-pipeline",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">= 22.18.0"
+  },
+  "scripts": {
+    "fetch-upstream": "node scripts/fetch-upstream.ts",
+    "build": "node scripts/build.ts",
+    "diff": "node scripts/diff.ts",
+    "emit": "node scripts/emit.ts",
+    "report": "node scripts/report.ts",
+    "update": "npm run fetch-upstream && npm run build && npm run diff && npm run emit && npm run report",
+    "test": "tsc -p test/tsconfig.json && node scripts/check-delta.ts"
+  },
+  "devDependencies": {
+    "@webref/idl": "^3.82.0",
+    "typescript": "^5.9.3",
+    "webidl2": "^24.5.0"
+  }
+}

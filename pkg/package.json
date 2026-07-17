@@ -1,0 +1,31 @@
+{
+  "name": "modern-web-types",
+  "version": "0.0.0",
+  "description": "TypeScript types for web platform APIs that ship in one browser engine but aren't yet in lib.dom.",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts"
+    },
+    "./*": {
+      "types": "./*.d.ts"
+    }
+  },
+  "files": [
+    "*.d.ts"
+  ],
+  "keywords": [
+    "typescript",
+    "types",
+    "dom",
+    "web",
+    "lib.dom",
+    "web-platform"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/philipwalton/modern-web-types"
+  },
+  "sideEffects": false
+}

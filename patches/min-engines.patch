@@ -1,0 +1,28 @@
+diff --git a/src/build/bcd.ts b/src/build/bcd.ts
+index 1822fd4..c4302cb 100644
+--- a/src/build/bcd.ts
++++ b/src/build/bcd.ts
+@@ -25,7 +25,7 @@ function hasMultipleImplementations(support: SupportBlock, prefix?: string) {
+   if (hasStableImpl(support.safari) || hasStableImpl(support.safari_ios)) {
+     count += 1;
+   }
+-  return count >= 2;
++  return count >= Number(process.env.MWT_MIN_ENGINES ?? 2);
+ }
+ 
+ function isSuitable(
+diff --git a/src/build/emitter.ts b/src/build/emitter.ts
+index 3b2dd21..a4e2ede 100644
+--- a/src/build/emitter.ts
++++ b/src/build/emitter.ts
+@@ -504,6 +504,10 @@ export function emitWebIdl(
+       return objDomType;
+     }
+ 
++    if (process.env.MWT_LENIENT_TYPES) {
++      console.warn(`MWT: unknown DOM type ${objDomType}, emitting "any"`);
++      return "any";
++    }
+     throw new Error("Unknown DOM type: " + objDomType);
+   }
+ 

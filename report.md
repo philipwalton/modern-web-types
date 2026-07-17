@@ -1,0 +1,488 @@
+# Gap report
+
+Generated 2026-07-17T18:43:10.023Z from TypeScript-DOM-lib-generator `a193ecb2b75a`.
+
+These are declarations present when the two-engine rule is relaxed to **one** stable engine, but absent from the stock `lib.dom` baseline.
+
+## Totals
+
+| Category | Count |
+| --- | ---: |
+| New interfaces | 431 |
+| New type aliases | 93 |
+| New global vars | 214 |
+| New global functions | 8 |
+| Members added to existing interfaces | 336 |
+| Spec files emitted | 136 |
+| Skipped (unmergeable) | 10 |
+
+## Spec files
+
+`EXT_disjoint_timer_query`, `EXT_disjoint_timer_query_webgl2`, `IndexedDB`, `SVG`, `accelerometer`, `anchors`, `anonymous-iframe`, `audio-output`, `audio-session`, `autoplay-detection`, `background-fetch`, `background-sync`, `battery-status`, `capture-handle-identity`, `clipboard-apis`, `compute-pressure`, `contact-picker`, `content-index`, `crash-reporting`, `credential-management`, `csp-embedded-enforcement`, `css-animations-2`, `css-conditional-5`, `css-fonts`, `css-fonts-5`, `css-mixins`, `css-pseudo`, `css-scroll-snap-2`, `css-transitions-2`, `css-view-transitions`, `css-viewport`, `cssom`, `cssom-view`, `datacue`, `device-memory`, `device-posture`, `digital-goods`, `dom`, `edit-context`, `element-capture`, `element-timing`, `eyedropper-api`, `fedcm`, `fenced-frame`, `fetch`, `file-system-access`, `filter-effects`, `gamepad`, `gamepad-extensions`, `generic-sensor`, `geolocation-element`, `get-installed-related-apps`, `gpc`, `gyroscope`, `html`, `idle-detection`, `image-capture`, `image-resource`, `ink-enhancement`, `input-device-capabilities`, `intersection-observer`, `is-input-pending`, `js-self-profiling`, `keyboard-lock`, `keyboard-map`, `layout-instability`, `local-font-access`, `local-network-access`, `long-animation-frames`, `longtasks`, `managed-configuration`, `manifest-incubations`, `media-source`, `mediacapture-region`, `mediacapture-streams`, `mediasession`, `mediastream-recording`, `misc`, `navigation-timing`, `netinfo`, `notifications`, `observable`, `orientation-sensor`, `page-lifecycle`, `performance-measure-memory`, `periodic-background-sync`, `prerendering-revamped`, `presentation-api`, `private-click-measurement`, `prompt-api`, `raw-camera-access`, `resource-timing`, `saa-non-cookie-storage`, `savedata`, `screen-capture`, `secure-payment-confirmation`, `shape-detection-api`, `speech-api`, `storage-buckets`, `svg-animations`, `svg-paths`, `touch-events`, `translation-api`, `trust-token-api`, `ua-client-hints`, `virtual-keyboard`, `web-animations-2`, `web-app-launch`, `web-based-payment-handler`, `web-bluetooth`, `web-nfc`, `web-otp`, `webaudio`, `webcodecs`, `webgl1`, `webgpu`, `webhid`, `webidl`, `webmidi`, `webrtc`, `webrtc-identity`, `webrtc-priority`, `webtransport`, `webusb`, `webxr`, `webxr-ar-module`, `webxr-depth-sensing`, `webxr-dom-overlays`, `webxr-hand-input`, `webxr-hit-test`, `webxr-lighting-estimation`, `webxr-plane-detection`, `webxrlayers`, `window-controls-overlay`, `window-management`, `writing-assistance-apis`
+
+## New interfaces
+
+<details><summary>431 interfaces</summary>
+
+- `AbsoluteOrientationSensor`
+- `Accelerometer`
+- `AccelerometerSensorOptions`
+- `ActivationBlockersMixin`
+- `ActivationBlockersMixinEventMap`
+- `AnimationTrigger`
+- `AnimationTriggerOptions`
+- `AudioContextEventMap`
+- `AudioOutputOptions`
+- `AudioPlaybackStats`
+- `AudioSession`
+- `AudioSinkInfo`
+- `AudioSinkOptions`
+- `AudioTrack`
+- `AudioTrackList`
+- `AudioTrackListEventMap`
+- `BackgroundFetchManager`
+- `BackgroundFetchOptions`
+- `BackgroundFetchRecord`
+- `BackgroundFetchRegistration`
+- `BackgroundFetchRegistrationEventMap`
+- `BackgroundFetchUIOptions`
+- `BackgroundSyncOptions`
+- `BarcodeDetector`
+- `BarcodeDetectorOptions`
+- `BatteryManager`
+- `BatteryManagerEventMap`
+- `BeforeInstallPromptEvent`
+- `Bluetooth`
+- `BluetoothCharacteristicProperties`
+- `BluetoothDataFilterInit`
+- `BluetoothDevice`
+- `BluetoothDeviceEventHandlers`
+- `BluetoothDeviceEventHandlersEventMap`
+- `BluetoothDeviceEventMap`
+- `BluetoothEventMap`
+- `BluetoothLEScanFilterInit`
+- `BluetoothManufacturerDataFilterInit`
+- `BluetoothRemoteGATTCharacteristic`
+- `BluetoothRemoteGATTDescriptor`
+- `BluetoothRemoteGATTServer`
+- `BluetoothRemoteGATTService`
+- `BluetoothServiceDataFilterInit`
+- `BluetoothUUID`
+- `BrowserCaptureMediaStreamTrack`
+- `BufferedChangeEvent`
+- `BufferedChangeEventInit`
+- `CSSContainerCondition`
+- `CSSFontFeatureValuesMap`
+- `CSSFunctionDeclarations`
+- `CSSFunctionDescriptors`
+- `CSSFunctionRule`
+- `CSSMarginRule`
+- `CSSPseudoElement`
+- `CaptureController`
+- `CaptureControllerEventMap`
+- `CaptureHandle`
+- `CaptureHandleConfig`
+- `CatchCallback`
+- `ChapterInformation`
+- `CharacterBoundsUpdateEvent`
+- `CharacterBoundsUpdateEventInit`
+- `CharacteristicEventHandlers`
+- `CharacteristicEventHandlersEventMap`
+- `ClipboardChangeEvent`
+- `ClipboardChangeEventInit`
+- `ColorSelectionOptions`
+- `ColorSelectionResult`
+- `ContactInfo`
+- `ContactsManager`
+- `ContactsSelectOptions`
+- `ContentDescription`
+- `ContentIndex`
+- `CrashReportContext`
+- `CreateMonitor`
+- `CreateMonitorCallback`
+- `CreateMonitorEventMap`
+- `CredentialData`
+- `CredentialUserData`
+- `CropTarget`
+- `DataCue`
+- `DeferredRequestInit`
+- `DelegatedInkTrailPresenter`
+- `DestroyableModel`
+- `DetectedBarcode`
+- `DevicePosture`
+- `DevicePostureEventMap`
+- `DirectoryPickerOptions`
+- `EXT_disjoint_timer_query`
+- `EXT_disjoint_timer_query_webgl2`
+- `EditContext`
+- `EditContextEventMap`
+- `EditContextInit`
+- `EyeDropper`
+- `FederatedCredential`
+- `FederatedCredentialInit`
+- `Fence`
+- `FenceEvent`
+- `FencedFrameConfig`
+- `FetchLaterResult`
+- `FilePickerAcceptType`
+- `FilePickerOptions`
+- `FileSystemHandlePermissionDescriptor`
+- `FontData`
+- `FunctionParameter`
+- `GamepadPose`
+- `GlobalPrivacyControl`
+- `GravitySensor`
+- `Gyroscope`
+- `GyroscopeSensorOptions`
+- `HID`
+- `HIDCollectionInfo`
+- `HIDConnectionEvent`
+- `HIDConnectionEventInit`
+- `HIDDevice`
+- `HIDDeviceEventMap`
+- `HIDDeviceFilter`
+- `HIDDeviceRequestOptions`
+- `HIDEventMap`
+- `HIDInputReportEvent`
+- `HIDInputReportEventInit`
+- `HIDReportInfo`
+- `HIDReportItem`
+- `HTMLFencedFrameElement`
+- `HTMLGeolocationElement`
+- `HTMLGeolocationElementEventMap`
+- `HTMLSelectedContentElement`
+- `IDBGetAllOptions`
+- `IDBRecord`
+- `IdentityCredential`
+- `IdentityCredentialDisconnectOptions`
+- `IdentityCredentialError`
+- `IdentityCredentialErrorInit`
+- `IdentityProvider`
+- `IdentityProviderConfig`
+- `IdentityResolveOptions`
+- `IdentityUserInfo`
+- `IdleDetector`
+- `IdleDetectorEventMap`
+- `IdleOptions`
+- `ImageResource`
+- `Ink`
+- `InkPresenterParam`
+- `InkTrailStyle`
+- `InputDeviceCapabilities`
+- `InputDeviceCapabilitiesInit`
+- `IsInputPendingOptions`
+- `Keyboard`
+- `KeyboardLayoutMap`
+- `LanguageDetectionResult`
+- `LanguageDetector`
+- `LanguageDetectorCreateCoreOptions`
+- `LanguageDetectorCreateOptions`
+- `LanguageDetectorDetectOptions`
+- `LanguageModel`
+- `LanguageModelAppendOptions`
+- `LanguageModelCloneOptions`
+- `LanguageModelCreateCoreOptions`
+- `LanguageModelCreateOptions`
+- `LanguageModelEventMap`
+- `LanguageModelExpected`
+- `LanguageModelMessage`
+- `LanguageModelMessageContent`
+- `LanguageModelPromptOptions`
+- `LanguageModelTool`
+- `LanguageModelToolFunction`
+- `LaunchConsumer`
+- `LaunchParams`
+- `LaunchQueue`
+- `LayoutShift`
+- `LayoutShiftAttribution`
+- `LinearAccelerationSensor`
+- `ManagedMediaSource`
+- `ManagedMediaSourceEventMap`
+- `ManagedSourceBuffer`
+- `ManagedSourceBufferEventMap`
+- `Mapper`
+- `MediaStreamTrackAudioSourceNode`
+- `MediaStreamTrackAudioSourceOptions`
+- `MemoryAttribution`
+- `MemoryAttributionContainer`
+- `MemoryBreakdownEntry`
+- `MemoryMeasurement`
+- `NDEFMakeReadOnlyOptions`
+- `NDEFMessage`
+- `NDEFMessageInit`
+- `NDEFReader`
+- `NDEFReaderEventMap`
+- `NDEFReadingEvent`
+- `NDEFReadingEventInit`
+- `NDEFRecord`
+- `NDEFRecordInit`
+- `NDEFScanOptions`
+- `NDEFWriteOptions`
+- `NavigatorDeviceMemory`
+- `NavigatorManagedData`
+- `NavigatorManagedDataEventMap`
+- `NavigatorNetworkInformation`
+- `NavigatorStorageBuckets`
+- `NavigatorUA`
+- `NavigatorUABrandVersion`
+- `NavigatorUAData`
+- `NetworkInformation`
+- `NetworkInformationEventMap`
+- `NetworkInformationSaveData`
+- `NotRestoredReasonDetails`
+- `NotRestoredReasons`
+- `OTPCredential`
+- `Observable`
+- `ObservableEventListenerOptions`
+- `ObservableInspector`
+- `ObservableInspectorAbortHandler`
+- `ObservableSubscriptionCallback`
+- `OpenFilePickerOptions`
+- `OrientationSensor`
+- `OrientationSensorOptions`
+- `PasswordCredential`
+- `PasswordCredentialData`
+- `PaymentManager`
+- `PerformanceElementTiming`
+- `PerformanceLongAnimationFrameTiming`
+- `PerformanceLongTaskTiming`
+- `PerformanceScriptTiming`
+- `PerformanceTimingConfidence`
+- `PeriodicSyncManager`
+- `Point2D`
+- `PowerfulFeatureObserver`
+- `PowerfulFeatureObserverEventMap`
+- `Predicate`
+- `Presentation`
+- `PresentationAvailability`
+- `PresentationAvailabilityEventMap`
+- `PresentationConnection`
+- `PresentationConnectionAvailableEvent`
+- `PresentationConnectionAvailableEventInit`
+- `PresentationConnectionCloseEvent`
+- `PresentationConnectionCloseEventInit`
+- `PresentationConnectionEventMap`
+- `PresentationConnectionList`
+- `PresentationConnectionListEventMap`
+- `PresentationReceiver`
+- `PresentationRequest`
+- `PresentationRequestEventMap`
+- `PressureObserver`
+- `PressureObserverOptions`
+- `PressureRecord`
+- `PressureUpdateCallback`
+- `PrivateToken`
+- `Profiler`
+- `ProfilerFrame`
+- `ProfilerInitOptions`
+- `ProfilerSample`
+- `ProfilerStack`
+- `ProfilerTrace`
+- `PromptResponseObject`
+- `QueryOptions`
+- `QuotaExceededError`
+- `QuotaExceededErrorOptions`
+- `RTCIceParameters`
+- `RTCIdentityAssertion`
+- `RTCIdentityProviderOptions`
+- `Reducer`
+- `RelatedApplication`
+- `RelativeOrientationSensor`
+- `RequestDeviceOptions`
+- `RestrictionTarget`
+- `SVGPathData`
+- `SVGPathDataSettings`
+- `SaveFilePickerOptions`
+- `Scheduling`
+- `ScreenDetailed`
+- `ScreenDetails`
+- `ScreenDetailsEventMap`
+- `ScreenEventMap`
+- `Sensor`
+- `SensorErrorEvent`
+- `SensorErrorEventInit`
+- `SensorEventMap`
+- `SensorOptions`
+- `SharedWorkerOptions`
+- `SnapEvent`
+- `SnapEventInit`
+- `SpeechGrammarList`
+- `SpeechRecognition`
+- `SpeechRecognitionEventMap`
+- `SpeechRecognitionOptions`
+- `SpeechRecognitionPhrase`
+- `StorageAccessHandle`
+- `StorageBucket`
+- `StorageBucketManager`
+- `StorageBucketOptions`
+- `SubscribeCallback`
+- `SubscribeOptions`
+- `Subscriber`
+- `SubscriptionObserver`
+- `Summarizer`
+- `SummarizerCreateCoreOptions`
+- `SummarizerCreateOptions`
+- `SummarizerSummarizeOptions`
+- `SyncManager`
+- `TaskAttributionTiming`
+- `TextFormat`
+- `TextFormatInit`
+- `TextFormatUpdateEvent`
+- `TextFormatUpdateEventInit`
+- `TextUpdateEvent`
+- `TextUpdateEventInit`
+- `TimeEvent`
+- `Translator`
+- `TranslatorCreateCoreOptions`
+- `TranslatorCreateOptions`
+- `TranslatorTranslateOptions`
+- `UADataValues`
+- `UALowEntropyJSON`
+- `USB`
+- `USBAlternateInterface`
+- `USBConfiguration`
+- `USBConnectionEvent`
+- `USBConnectionEventInit`
+- `USBControlTransferParameters`
+- `USBDevice`
+- `USBDeviceFilter`
+- `USBDeviceRequestOptions`
+- `USBEndpoint`
+- `USBEventMap`
+- `USBInTransferResult`
+- `USBInterface`
+- `USBIsochronousInTransferPacket`
+- `USBIsochronousInTransferResult`
+- `USBIsochronousOutTransferPacket`
+- `USBIsochronousOutTransferResult`
+- `USBOutTransferResult`
+- `VideoFrameMetadata`
+- `VideoTrack`
+- `VideoTrackList`
+- `VideoTrackListEventMap`
+- `Viewport`
+- `VirtualKeyboard`
+- `VirtualKeyboardEventMap`
+- `VisibilityStateEntry`
+- `Visitor`
+- `WebGLObject`
+- `WebGLTimerQueryEXT`
+- `WebTransportDatagramsWritable`
+- `WebTransportSendGroup`
+- `WindowControlsOverlay`
+- `WindowControlsOverlayEventMap`
+- `WindowControlsOverlayGeometryChangeEvent`
+- `WindowControlsOverlayGeometryChangeEventInit`
+- `XRAnchor`
+- `XRAnchorSet`
+- `XRBoundedReferenceSpace`
+- `XRCPUDepthInformation`
+- `XRCamera`
+- `XRCompositionLayer`
+- `XRCubeLayer`
+- `XRCubeLayerEventMap`
+- `XRCubeLayerInit`
+- `XRCylinderLayer`
+- `XRCylinderLayerEventMap`
+- `XRCylinderLayerInit`
+- `XRDOMOverlayInit`
+- `XRDOMOverlayState`
+- `XRDepthInformation`
+- `XRDepthStateInit`
+- `XREquirectLayer`
+- `XREquirectLayerEventMap`
+- `XREquirectLayerInit`
+- `XRFrame`
+- `XRFrameRequestCallback`
+- `XRHand`
+- `XRHandIterator`
+- `XRHitTestOptionsInit`
+- `XRHitTestResult`
+- `XRHitTestSource`
+- `XRInputSource`
+- `XRInputSourceArray`
+- `XRInputSourceEvent`
+- `XRInputSourceEventInit`
+- `XRInputSourcesChangeEvent`
+- `XRInputSourcesChangeEventInit`
+- `XRJointPose`
+- `XRJointSpace`
+- `XRLayer`
+- `XRLayerEvent`
+- `XRLayerEventInit`
+- `XRLayerInit`
+- `XRLightEstimate`
+- `XRLightProbe`
+- `XRLightProbeEventMap`
+- `XRLightProbeInit`
+- `XRPlane`
+- `XRPlaneSet`
+- `XRPose`
+- `XRProjectionLayer`
+- `XRProjectionLayerInit`
+- `XRQuadLayer`
+- `XRQuadLayerEventMap`
+- `XRQuadLayerInit`
+- `XRRay`
+- `XRRayDirectionInit`
+- `XRReferenceSpace`
+- `XRReferenceSpaceEvent`
+- `XRReferenceSpaceEventInit`
+- `XRReferenceSpaceEventMap`
+- `XRRenderState`
+- `XRRenderStateInit`
+- `XRRigidTransform`
+- `XRSession`
+- `XRSessionEvent`
+- `XRSessionEventInit`
+- `XRSessionEventMap`
+- `XRSessionInit`
+- `XRSpace`
+- `XRSubImage`
+- `XRSystem`
+- `XRSystemEventMap`
+- `XRTransientInputHitTestOptionsInit`
+- `XRTransientInputHitTestResult`
+- `XRTransientInputHitTestSource`
+- `XRView`
+- `XRViewGeometry`
+- `XRViewerPose`
+- `XRViewport`
+- `XRVisibilityMaskChangeEvent`
+- `XRVisibilityMaskChangeEventInit`
+- `XRWebGLBinding`
+- `XRWebGLDepthInformation`
+- `XRWebGLLayer`
+- `XRWebGLLayerInit`
+- `XRWebGLSubImage`
+
+</details>
+
+## Skipped (cannot merge into lib.dom)
+
+These differ from an existing lib.dom declaration in a way that declaration merging can't express (a changed property type, a widened type alias, or a re-typed `declare var`). Handle with a manual override if needed.
+
+- `TrackEventInit.track` — property-type-changed
+- `CSSFontFeatureValuesMap` — maplike-mutator-dropped
+- `TrackEvent.track` — property-type-changed
+- `Transferable` — type-alias-changed
+- `DeviceMotionEvent` — var-changed
+- `DeviceOrientationEvent` — var-changed
+- `Document` — var-changed
+- `PaymentRequest` — var-changed
+- `ReadableStream` — var-changed
+- `WebTransport` — var-changed
+
+## Unknown-type fallbacks
+
+The relaxed build referenced types the emitter couldn't resolve (usually because a referenced feature is itself single-engine and its own definition is elsewhere in the delta). These were emitted as `any`; most resolve once their defining spec file is also included.
+
+```
+MWT: unknown DOM type ContactAddress, emitting "any"
+MWT: unknown DOM type SVGPathSegment, emitting "any"
+MWT: unknown DOM type SpeechGrammar, emitting "any"
+MWT: unknown DOM type DigitalGoodsService, emitting "any"
+MWT: unknown DOM type TimeRanges, emitting "any"
+MWT: unknown DOM type PaymentManager, emitting "any"
+MWT: unknown DOM type MediaStreamTrack, emitting "any"
+```

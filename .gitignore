@@ -1,0 +1,4 @@
+node_modules/
+upstream/
+build/
+.DS_Store
