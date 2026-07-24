@@ -164,15 +164,15 @@ Worker-scope augments live under `modern-web-types/augment/worker` (all) or
 ## Development
 
 ```sh
-npm run update   # fetch-upstream -> build -> diff -> emit -> emit-lib -> report
+npm run update   # fetch-upstream -> build -> diff -> emit -> emit-lib -> emit-test -> report
 npm test         # typecheck every generated flavor + guard the delta size
 ```
 
 Individual steps: `npm run fetch-upstream`, `npm run build`, `npm run diff`,
-`npm run emit`, `npm run emit-lib`, `npm run report`. The pinned generator is
-cloned into `upstream/` (gitignored) and patched on fetch. Intermediate build
-artifacts go in `build/` (gitignored); the published files live in
-[`pkg/`](pkg/):
+`npm run emit`, `npm run emit-lib`, `npm run emit-test`, `npm run report`. The
+pinned generator is cloned into `upstream/` (gitignored) and patched on fetch.
+Intermediate build artifacts go in `build/` (gitignored); the published files
+live in [`pkg/`](pkg/):
 
 - augment mode — `<spec>.d.ts` / `index.d.ts` (dom), `<spec>.worker.d.ts` /
   `worker.d.ts` (webworker), from `emit`;
@@ -184,6 +184,16 @@ get a replace lib; the two with a built-in TypeScript lib (`dom`, `webworker`)
 also get the augment delta. `scripts/check-libs.ts` typechecks every replace lib
 standalone (lib `ESNext`, no built-in DOM/Worker lib) to guarantee each is
 self-contained.
+
+The smoke tests are generated, not hand-written. `scripts/emit-test.ts` reads
+each scope's delta and emits, into `test/generated/` (gitignored), one type-only
+assertion per delta symbol — that every new interface/alias resolves as a type,
+every new global as a value, and every merged member lands on its interface — in
+both an augment variant (baseline + `pkg/` index) and a replace variant (the
+complete lib). Because they are regenerated from the current delta each run, an
+API that graduates to two engines simply drops out of the delta and out of the
+tests, so the suite never goes stale or vacuously green. `test/all-specs.ts` and
+`test/worker-specs.ts` remain the whole-package consistency checks.
 
 A weekly GitHub Actions workflow
 ([`.github/workflows/update.yml`](.github/workflows/update.yml)) bumps the

@@ -6,5 +6,5 @@
     "types": [],
     "lib": ["ESNext"]
   },
-  "files": ["worker-specs.ts", "worker-smoke.ts"]
+  "files": ["worker-specs.ts", "generated/webworker.augment.ts"]
 }
