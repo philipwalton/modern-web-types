@@ -11,24 +11,53 @@ const { repo, sha } = JSON.parse(
 const patchFile = path.join(rootDir, "patches", "min-engines.patch");
 
 function currentSha(): string | undefined {
+  // No clone yet (or an interrupted one left an empty dir): nothing to reuse.
+  if (!fs.existsSync(path.join(upstreamDir, ".git"))) return undefined;
   try {
-    return run("git", ["rev-parse", "HEAD"], { cwd: upstreamDir }).trim();
+    // --verify --quiet exits non-zero *silently* on an unresolvable HEAD (an
+    // interrupted clone with an unborn HEAD), so the probe never leaks git's
+    // "ambiguous argument 'HEAD'" to the console; either way we re-clone.
+    return run("git", ["rev-parse", "--verify", "--quiet", "HEAD"], {
+      cwd: upstreamDir,
+    }).trim();
   } catch {
     return undefined;
   }
 }
 
-if (currentSha() !== sha) {
-  fs.rmSync(upstreamDir, { recursive: true, force: true });
-  fs.mkdirSync(upstreamDir, { recursive: true });
-  run("git", ["init", "-q"], { cwd: upstreamDir });
-  run("git", ["remote", "add", "origin", repo], { cwd: upstreamDir });
-  console.log(`Fetching ${repo} @ ${sha}…`);
-  run("git", ["fetch", "-q", "--depth", "1", "origin", sha], {
-    cwd: upstreamDir,
-  });
-  run("git", ["checkout", "-q", "FETCH_HEAD"], { cwd: upstreamDir });
+// Block the thread between retry attempts (run() is synchronous).
+function sleepSync(ms: number): void {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
 }
+
+// Shallow-fetch the pinned SHA into a fresh upstream/ and check it out. The
+// fetch occasionally returns a partial packfile ("remote did not send all
+// necessary objects"); a clean retry almost always succeeds, so each attempt
+// starts from an empty directory to discard any half-written object store.
+function cloneAtSha(): void {
+  const attempts = 3;
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    fs.rmSync(upstreamDir, { recursive: true, force: true });
+    fs.mkdirSync(upstreamDir, { recursive: true });
+    run("git", ["init", "-q"], { cwd: upstreamDir });
+    run("git", ["remote", "add", "origin", repo], { cwd: upstreamDir });
+    console.log(`Fetching ${repo} @ ${sha}… (attempt ${attempt}/${attempts})`);
+    try {
+      run("git", ["fetch", "-q", "--depth", "1", "origin", sha], {
+        cwd: upstreamDir,
+      });
+      run("git", ["checkout", "-q", "FETCH_HEAD"], { cwd: upstreamDir });
+      return;
+    } catch (err) {
+      if (attempt === attempts) throw err;
+      const backoffMs = 2000 * 2 ** (attempt - 1);
+      console.warn(`Fetch failed; retrying in ${backoffMs / 1000}s…`);
+      sleepSync(backoffMs);
+    }
+  }
+}
+
+if (currentSha() !== sha) cloneAtSha();
 
 // A dirty tree means the patch is already applied (or something is wrong —
 // git apply will fail loudly in that case).
