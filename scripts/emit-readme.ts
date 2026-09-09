@@ -13,7 +13,8 @@ const repoOnlySections = new Set(["Development"]);
 const { repository } = JSON.parse(
   fs.readFileSync(path.join(pkgDir, "package.json"), "utf8"),
 );
-const repoUrl = repository.url.replace(/\.git$/, "");
+// repository.url is a clone URL; the README needs the browsable form.
+const repoUrl = repository.url.replace(/^git\+/, "").replace(/\.git$/, "");
 const blobUrl = `${repoUrl}/blob/main`;
 
 const readme = fs.readFileSync(path.join(rootDir, "README.md"), "utf8");
