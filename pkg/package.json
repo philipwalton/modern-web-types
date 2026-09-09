@@ -1,7 +1,7 @@
 {
   "name": "modern-web-types",
   "version": "0.1.0",
-  "description": "TypeScript types for web platform APIs that ship in one browser engine but aren't yet in lib.dom.",
+  "description": "TypeScript types for new web platform APIs that aren't yet in lib.dom.",
   "types": "./lib.dom.d.ts",
   "exports": {
     ".": {

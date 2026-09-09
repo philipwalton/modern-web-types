@@ -1,9 +1,7 @@
 # modern-web-types
 
-TypeScript types for web platform APIs that have **shipped in a browser but
-aren't in `lib.dom.d.ts` yet** — WebGPU, WebUSB, Web Bluetooth, FedCM, the
-EyeDropper, View Transitions, the built-in AI (Prompt / Translation / Writing
-Assistance) APIs, and ~130 other specs.
+TypeScript types for web platform APIs that have shipped in at least one stable 
+browser but aren't yet in `lib.dom.d.ts`.
 
 ## Why this exists
 
