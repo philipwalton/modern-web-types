@@ -12,10 +12,33 @@ index 1822fd4..c4302cb 100644
  
  function isSuitable(
 diff --git a/src/build/emitter.ts b/src/build/emitter.ts
-index 3b2dd21..a4e2ede 100644
+index 31e4374..01cf7da 100644
 --- a/src/build/emitter.ts
 +++ b/src/build/emitter.ts
-@@ -504,6 +504,10 @@ export function emitWebIdl(
+@@ -407,16 +407,13 @@ export function emitWebIdl(
+     forReturn: boolean,
+   ): string {
+     function convertBaseType() {
+-      // Support async_sequence (see https://github.com/whatwg/streams/pull/1372)
++      // Support async_sequence (see https://github.com/whatwg/streams/pull/1372).
++      // The element type rides along as a subtype, which the caller appends as a
++      // type argument, so returning the bare constructor yields AsyncIterable<T>.
++      // AsyncIterable is declared by lib.es2018.asynciterable, which every scope
++      // this project emits is typechecked against.
+       if (obj.type === "async_sequence") {
+-        // AsyncIterable<T> requires separate asynciterable.d.ts until TS 6.0.
+-        // To make it correct, we need to defer any functions using async_sequence to the asynciterable variant.
+-        // For now, skip generation and warn.
+-        console.warn(
+-          "Skipping generation for a function or property with async_sequence type: " +
+-            JSON.stringify(obj),
+-        );
+-        return "never"; // Use 'never' to signal omission in type generation
++        return "AsyncIterable";
+       }
+       if (obj.type === "sequence" && !forReturn && iterator !== "") {
+         return "Iterable";
+@@ -517,6 +514,10 @@ export function emitWebIdl(
        return objDomType;
      }
  
