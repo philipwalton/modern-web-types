@@ -24,7 +24,6 @@
 /// <reference path="./credential-management.d.ts" />
 /// <reference path="./csp-embedded-enforcement.d.ts" />
 /// <reference path="./css-animations-2.d.ts" />
-/// <reference path="./css-conditional-5.d.ts" />
 /// <reference path="./css-fonts.d.ts" />
 /// <reference path="./css-fonts-5.d.ts" />
 /// <reference path="./css-mixins.d.ts" />

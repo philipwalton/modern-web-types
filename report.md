@@ -1,6 +1,6 @@
 # Gap report
 
-Generated 2026-07-24T17:18:40.615Z from TypeScript-DOM-lib-generator `a193ecb2b75a`.
+Generated 2026-09-09T02:11:18.974Z from TypeScript-DOM-lib-generator `245655f1e887`.
 
 These are declarations present when the two-engine rule is relaxed to **one** stable engine, but absent from the stock baseline.
 
@@ -20,14 +20,14 @@ Augment entry points: `modern-web-types/augment/…`.
 
 | Category | Count |
 | --- | ---: |
-| New interfaces | 431 |
-| New type aliases | 93 |
+| New interfaces | 433 |
+| New type aliases | 96 |
 | New global vars | 214 |
-| New global functions | 8 |
-| Members added to existing interfaces | 336 |
+| New global functions | 9 |
+| Members added to existing interfaces | 339 |
 | Skipped (unmergeable) | 10 |
 
-<details><summary>431 new interfaces</summary>
+<details><summary>433 new interfaces</summary>
 
 - `AbsoluteOrientationSensor`
 - `Accelerometer`
@@ -45,6 +45,7 @@ Augment entry points: `modern-web-types/augment/…`.
 - `AudioTrack`
 - `AudioTrackList`
 - `AudioTrackListEventMap`
+- `BackgroundBlur`
 - `BackgroundFetchManager`
 - `BackgroundFetchOptions`
 - `BackgroundFetchRecord`
@@ -76,7 +77,6 @@ Augment entry points: `modern-web-types/augment/…`.
 - `BrowserCaptureMediaStreamTrack`
 - `BufferedChangeEvent`
 - `BufferedChangeEventInit`
-- `CSSContainerCondition`
 - `CSSFontFeatureValuesMap`
 - `CSSFunctionDeclarations`
 - `CSSFunctionDescriptors`
@@ -206,6 +206,7 @@ Augment entry points: `modern-web-types/augment/…`.
 - `ManagedSourceBuffer`
 - `ManagedSourceBufferEventMap`
 - `Mapper`
+- `MediaEffectInfo`
 - `MediaStreamTrackAudioSourceNode`
 - `MediaStreamTrackAudioSourceOptions`
 - `MemoryAttribution`
@@ -303,6 +304,7 @@ Augment entry points: `modern-web-types/augment/…`.
 - `ScreenDetails`
 - `ScreenDetailsEventMap`
 - `ScreenEventMap`
+- `Segment`
 - `Sensor`
 - `SensorErrorEvent`
 - `SensorErrorEventInit`
@@ -486,17 +488,18 @@ Augment entry points: `modern-web-types/augment/…worker`.
 
 | Category | Count |
 | --- | ---: |
-| New interfaces | 141 |
-| New type aliases | 34 |
+| New interfaces | 144 |
+| New type aliases | 35 |
 | New global vars | 55 |
 | New global functions | 1 |
-| Members added to existing interfaces | 63 |
+| Members added to existing interfaces | 64 |
 | Skipped (unmergeable) | 5 |
 
-<details><summary>141 new interfaces</summary>
+<details><summary>144 new interfaces</summary>
 
 - `AddressErrors`
 - `AddressInit`
+- `BackgroundBlur`
 - `BackgroundFetchEvent`
 - `BackgroundFetchEventInit`
 - `BackgroundFetchManager`
@@ -546,6 +549,7 @@ Augment entry points: `modern-web-types/augment/…worker`.
 - `ManagedSourceBuffer`
 - `ManagedSourceBufferEventMap`
 - `Mapper`
+- `MediaEffectInfo`
 - `MemoryAttribution`
 - `MemoryAttributionContainer`
 - `MemoryBreakdownEntry`
@@ -597,6 +601,7 @@ Augment entry points: `modern-web-types/augment/…worker`.
 - `RouterCondition`
 - `RouterRule`
 - `RouterSourceDict`
+- `Segment`
 - `Sensor`
 - `SensorErrorEvent`
 - `SensorErrorEventInit`
