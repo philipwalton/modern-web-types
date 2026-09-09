@@ -525,6 +525,7 @@ interface GPUPipelineErrorInit {
 
 interface GPUPipelineLayoutDescriptor extends GPUObjectDescriptorBase {
     bindGroupLayouts: (GPUBindGroupLayout | null)[];
+    immediateSize?: GPUSize32;
 }
 
 interface GPUPrimitiveState {
@@ -2027,21 +2028,53 @@ declare var Blob: {
 };
 
 interface Body {
-    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/body) */
+    /**
+     * The **`body`** read-only property of the Request interface contains a ReadableStream with the body contents that have been added to the request. Note that a request using the GET or HEAD method cannot have a body and null is returned in these cases.
+     *
+     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/body)
+     */
     readonly body: ReadableStream<Uint8Array<ArrayBuffer>> | null;
-    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/bodyUsed) */
+    /**
+     * The **`bodyUsed`** read-only property of the Request interface is a boolean value that indicates whether the request body has been read yet.
+     *
+     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/bodyUsed)
+     */
     readonly bodyUsed: boolean;
-    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/arrayBuffer) */
+    /**
+     * The **`arrayBuffer()`** method of the Request interface reads the request body and returns it as a promise that resolves with an ArrayBuffer.
+     *
+     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/arrayBuffer)
+     */
     arrayBuffer(): Promise<ArrayBuffer>;
-    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/blob) */
+    /**
+     * The **`blob()`** method of the Request interface reads the request body and returns it as a promise that resolves with a Blob.
+     *
+     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/blob)
+     */
     blob(): Promise<Blob>;
-    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/bytes) */
+    /**
+     * The **`bytes()`** method of the Request interface reads the request body and returns it as a promise that resolves with a Uint8Array.
+     *
+     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/bytes)
+     */
     bytes(): Promise<Uint8Array<ArrayBuffer>>;
-    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/formData) */
+    /**
+     * The **`formData()`** method of the Request interface reads the request body and returns it as a promise that resolves with a FormData object.
+     *
+     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/formData)
+     */
     formData(): Promise<FormData>;
-    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/json) */
+    /**
+     * The **`json()`** method of the Request interface reads the request body and returns it as a promise that resolves with the result of parsing the body text as JSON.
+     *
+     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/json)
+     */
     json(): Promise<any>;
-    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/text) */
+    /**
+     * The **`text()`** method of the Request interface reads the request body and returns it as a promise that resolves with a String. The response is always decoded using UTF-8.
+     *
+     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/text)
+     */
     text(): Promise<string>;
 }
 
@@ -8439,6 +8472,7 @@ interface OffscreenCanvas extends EventTarget {
     getContext(contextId: "bitmaprenderer", options?: any): ImageBitmapRenderingContext | null;
     getContext(contextId: "webgl", options?: any): WebGLRenderingContext | null;
     getContext(contextId: "webgl2", options?: any): WebGL2RenderingContext | null;
+    getContext(contextId: "webgpu"): GPUCanvasContext | null;
     getContext(contextId: OffscreenRenderingContextId, options?: any): OffscreenRenderingContext | null;
     /**
      * The **`transferToImageBitmap()`** method of the OffscreenCanvas interface creates an ImageBitmap object from the most recently rendered image of the OffscreenCanvas. The image in the OffscreenCanvas is replaced with a new blank image for subsequent rendering.
@@ -9529,7 +9563,7 @@ declare var ReadableStream: {
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/ReadableStream/from_static)
      */
-    from(asyncIterable: any): ReadableStream;
+    from(asyncIterable: AsyncIterable<any>): ReadableStream;
 };
 
 /**
@@ -9736,6 +9770,7 @@ interface Request extends Body {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/isHistoryNavigation)
      */
     readonly isHistoryNavigation: boolean;
+    readonly isReloadNavigation: boolean;
     /**
      * The **`keepalive`** read-only property of the Request interface contains the request's keepalive setting (true or false), which indicates whether the browser will keep the associated request alive if the page that initiated it is unloaded before the request is complete.
      *
@@ -9778,6 +9813,7 @@ interface Request extends Body {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/signal)
      */
     readonly signal: AbortSignal;
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/targetAddressSpace) */
     readonly targetAddressSpace: IPAddressSpace;
     /**
      * The **`url`** read-only property of the Request interface contains the URL of the request.
@@ -14292,6 +14328,7 @@ interface WebTransport {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransport/createBidirectionalStream)
      */
     createBidirectionalStream(options?: WebTransportSendStreamOptions): Promise<WebTransportBidirectionalStream>;
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransport/createSendGroup) */
     createSendGroup(): WebTransportSendGroup;
     /**
      * The **`createUnidirectionalStream()`** method of the WebTransport interface asynchronously opens a unidirectional stream.
@@ -14388,6 +14425,7 @@ interface WebTransportDatagramDuplexStream {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportDatagramDuplexStream/writable)
      */
     readonly writable: WritableStream;
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportDatagramDuplexStream/createWritable) */
     createWritable(options?: WebTransportSendOptions): WebTransportDatagramsWritable;
 }
 
@@ -14396,9 +14434,15 @@ declare var WebTransportDatagramDuplexStream: {
     new(): WebTransportDatagramDuplexStream;
 };
 
-/** Available only in secure contexts. */
+/**
+ * Available only in secure contexts.
+ *
+ * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportDatagramsWritable)
+ */
 interface WebTransportDatagramsWritable extends WritableStream {
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportDatagramsWritable/sendGroup) */
     sendGroup: WebTransportSendGroup | null;
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportDatagramsWritable/sendOrder) */
     sendOrder: number;
 }
 
@@ -14453,8 +14497,13 @@ declare var WebTransportReceiveStream: {
     new(): WebTransportReceiveStream;
 };
 
-/** Available only in secure contexts. */
+/**
+ * Available only in secure contexts.
+ *
+ * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportSendGroup)
+ */
 interface WebTransportSendGroup {
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportSendGroup/getStats) */
     getStats(): Promise<WebTransportSendStreamStats>;
 }
 
@@ -15746,7 +15795,7 @@ type GPUTextureDimension = "1d" | "2d" | "3d";
 type GPUTextureFormat = "astc-10x10-unorm" | "astc-10x10-unorm-srgb" | "astc-10x5-unorm" | "astc-10x5-unorm-srgb" | "astc-10x6-unorm" | "astc-10x6-unorm-srgb" | "astc-10x8-unorm" | "astc-10x8-unorm-srgb" | "astc-12x10-unorm" | "astc-12x10-unorm-srgb" | "astc-12x12-unorm" | "astc-12x12-unorm-srgb" | "astc-4x4-unorm" | "astc-4x4-unorm-srgb" | "astc-5x4-unorm" | "astc-5x4-unorm-srgb" | "astc-5x5-unorm" | "astc-5x5-unorm-srgb" | "astc-6x5-unorm" | "astc-6x5-unorm-srgb" | "astc-6x6-unorm" | "astc-6x6-unorm-srgb" | "astc-8x5-unorm" | "astc-8x5-unorm-srgb" | "astc-8x6-unorm" | "astc-8x6-unorm-srgb" | "astc-8x8-unorm" | "astc-8x8-unorm-srgb" | "bc1-rgba-unorm" | "bc1-rgba-unorm-srgb" | "bc2-rgba-unorm" | "bc2-rgba-unorm-srgb" | "bc3-rgba-unorm" | "bc3-rgba-unorm-srgb" | "bc4-r-snorm" | "bc4-r-unorm" | "bc5-rg-snorm" | "bc5-rg-unorm" | "bc6h-rgb-float" | "bc6h-rgb-ufloat" | "bc7-rgba-unorm" | "bc7-rgba-unorm-srgb" | "bgra8unorm" | "bgra8unorm-srgb" | "depth16unorm" | "depth24plus" | "depth24plus-stencil8" | "depth32float" | "depth32float-stencil8" | "eac-r11snorm" | "eac-r11unorm" | "eac-rg11snorm" | "eac-rg11unorm" | "etc2-rgb8a1unorm" | "etc2-rgb8a1unorm-srgb" | "etc2-rgb8unorm" | "etc2-rgb8unorm-srgb" | "etc2-rgba8unorm" | "etc2-rgba8unorm-srgb" | "r16float" | "r16sint" | "r16snorm" | "r16uint" | "r16unorm" | "r32float" | "r32sint" | "r32uint" | "r8sint" | "r8snorm" | "r8uint" | "r8unorm" | "rg11b10ufloat" | "rg16float" | "rg16sint" | "rg16snorm" | "rg16uint" | "rg16unorm" | "rg32float" | "rg32sint" | "rg32uint" | "rg8sint" | "rg8snorm" | "rg8uint" | "rg8unorm" | "rgb10a2uint" | "rgb10a2unorm" | "rgb9e5ufloat" | "rgba16float" | "rgba16sint" | "rgba16snorm" | "rgba16uint" | "rgba16unorm" | "rgba32float" | "rgba32sint" | "rgba32uint" | "rgba8sint" | "rgba8snorm" | "rgba8uint" | "rgba8unorm" | "rgba8unorm-srgb" | "stencil8";
 type GPUTextureSampleType = "depth" | "float" | "sint" | "uint" | "unfilterable-float";
 type GPUTextureViewDimension = "1d" | "2d" | "2d-array" | "3d" | "cube" | "cube-array";
-type GPUVertexFormat = "float16" | "float16x2" | "float16x4" | "float32" | "float32x2" | "float32x3" | "float32x4" | "sint16" | "sint16x2" | "sint16x4" | "sint32" | "sint32x2" | "sint32x3" | "sint32x4" | "sint8" | "sint8x2" | "sint8x4" | "snorm16" | "snorm16x2" | "snorm16x4" | "snorm8" | "snorm8x2" | "snorm8x4" | "uint16" | "uint16x2" | "uint16x4" | "uint32" | "uint32x2" | "uint32x3" | "uint32x4" | "uint8" | "uint8x2" | "uint8x4" | "unorm10-10-10-2" | "unorm16" | "unorm16x2" | "unorm16x4" | "unorm8" | "unorm8x2" | "unorm8x4" | "unorm8x4-bgra";
+type GPUVertexFormat = "float16" | "float16x2" | "float16x4" | "float32" | "float32x2" | "float32x3" | "float32x4" | "sint16" | "sint16x2" | "sint16x4" | "sint32" | "sint32x2" | "sint32x3" | "sint32x4" | "sint8" | "sint8x2" | "sint8x4" | "snorm10-10-10-2" | "snorm16" | "snorm16x2" | "snorm16x4" | "snorm8" | "snorm8x2" | "snorm8x4" | "uint16" | "uint16x2" | "uint16x4" | "uint32" | "uint32x2" | "uint32x3" | "uint32x4" | "uint8" | "uint8x2" | "uint8x4" | "unorm10-10-10-2" | "unorm16" | "unorm16x2" | "unorm16x4" | "unorm8" | "unorm8x2" | "unorm8x4" | "unorm8x4-bgra";
 type GPUVertexStepMode = "instance" | "vertex";
 type GlobalCompositeOperation = "color" | "color-burn" | "color-dodge" | "copy" | "darken" | "destination-atop" | "destination-in" | "destination-out" | "destination-over" | "difference" | "exclusion" | "hard-light" | "hue" | "lighten" | "lighter" | "luminosity" | "multiply" | "overlay" | "saturation" | "screen" | "soft-light" | "source-atop" | "source-in" | "source-out" | "source-over" | "xor";
 type HIDUnitSystem = "english-linear" | "english-rotation" | "none" | "reserved" | "si-linear" | "si-rotation" | "vendor-defined";
