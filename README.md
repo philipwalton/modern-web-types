@@ -50,7 +50,10 @@ Or reference it explicitly, which is what worker scopes need, since one package 
 Layer the additions onto your existing `lib.dom` instead of replacing it:
 
 ```ts
+// every spec at once
 /// <reference types="modern-web-types/augment" />
+
+// or a single spec
 /// <reference types="modern-web-types/augment/eyedropper-api" />
 
 const dropper = new EyeDropper();
