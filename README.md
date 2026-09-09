@@ -82,6 +82,8 @@ Smoke tests are generated from the current delta rather than hand-written, so an
 
 A weekly [workflow](.github/workflows/update.yml) bumps the generator to its latest `main`, regenerates, runs the tests, and opens a PR when anything changed.
 
+Releases are driven by `version` in [`pkg/package.json`](pkg/package.json): a merge to `main` that changes it triggers the [publish workflow](.github/workflows/publish.yml), which publishes `pkg/` to npm and tags the commit. Merges that leave the version alone publish nothing.
+
 ## Related
 
 - [`lib.dom.d.ts` / `@types/web`][gen]: the official types, from the generator this project reuses. This project is strictly additive and never redefines what they already cover.

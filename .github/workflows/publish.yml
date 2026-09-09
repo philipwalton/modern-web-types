@@ -1,0 +1,41 @@
+name: Publish package
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - pkg/package.json
+  workflow_dispatch:
+
+permissions:
+  contents: write # push the release tag
+  id-token: write # npm trusted publishing
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          registry-url: https://registry.npmjs.org
+
+      # Trusted publishing needs npm 11.5.1 or newer.
+      - run: npm install -g npm@latest
+
+      - id: publish
+        run: node scripts/publish.ts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Tag release
+        if: steps.publish.outputs.published == 'true'
+        run: |
+          git tag "v${{ steps.publish.outputs.version }}"
+          git push origin "v${{ steps.publish.outputs.version }}"
