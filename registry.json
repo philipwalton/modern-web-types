@@ -1,0 +1,90 @@
+{
+  "repo": "https://github.com/w3c/timing-entrytypes-registry.git",
+  "sha": "e7bd634123c5a31f29e2b023dc484f24eedd84a9",
+  "entryTypes": [
+    {
+      "type": "element",
+      "interfaces": [
+        "PerformanceElementTiming"
+      ],
+      "availableFromTimeline": false
+    },
+    {
+      "type": "event",
+      "interfaces": [
+        "PerformanceEventTiming"
+      ],
+      "availableFromTimeline": false
+    },
+    {
+      "type": "first-input",
+      "interfaces": [
+        "PerformanceEventTiming"
+      ],
+      "availableFromTimeline": true
+    },
+    {
+      "type": "largest-contentful-paint",
+      "interfaces": [
+        "LargestContentfulPaint"
+      ],
+      "availableFromTimeline": false
+    },
+    {
+      "type": "layout-shift",
+      "interfaces": [
+        "LayoutShift"
+      ],
+      "availableFromTimeline": false
+    },
+    {
+      "type": "long-animation-frame",
+      "interfaces": [
+        "PerformanceLongAnimationFrameTiming"
+      ],
+      "availableFromTimeline": true
+    },
+    {
+      "type": "longtask",
+      "interfaces": [
+        "PerformanceLongTaskTiming"
+      ],
+      "availableFromTimeline": false
+    },
+    {
+      "type": "mark",
+      "interfaces": [
+        "PerformanceMark"
+      ],
+      "availableFromTimeline": true
+    },
+    {
+      "type": "measure",
+      "interfaces": [
+        "PerformanceMeasure"
+      ],
+      "availableFromTimeline": true
+    },
+    {
+      "type": "navigation",
+      "interfaces": [
+        "PerformanceNavigationTiming"
+      ],
+      "availableFromTimeline": true
+    },
+    {
+      "type": "paint",
+      "interfaces": [
+        "PerformancePaintTiming"
+      ],
+      "availableFromTimeline": true
+    },
+    {
+      "type": "resource",
+      "interfaces": [
+        "PerformanceResourceTiming"
+      ],
+      "availableFromTimeline": true
+    }
+  ]
+}

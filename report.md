@@ -1,6 +1,6 @@
 # Gap report
 
-Generated 2026-09-09T02:11:18.974Z from TypeScript-DOM-lib-generator `245655f1e887`.
+Generated 2026-09-09T02:42:34.346Z from TypeScript-DOM-lib-generator `245655f1e887`.
 
 These are declarations present when the two-engine rule is relaxed to **one** stable engine, but absent from the stock baseline.
 
@@ -655,6 +655,25 @@ Each differs from an existing lib declaration in a way declaration merging can't
 - `WebTransport` — var-changed
 
 </details>
+
+## Performance entry types
+
+Both flavors type `getEntriesByType()` and `getEntriesByName()` by their `entryType` argument, from the [timing entry types registry](https://github.com/w3c/timing-entrytypes-registry/tree/e7bd634123c5a31f29e2b023dc484f24eedd84a9) — data the generator has no source for, since Web IDL doesn't record which interface an entry type produces. An entry type the registry doesn't list, or a non-literal argument, still resolves through the original `PerformanceEntry[]` signature.
+
+| `entryType` | Interface | Reachable from | Scopes |
+| --- | --- | --- | --- |
+| `"element"` | `PerformanceElementTiming` | `PerformanceObserver` | `dom` |
+| `"event"` | `PerformanceEventTiming` | `PerformanceObserver` | `dom` |
+| `"first-input"` | `PerformanceEventTiming` | `Performance`, `PerformanceObserver` | `dom` |
+| `"largest-contentful-paint"` | `LargestContentfulPaint` | `PerformanceObserver` | `dom` |
+| `"layout-shift"` | `LayoutShift` | `PerformanceObserver` | `dom` |
+| `"long-animation-frame"` | `PerformanceLongAnimationFrameTiming` | `Performance`, `PerformanceObserver` | `dom` |
+| `"longtask"` | `PerformanceLongTaskTiming` | `PerformanceObserver` | `dom` |
+| `"mark"` | `PerformanceMark` | `Performance`, `PerformanceObserver` | `dom`, `webworker`, `serviceworker`, `sharedworker` |
+| `"measure"` | `PerformanceMeasure` | `Performance`, `PerformanceObserver` | `dom`, `webworker`, `serviceworker`, `sharedworker` |
+| `"navigation"` | `PerformanceNavigationTiming` | `Performance`, `PerformanceObserver` | `dom` |
+| `"paint"` | `PerformancePaintTiming` | `Performance`, `PerformanceObserver` | `dom` |
+| `"resource"` | `PerformanceResourceTiming` | `Performance`, `PerformanceObserver` | `dom`, `webworker`, `serviceworker`, `sharedworker` |
 
 ## Unknown-type fallbacks
 

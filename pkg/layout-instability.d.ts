@@ -2,6 +2,8 @@
 // (upstream 245655f1e887) — do not edit.
 // Scope: dom. Spec: layout-instability
 
+/// <reference path="./performance-timeline.d.ts" />
+
 /**
  * The **`LayoutShift`** interface of the Performance API provides insights into the layout stability of web pages based on movements of the elements on the page.
  *
@@ -75,3 +77,7 @@ declare var LayoutShiftAttribution: {
     prototype: LayoutShiftAttribution;
     new(): LayoutShiftAttribution;
 };
+
+interface PerformanceEntryTypeMap {
+    "layout-shift": LayoutShift;
+}

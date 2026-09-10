@@ -72,15 +72,15 @@ Worker augments live at `modern-web-types/augment/worker` and `modern-web-types/
 ## Development
 
 ```sh
-npm run update   # fetch-upstream -> build -> diff -> emit -> emit-lib -> emit-test -> report
+npm run update   # fetch-upstream -> fetch-registry -> build -> diff -> emit -> emit-lib -> emit-test -> report
 npm test         # typecheck every generated lib and flavor, guard the delta size
 ```
 
-The pinned generator is cloned into `upstream/` and patched on fetch; intermediate artifacts go in `build/`. Both are gitignored. Published files live in [`pkg/`](pkg/), and the environments are configured in [`scripts/util.ts`](scripts/util.ts).
+The pinned generator is cloned into `upstream/` and patched on fetch; intermediate artifacts go in `build/`. Both are gitignored. Published files live in [`pkg/`](pkg/), and the environments are configured in [`scripts/util.ts`](scripts/util.ts). [`registry.json`](registry.json) is a second pinned source, holding both the pin and its parsed table so a change to it shows up as a reviewable diff.
 
 Smoke tests are generated from the current delta rather than hand-written, so an API that graduates to two engines drops out of the delta and out of the tests.
 
-A weekly [workflow](.github/workflows/update.yml) bumps the generator to its latest `main`, regenerates, runs the tests, and opens a PR when anything changed.
+A weekly [workflow](.github/workflows/update.yml) bumps both pinned sources to their latest `main`, regenerates, runs the tests, and opens a PR when anything changed.
 
 Releases are driven by `version` in [`pkg/package.json`](pkg/package.json): a merge to `main` that changes it triggers the [publish workflow](.github/workflows/publish.yml), which publishes `pkg/` to npm and tags the commit. Merges that leave the version alone publish nothing.
 

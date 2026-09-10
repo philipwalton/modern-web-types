@@ -21,10 +21,19 @@
 //     lib), the dangling `extends` is dropped.
 // Everything else is copied verbatim, including the leading `/// <reference
 // lib=... />` lines.
+//
+// The lib is then extended with the performance entry type lookup maps
+// (scripts/entry-types.ts), covering every registered entry type whose
+// interface this environment declares.
 import fs from "node:fs";
 import path from "node:path";
 import ts from "typescript";
 import { buildDir, pkgDir, scopes, replaceLib, type Scope } from "./util.ts";
+import {
+  mapDeclarations,
+  overloadDeclarations,
+  resolvableIn,
+} from "./entry-types.ts";
 
 const COLLECTION_MUTATORS: Record<string, string[]> = {
   Map: ["set", "delete", "clear"],
@@ -243,10 +252,26 @@ for (const scope of scopes) {
     `// ${scope.lib} lib that also includes APIs shipped in a single engine.\n` +
     `// Set "lib" without "${scope.lib}" and reference this file instead.\n\n`;
   const outName = replaceLib(scope);
-  fs.writeFileSync(path.join(pkgDir, outName), header + sanitize(raw + supporting));
+  // Pulled type-only deps are declared in the output too, so an entry type can
+  // resolve through one.
+  const declared = new Set([...defined, ...names]);
+  const rows = resolvableIn(declared);
+  const overloads = overloadDeclarations(declared);
+  const lookups = overloads.length
+    ? `\n\n/////////////////////////////\n` +
+      `/// Performance entry type lookups\n` +
+      `/////////////////////////////\n\n` +
+      [mapDeclarations(rows), ...overloads].join("\n\n") +
+      "\n"
+    : "";
+  fs.writeFileSync(
+    path.join(pkgDir, outName),
+    header + sanitize(raw + supporting) + lookups,
+  );
 
   const notes = [
     names.size ? `${names.size} type-only deps pulled` : "",
+    rows.length ? `${rows.length} entry types mapped` : "",
     missing.size ? `${missing.size} unresolved (dropped): ${[...missing].join(", ")}` : "",
   ].filter(Boolean);
   console.log(`[${scope.name}] wrote ${outName}${notes.length ? ` (${notes.join("; ")})` : ""}`);

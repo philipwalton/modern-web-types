@@ -2,6 +2,8 @@
 // (upstream 245655f1e887) — do not edit.
 // Scope: dom. Spec: longtasks
 
+/// <reference path="./performance-timeline.d.ts" />
+
 /**
  * The **`PerformanceLongTaskTiming`** interface provides information about tasks that occupy the UI thread for 50 milliseconds or more.
  *
@@ -69,3 +71,7 @@ declare var TaskAttributionTiming: {
     prototype: TaskAttributionTiming;
     new(): TaskAttributionTiming;
 };
+
+interface PerformanceEntryTypeMap {
+    "longtask": PerformanceLongTaskTiming;
+}

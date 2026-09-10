@@ -8,13 +8,14 @@
   },
   "scripts": {
     "fetch-upstream": "node scripts/fetch-upstream.ts",
+    "fetch-registry": "node scripts/fetch-registry.ts",
     "build": "node scripts/build.ts",
     "diff": "node scripts/diff.ts",
     "emit": "node scripts/emit.ts",
     "emit-lib": "node scripts/emit-lib.ts",
     "emit-test": "node scripts/emit-test.ts",
     "report": "node scripts/report.ts",
-    "update": "npm run fetch-upstream && npm run build && npm run diff && npm run emit && npm run emit-lib && npm run emit-test && npm run emit-readme && npm run report",
+    "update": "npm run fetch-upstream && npm run fetch-registry && npm run build && npm run diff && npm run emit && npm run emit-lib && npm run emit-test && npm run emit-readme && npm run report",
     "test": "tsc -p test/tsconfig.json && tsc -p test/tsconfig.worker.json && tsc -p test/tsconfig.lib.json && tsc -p test/tsconfig.lib-worker.json && node scripts/check-libs.ts && node scripts/check-delta.ts",
     "publish-pkg": "node scripts/publish.ts",
     "emit-readme": "node scripts/emit-readme.ts"

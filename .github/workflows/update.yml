@@ -26,7 +26,7 @@ jobs:
 
       - run: npm ci
 
-      - name: Bump upstream SHA
+      - name: Bump pinned sources
         if: github.event_name == 'schedule' || inputs.bump
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -44,6 +44,7 @@ jobs:
           add-paths: |
             pkg/**
             upstream.json
+            registry.json
             report.md
           branch: automated/update-types
           title: "Regenerate types from latest web platform data"

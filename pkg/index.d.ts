@@ -86,6 +86,7 @@
 /// <reference path="./orientation-sensor.d.ts" />
 /// <reference path="./page-lifecycle.d.ts" />
 /// <reference path="./performance-measure-memory.d.ts" />
+/// <reference path="./performance-timeline.d.ts" />
 /// <reference path="./periodic-background-sync.d.ts" />
 /// <reference path="./prerendering-revamped.d.ts" />
 /// <reference path="./presentation-api.d.ts" />
