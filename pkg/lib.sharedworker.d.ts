@@ -15446,3 +15446,36 @@ interface ReadableStream<R = any> {
     [Symbol.asyncIterator](options?: ReadableStreamIteratorOptions): ReadableStreamAsyncIterator<R>;
     values(options?: ReadableStreamIteratorOptions): ReadableStreamAsyncIterator<R>;
 }
+
+
+/////////////////////////////
+/// Performance entry type lookups
+/////////////////////////////
+
+/**
+ * Maps each `entryType` reachable through the performance timeline to the
+ * interface its entries implement, keyed by the identifier the timing entry
+ * types registry assigns.
+ */
+interface PerformanceTimelineEntryTypeMap {
+    "mark": PerformanceMark;
+    "measure": PerformanceMeasure;
+    "resource": PerformanceResourceTiming;
+}
+
+/**
+ * Maps every registered `entryType` to the interface its entries implement.
+ * The types it adds to PerformanceTimelineEntryTypeMap are delivered only to a
+ * `PerformanceObserver`.
+ */
+interface PerformanceEntryTypeMap extends PerformanceTimelineEntryTypeMap {}
+
+interface Performance {
+    getEntriesByType<K extends keyof PerformanceTimelineEntryTypeMap>(type: K): PerformanceTimelineEntryTypeMap[K][];
+    getEntriesByName<K extends keyof PerformanceTimelineEntryTypeMap>(name: string, type: K): PerformanceTimelineEntryTypeMap[K][];
+}
+
+interface PerformanceObserverEntryList {
+    getEntriesByType<K extends keyof PerformanceEntryTypeMap>(type: K): PerformanceEntryTypeMap[K][];
+    getEntriesByName<K extends keyof PerformanceEntryTypeMap>(name: string, type: K): PerformanceEntryTypeMap[K][];
+}

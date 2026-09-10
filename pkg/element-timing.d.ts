@@ -2,6 +2,8 @@
 // (upstream 245655f1e887) — do not edit.
 // Scope: dom. Spec: element-timing
 
+/// <reference path="./performance-timeline.d.ts" />
+
 interface Element {
     /**
      * The **`elementTiming`** property of the Element interface identifies elements for observation in the PerformanceElementTiming API. The elementTiming property reflects the value of the elementtiming attribute.
@@ -83,3 +85,7 @@ declare var PerformanceElementTiming: {
     prototype: PerformanceElementTiming;
     new(): PerformanceElementTiming;
 };
+
+interface PerformanceEntryTypeMap {
+    "element": PerformanceElementTiming;
+}

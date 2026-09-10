@@ -3,6 +3,12 @@
 import fs from "node:fs";
 import path from "node:path";
 import { buildDir, rootDir, scopes, augmentScopes } from "./util.ts";
+import {
+  declaredInterfaces,
+  entryTypes,
+  registrySha,
+  resolvableIn,
+} from "./entry-types.ts";
 
 const warnings = fs.existsSync(path.join(buildDir, "warnings.txt"))
   ? fs
@@ -112,6 +118,40 @@ for (const scope of augmentScopes) {
     lines.push("");
   }
 }
+
+lines.push("## Performance entry types");
+lines.push("");
+lines.push(
+  "Both flavors type `getEntriesByType()` and `getEntriesByName()` by their " +
+    "`entryType` argument, from the [timing entry types registry]" +
+    `(https://github.com/w3c/timing-entrytypes-registry/tree/${registrySha}) ` +
+    "— data the generator has no source for, since Web IDL doesn't record " +
+    "which interface an entry type produces. An entry type the registry " +
+    "doesn't list, or a non-literal argument, still resolves through the " +
+    "original `PerformanceEntry[]` signature.",
+);
+lines.push("");
+lines.push(`| \`entryType\` | Interface | Reachable from | Scopes |`);
+lines.push(`| --- | --- | --- | --- |`);
+const resolvingScopes = new Map(
+  scopes.map((s) => [
+    s.name,
+    resolvableIn(
+      declaredInterfaces(fs.readFileSync(path.join(buildDir, s.full), "utf8")),
+    ).map((e) => e.type),
+  ]),
+);
+for (const entry of entryTypes) {
+  const where = scopes
+    .filter((s) => resolvingScopes.get(s.name)!.includes(entry.type))
+    .map((s) => `\`${s.name}\``);
+  lines.push(
+    `| \`"${entry.type}"\` | \`${entry.interfaces.join("` \\| `")}\` | ` +
+      `${entry.availableFromTimeline ? "`Performance`, `PerformanceObserver`" : "`PerformanceObserver`"} | ` +
+      `${where.join(", ") || "—"} |`,
+  );
+}
+lines.push("");
 
 if (warnings.length) {
   lines.push("## Unknown-type fallbacks");

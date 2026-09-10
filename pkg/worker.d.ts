@@ -30,6 +30,7 @@
 /// <reference path="./observable.worker.d.ts" />
 /// <reference path="./payment-request.worker.d.ts" />
 /// <reference path="./performance-measure-memory.worker.d.ts" />
+/// <reference path="./performance-timeline.worker.d.ts" />
 /// <reference path="./periodic-background-sync.worker.d.ts" />
 /// <reference path="./push-api.worker.d.ts" />
 /// <reference path="./resource-timing.worker.d.ts" />

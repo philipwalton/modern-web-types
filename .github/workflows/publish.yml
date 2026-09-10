@@ -24,15 +24,18 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: "24"
-          registry-url: https://registry.npmjs.org
 
       # Trusted publishing needs npm 11.5.1 or newer.
       - run: npm install -g npm@latest
 
+      # Auth is the OIDC token, which npm exchanges for a short-lived
+      # credential on its own. It only does that when it finds no credential
+      # already configured, so this step must not set NODE_AUTH_TOKEN and
+      # setup-node above must not set `registry-url` — that writes an
+      # `_authToken` line into .npmrc, which npm reads as "already
+      # authenticated" and then publishes with an empty credential.
       - id: publish
         run: node scripts/publish.ts
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Tag release
         if: steps.publish.outputs.published == 'true'

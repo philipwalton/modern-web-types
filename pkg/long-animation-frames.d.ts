@@ -2,6 +2,8 @@
 // (upstream 245655f1e887) — do not edit.
 // Scope: dom. Spec: long-animation-frames
 
+/// <reference path="./performance-timeline.d.ts" />
+
 /**
  * The **`PerformanceLongAnimationFrameTiming`** interface is specified in the Long Animation Frames API and provides metrics on long animation frames (LoAFs) that occupy rendering and block other tasks from being executed.
  *
@@ -133,3 +135,7 @@ declare var PerformanceScriptTiming: {
 type ScriptInvokerType = "classic-script" | "event-listener" | "module-script" | "reject-promise" | "resolve-promise" | "user-callback";
 
 type ScriptWindowAttribution = "ancestor" | "descendant" | "other" | "same-page" | "self";
+
+interface PerformanceTimelineEntryTypeMap {
+    "long-animation-frame": PerformanceLongAnimationFrameTiming;
+}
