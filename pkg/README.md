@@ -4,7 +4,7 @@
 
 TypeScript types for all web platform APIs that have shipped in at least one stable browser, but aren't yet included in TypeScript's built-in type definitions.
 
-These types are generated using the exact same pipeline as TypeScript's official types, so the quality and correctness should be identical. The only difference is the number of APIs that are included (this project includes hundreds more).
+These types are generated using the exact same pipeline as TypeScript's official types, so the quality and correctness is identical. The only difference is the number of APIs that are included.
 
 ## Why this exists
 
