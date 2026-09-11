@@ -3,16 +3,16 @@
 // the filter and the .patch no longer applies to the right code).
 import fs from "node:fs";
 import path from "node:path";
-import { buildDir, augmentScopes } from "./util.ts";
+import { buildDir, deltaScopes } from "./util.ts";
 
 // Rough floors well below current counts (dom ~431, webworker ~141).
 const MIN_INTERFACES: Record<string, number> = { dom: 200, webworker: 60 };
 
 let failed = false;
-for (const scope of augmentScopes) {
-  const deltaPath = path.join(buildDir, scope.augment!.delta);
+for (const scope of deltaScopes) {
+  const deltaPath = path.join(buildDir, scope.delta!.delta);
   if (!fs.existsSync(deltaPath)) {
-    console.error(`Missing ${scope.augment!.delta} — run \`npm run build && npm run diff\` first.`);
+    console.error(`Missing ${scope.delta!.delta} — run \`npm run build && npm run diff\` first.`);
     failed = true;
     continue;
   }

@@ -7,6 +7,9 @@
     ".": {
       "types": "./lib.dom.d.ts"
     },
+    "./dom": {
+      "types": "./lib.dom.d.ts"
+    },
     "./webworker": {
       "types": "./lib.webworker.d.ts"
     },
@@ -18,15 +21,6 @@
     },
     "./audioworklet": {
       "types": "./lib.audioworklet.d.ts"
-    },
-    "./augment": {
-      "types": "./index.d.ts"
-    },
-    "./augment/worker": {
-      "types": "./worker.d.ts"
-    },
-    "./augment/*": {
-      "types": "./*.d.ts"
     },
     "./package.json": "./package.json"
   },

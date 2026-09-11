@@ -2,7 +2,7 @@
 // what ships in >=1 stable engine and what the stock lib exposes.
 import fs from "node:fs";
 import path from "node:path";
-import { buildDir, rootDir, scopes, augmentScopes } from "./util.ts";
+import { buildDir, rootDir, scopes, deltaScopes } from "./util.ts";
 import {
   declaredInterfaces,
   entryTypes,
@@ -18,7 +18,7 @@ const warnings = fs.existsSync(path.join(buildDir, "warnings.txt"))
   : [];
 
 const first = JSON.parse(
-  fs.readFileSync(path.join(buildDir, augmentScopes[0].augment!.delta), "utf8"),
+  fs.readFileSync(path.join(buildDir, deltaScopes[0].delta!.delta), "utf8"),
 );
 
 const lines: string[] = [];
@@ -35,49 +35,23 @@ lines.push(
 );
 lines.push("");
 lines.push(
-  "The package ships in two flavors. **Replace** provides a complete lib for " +
-    "each environment, used in place of TypeScript's built-in (`@types/web` " +
-    "model):",
-);
-lines.push("");
-const replaceEntry = (s: (typeof scopes)[number]) =>
-  s.name === "dom" ? "modern-web-types" : `modern-web-types/${s.name}`;
-for (const s of scopes) {
-  lines.push(
-    `- \`${replaceEntry(s)}\` — replaces \`${s.lib}\`` +
-      (s.augment ? "" : " (standalone; not a built-in TypeScript lib)"),
-  );
-}
-lines.push("");
-lines.push(
-  "**Augment** ships per-spec files (under the `augment/` subpath) that merge " +
-    "the single-engine delta into your existing lib; it covers the two " +
-    "environments with a built-in TypeScript lib (`DOM`, `WebWorker`). The " +
-    "per-scope counts below describe that delta.",
+  "The per-scope counts below are that gap, measured for the two environments " +
+    "TypeScript ships a lib for (`DOM`, `WebWorker`).",
 );
 lines.push("");
 
 const count = (delta: any, kind: string) =>
   delta.items.filter((i: any) => i.kind === kind).length;
 
-for (const scope of augmentScopes) {
-  const augment = scope.augment!;
+for (const scope of deltaScopes) {
   const delta = JSON.parse(
-    fs.readFileSync(path.join(buildDir, augment.delta), "utf8"),
+    fs.readFileSync(path.join(buildDir, scope.delta!.delta), "utf8"),
   );
   const newInterfaces = delta.items
     .filter((i: any) => i.kind === "interface")
     .map((i: any) => i.name)
     .sort();
-  const specShortnames = [
-    ...new Set(delta.items.map((i: any) => i.name)),
-  ].length;
-
   lines.push(`## ${scope.name} scope (lib \`${scope.lib}\`)`);
-  lines.push("");
-  lines.push(
-    `Augment entry points: \`modern-web-types/augment${scope.name === "webworker" ? "/…worker" : "/…"}\`.`,
-  );
   lines.push("");
   lines.push(`| Category | Count |`);
   lines.push(`| --- | ---: |`);
@@ -86,9 +60,8 @@ for (const scope of augmentScopes) {
   lines.push(`| New global vars | ${count(delta, "var")} |`);
   lines.push(`| New global functions | ${count(delta, "function")} |`);
   lines.push(
-    `| Members added to existing interfaces | ${delta.augments.length} |`,
+    `| Members added to existing interfaces | ${delta.memberAdditions.length} |`,
   );
-  lines.push(`| Skipped (unmergeable) | ${delta.skipped.length} |`);
   lines.push("");
 
   lines.push(
@@ -99,30 +72,12 @@ for (const scope of augmentScopes) {
   lines.push("");
   lines.push("</details>");
   lines.push("");
-
-  if (delta.skipped.length) {
-    lines.push(
-      `<details><summary>${delta.skipped.length} skipped (cannot merge)</summary>`,
-    );
-    lines.push("");
-    lines.push(
-      "Each differs from an existing lib declaration in a way declaration " +
-        "merging can't express (a changed property type, a widened type alias, " +
-        "a re-typed `declare var`, a maplike mutator, or an `extends` base that " +
-        "doesn't exist in this scope). Handle with a manual override if needed.",
-    );
-    lines.push("");
-    for (const s of delta.skipped) lines.push(`- \`${s.name}\` — ${s.reason}`);
-    lines.push("");
-    lines.push("</details>");
-    lines.push("");
-  }
 }
 
 lines.push("## Performance entry types");
 lines.push("");
 lines.push(
-  "Both flavors type `getEntriesByType()` and `getEntriesByName()` by their " +
+  "The libs type `getEntriesByType()` and `getEntriesByName()` by their " +
     "`entryType` argument, from the [timing entry types registry]" +
     `(https://github.com/w3c/timing-entrytypes-registry/tree/${registrySha}) ` +
     "— data the generator has no source for, since Web IDL doesn't record " +
@@ -172,10 +127,10 @@ if (warnings.length) {
 fs.writeFileSync(path.join(rootDir, "report.md"), lines.join("\n"));
 console.log(
   `Wrote report.md (` +
-    augmentScopes
+    deltaScopes
       .map((s) => {
         const d = JSON.parse(
-          fs.readFileSync(path.join(buildDir, s.augment!.delta), "utf8"),
+          fs.readFileSync(path.join(buildDir, s.delta!.delta), "utf8"),
         );
         return `${s.name}: ${count(d, "interface")} interfaces`;
       })

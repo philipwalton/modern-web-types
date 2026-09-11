@@ -1,22 +1,12 @@
 # Gap report
 
-Generated 2026-09-09T02:42:34.346Z from TypeScript-DOM-lib-generator `245655f1e887`.
+Generated 2026-09-11T03:23:28.560Z from TypeScript-DOM-lib-generator `245655f1e887`.
 
 These are declarations present when the two-engine rule is relaxed to **one** stable engine, but absent from the stock baseline.
 
-The package ships in two flavors. **Replace** provides a complete lib for each environment, used in place of TypeScript's built-in (`@types/web` model):
-
-- `modern-web-types` — replaces `DOM`
-- `modern-web-types/webworker` — replaces `WebWorker`
-- `modern-web-types/serviceworker` — replaces `ServiceWorker` (standalone; not a built-in TypeScript lib)
-- `modern-web-types/sharedworker` — replaces `SharedWorker` (standalone; not a built-in TypeScript lib)
-- `modern-web-types/audioworklet` — replaces `AudioWorklet` (standalone; not a built-in TypeScript lib)
-
-**Augment** ships per-spec files (under the `augment/` subpath) that merge the single-engine delta into your existing lib; it covers the two environments with a built-in TypeScript lib (`DOM`, `WebWorker`). The per-scope counts below describe that delta.
+The per-scope counts below are that gap, measured for the two environments TypeScript ships a lib for (`DOM`, `WebWorker`).
 
 ## dom scope (lib `DOM`)
-
-Augment entry points: `modern-web-types/augment/…`.
 
 | Category | Count |
 | --- | ---: |
@@ -24,8 +14,7 @@ Augment entry points: `modern-web-types/augment/…`.
 | New type aliases | 96 |
 | New global vars | 214 |
 | New global functions | 9 |
-| Members added to existing interfaces | 339 |
-| Skipped (unmergeable) | 10 |
+| Members added to existing interfaces | 311 |
 
 <details><summary>433 new interfaces</summary>
 
@@ -465,26 +454,7 @@ Augment entry points: `modern-web-types/augment/…`.
 
 </details>
 
-<details><summary>10 skipped (cannot merge)</summary>
-
-Each differs from an existing lib declaration in a way declaration merging can't express (a changed property type, a widened type alias, a re-typed `declare var`, a maplike mutator, or an `extends` base that doesn't exist in this scope). Handle with a manual override if needed.
-
-- `TrackEventInit.track` — property-type-changed
-- `CSSFontFeatureValuesMap` — maplike-mutator-dropped
-- `TrackEvent.track` — property-type-changed
-- `Transferable` — type-alias-changed
-- `DeviceMotionEvent` — var-changed
-- `DeviceOrientationEvent` — var-changed
-- `Document` — var-changed
-- `PaymentRequest` — var-changed
-- `ReadableStream` — var-changed
-- `WebTransport` — var-changed
-
-</details>
-
 ## webworker scope (lib `WebWorker`)
-
-Augment entry points: `modern-web-types/augment/…worker`.
 
 | Category | Count |
 | --- | ---: |
@@ -493,7 +463,6 @@ Augment entry points: `modern-web-types/augment/…worker`.
 | New global vars | 55 |
 | New global functions | 1 |
 | Members added to existing interfaces | 64 |
-| Skipped (unmergeable) | 5 |
 
 <details><summary>144 new interfaces</summary>
 
@@ -644,21 +613,9 @@ Augment entry points: `modern-web-types/augment/…worker`.
 
 </details>
 
-<details><summary>5 skipped (cannot merge)</summary>
-
-Each differs from an existing lib declaration in a way declaration merging can't express (a changed property type, a widened type alias, a re-typed `declare var`, a maplike mutator, or an `extends` base that doesn't exist in this scope). Handle with a manual override if needed.
-
-- `ManagedMediaSource` — heritage-base-unresolved (MediaSource)
-- `ManagedSourceBuffer` — heritage-base-unresolved (SourceBuffer)
-- `Transferable` — type-alias-changed
-- `ReadableStream` — var-changed
-- `WebTransport` — var-changed
-
-</details>
-
 ## Performance entry types
 
-Both flavors type `getEntriesByType()` and `getEntriesByName()` by their `entryType` argument, from the [timing entry types registry](https://github.com/w3c/timing-entrytypes-registry/tree/e7bd634123c5a31f29e2b023dc484f24eedd84a9) — data the generator has no source for, since Web IDL doesn't record which interface an entry type produces. An entry type the registry doesn't list, or a non-literal argument, still resolves through the original `PerformanceEntry[]` signature.
+The libs type `getEntriesByType()` and `getEntriesByName()` by their `entryType` argument, from the [timing entry types registry](https://github.com/w3c/timing-entrytypes-registry/tree/e7bd634123c5a31f29e2b023dc484f24eedd84a9) — data the generator has no source for, since Web IDL doesn't record which interface an entry type produces. An entry type the registry doesn't list, or a non-literal argument, still resolves through the original `PerformanceEntry[]` signature.
 
 | `entryType` | Interface | Reachable from | Scopes |
 | --- | --- | --- | --- |

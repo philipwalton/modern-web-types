@@ -7,9 +7,9 @@
 // recovers the specific interface for a known entryType, while an unrecognized
 // or non-literal string still resolves through the original signature.
 //
-// The map is an interface rather than a union so that each augment file can
-// merge in the entry types its own spec defines; a scope's declarations are
-// assembled from whichever rows that scope can actually resolve.
+// The map is an interface rather than a union so that later declarations can
+// merge in more entry types; a scope's declarations are assembled from
+// whichever rows that scope can actually resolve.
 import fs from "node:fs";
 import path from "node:path";
 import { rootDir } from "./util.ts";
@@ -57,8 +57,7 @@ export function resolvableIn(declared: Set<string>): EntryType[] {
 export const mapMember = (entry: EntryType): string =>
   `    ${JSON.stringify(entry.type)}: ${entry.interfaces.join(" | ")};`;
 
-// The two maps, carrying whichever rows are passed in. Rows an augment file
-// contributes elsewhere are merged in by the compiler.
+// The two maps, carrying whichever rows are passed in.
 export function mapDeclarations(rows: EntryType[]): string {
   const members = (map: string) =>
     rows.filter((e) => mapFor(e) === map).map(mapMember).join("\n");
