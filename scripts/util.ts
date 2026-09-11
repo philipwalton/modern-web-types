@@ -1,5 +1,6 @@
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import fs from "node:fs";
 import path from "node:path";
 
 export const rootDir = path.resolve(
@@ -13,33 +14,32 @@ export const pkgDir = path.join(rootDir, "pkg");
 // The pipeline runs once per environment. The upstream generator emits a
 // separate lib per global scope; we mirror all five.
 //
-// Every environment ships in **replace** mode — a complete lib the consumer
-// uses in place of TypeScript's built-in (or, for the standalone worker
-// variants, in place of the corresponding @types/* package). `dom` and
-// `webworker` also ship in **augment** mode — per-spec files that merge the
-// single-engine delta into the consumer's existing lib.dom / lib.webworker.
+// Every environment ships a complete lib the consumer uses in place of
+// TypeScript's built-in (or, for the standalone worker variants, in place of
+// the corresponding @types/* package). `dom` and `webworker` are the two
+// TypeScript ships a lib for, so they also get a baseline build: the delta
+// between it and the one-engine build is the gap report.md describes and the
+// symbol list the smoke tests assert.
 //
 // `webworker` is the combined worker lib (it defines the dedicated, shared,
 // and service worker global scopes, exactly like TypeScript's bundled
 // lib.webworker). `serviceworker` and `sharedworker` are narrower subsets for
 // projects that want only that one global scope; `audioworklet` is a distinct,
 // restricted environment.
-export interface AugmentConfig {
+export interface DeltaConfig {
   baseline: string; // build/ filename of the two-engine build
   delta: string; // build/ filename of the computed delta
-  suffix: string; // appended to per-spec pkg files ("" or ".worker")
-  index: string; // aggregate entry point under pkg/
 }
 export interface Scope {
   name: string;
   generated: string; // filename under upstream/generated/
   full: string; // build/ filename of the one-engine build
   lib: string; // TypeScript lib name; also the replace-lib basename
-  augment?: AugmentConfig; // present only for envs with a built-in lib to merge into
+  delta?: DeltaConfig; // present only for envs TypeScript ships a lib for
 }
 
-// The replace-mode lib filename for a scope, e.g. "lib.dom.d.ts".
-export function replaceLib(scope: Scope): string {
+// The shipped lib filename for a scope, e.g. "lib.dom.d.ts".
+export function libFile(scope: Scope): string {
   return `lib.${scope.lib.toLowerCase()}.d.ts`;
 }
 
@@ -49,11 +49,9 @@ export const scopes: Scope[] = [
     generated: "dom.generated.d.ts",
     full: "dom.full.d.ts",
     lib: "DOM",
-    augment: {
+    delta: {
       baseline: "dom.baseline.d.ts",
       delta: "dom.delta.json",
-      suffix: "",
-      index: "index.d.ts",
     },
   },
   {
@@ -61,11 +59,9 @@ export const scopes: Scope[] = [
     generated: "webworker.generated.d.ts",
     full: "webworker.full.d.ts",
     lib: "WebWorker",
-    augment: {
+    delta: {
       baseline: "webworker.baseline.d.ts",
       delta: "webworker.delta.json",
-      suffix: ".worker",
-      index: "worker.d.ts",
     },
   },
   {
@@ -88,8 +84,30 @@ export const scopes: Scope[] = [
   },
 ];
 
-// The subset of environments that also produce augment-mode output.
-export const augmentScopes = scopes.filter((s) => s.augment);
+// The environments whose gap against a stock TypeScript lib is measurable.
+export const deltaScopes = scopes.filter((s) => s.delta);
+
+// Generated output is typechecked under two compilers: `typescript`, whose
+// JavaScript API scripts/diff.ts and scripts/emit-lib.ts parse with, and
+// `typescript-7`, an alias for the latest release, which is what consumers
+// compile with. Each package installs a bin named `tsc`, so only one of them
+// wins node_modules/.bin; both are invoked by full path instead.
+export interface Compiler {
+  version: string;
+  tsc: string;
+}
+
+export function compilers(): Compiler[] {
+  return ["typescript", "typescript-7"].map((pkg) => {
+    const dir = path.join(rootDir, "node_modules", pkg);
+    const tsc = path.join(dir, "bin", "tsc");
+    if (!fs.existsSync(tsc)) {
+      throw new Error(`Missing ${pkg} — run \`npm install\` first.`);
+    }
+    const manifest = fs.readFileSync(path.join(dir, "package.json"), "utf8");
+    return { version: JSON.parse(manifest).version, tsc };
+  });
+}
 
 // Runs a command, returning combined stdout + stderr. Throws on failure.
 export function run(

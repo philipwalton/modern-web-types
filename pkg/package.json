@@ -1,10 +1,13 @@
 {
   "name": "modern-web-types",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "TypeScript types for new web platform APIs that aren't yet in lib.dom.",
   "types": "./lib.dom.d.ts",
   "exports": {
     ".": {
+      "types": "./lib.dom.d.ts"
+    },
+    "./dom": {
       "types": "./lib.dom.d.ts"
     },
     "./webworker": {
@@ -18,15 +21,6 @@
     },
     "./audioworklet": {
       "types": "./lib.audioworklet.d.ts"
-    },
-    "./augment": {
-      "types": "./index.d.ts"
-    },
-    "./augment/worker": {
-      "types": "./worker.d.ts"
-    },
-    "./augment/*": {
-      "types": "./*.d.ts"
     },
     "./package.json": "./package.json"
   },

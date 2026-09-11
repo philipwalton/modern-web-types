@@ -1,20 +1,20 @@
-// Typechecks every replace-mode lib standalone: lib ESNext only, with no
-// built-in DOM/Worker lib, exactly as a consumer uses it. Each lib must be
+// Typechecks every shipped lib standalone: lib ESNext only, with no built-in
+// DOM/Worker lib, exactly as a consumer uses it. Each lib must be
 // self-contained (0 errors) — proving the type-only dependency retention closed
-// every cross-scope reference. lib-dom.ts / lib-worker.ts additionally exercise
-// real APIs; this covers all five environments including the standalone workers.
+// every cross-scope reference. The generated smoke tests cover the two scopes
+// with a delta; this covers all five environments, standalone workers included.
 import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
-import { buildDir, pkgDir, rootDir, scopes, replaceLib } from "./util.ts";
+import { buildDir, pkgDir, scopes, libFile, compilers } from "./util.ts";
 
-const tsc = path.join(rootDir, "node_modules", ".bin", "tsc");
+const toolchain = compilers();
 let failed = false;
 
 for (const scope of scopes) {
-  const libFile = path.join(pkgDir, replaceLib(scope));
-  if (!fs.existsSync(libFile)) {
-    console.error(`Missing ${replaceLib(scope)} — run \`npm run emit-lib\` first.`);
+  const libPath = path.join(pkgDir, libFile(scope));
+  if (!fs.existsSync(libPath)) {
+    console.error(`Missing ${libFile(scope)} — run \`npm run emit-lib\` first.`);
     failed = true;
     continue;
   }
@@ -29,22 +29,32 @@ for (const scope of scopes) {
         types: [],
         lib: ["ESNext"],
       },
-      files: [libFile],
+      files: [libPath],
     }),
   );
-  const proc = spawnSync(tsc, ["-p", cfgPath], {
-    encoding: "utf8",
-    maxBuffer: 64 * 1024 * 1024,
-  });
-  const errors = ((proc.stdout ?? "") + (proc.stderr ?? ""))
-    .split("\n")
-    .filter((l) => l.includes("error TS"));
-  if (errors.length) {
-    console.error(`[${scope.name}] ${replaceLib(scope)} has ${errors.length} error(s):`);
-    for (const e of errors.slice(0, 10)) console.error("  " + e);
-    failed = true;
-  } else {
-    console.log(`[${scope.name}] ${replaceLib(scope)} typechecks standalone.`);
+  let clean = true;
+  for (const { version, tsc } of toolchain) {
+    const proc = spawnSync(tsc, ["-p", cfgPath], {
+      encoding: "utf8",
+      maxBuffer: 64 * 1024 * 1024,
+    });
+    const errors = ((proc.stdout ?? "") + (proc.stderr ?? ""))
+      .split("\n")
+      .filter((l) => l.includes("error TS"));
+    if (errors.length) {
+      console.error(
+        `[${scope.name}] ${libFile(scope)} has ${errors.length} error(s) under tsc ${version}:`,
+      );
+      for (const e of errors.slice(0, 10)) console.error("  " + e);
+      clean = false;
+      failed = true;
+    }
+  }
+  if (clean) {
+    const versions = toolchain.map((c) => c.version).join(", ");
+    console.log(
+      `[${scope.name}] ${libFile(scope)} typechecks standalone under tsc ${versions}.`,
+    );
   }
 }
 

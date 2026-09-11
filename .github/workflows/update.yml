@@ -51,5 +51,5 @@ jobs:
           commit-message: "Regenerate types from latest web platform data"
           body: |
             Automated regeneration from the pinned upstream generator.
-            See `report.md` for the current gap and any skipped declarations.
+            See `report.md` for the current gap.
           labels: automated
