@@ -2,19 +2,18 @@
 // attributes, but reject unconsumed markup so malformed rows cannot disappear.
 function elements(source: string, tag: "tr" | "td"): string[] {
   const pattern = new RegExp(`<${tag}\\b[^>]*>([\\s\\S]*?)<\\/${tag}\\s*>`, "gi");
+  const malformed = (markup: string) =>
+    new Error(`Malformed registry <${tag}> markup:\n${markup.trim().slice(0, 500)}`);
   const values: string[] = [];
   let end = 0;
   for (const match of source.matchAll(pattern)) {
-    if (source.slice(end, match.index).trim() ||
-        new RegExp(`<\\/?${tag}\\b`, "i").test(match[1])) {
-      throw new Error(`Malformed registry <${tag}> markup`);
-    }
+    const between = source.slice(end, match.index);
+    if (between.trim()) throw malformed(between);
+    if (new RegExp(`<\\/?${tag}\\b`, "i").test(match[1])) throw malformed(match[0]);
     values.push(match[1]);
     end = match.index + match[0].length;
   }
-  if (source.slice(end).trim()) {
-    throw new Error(`Malformed registry <${tag}> markup`);
-  }
+  if (source.slice(end).trim()) throw malformed(source.slice(end));
   return values;
 }
 
