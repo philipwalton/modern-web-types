@@ -55856,6 +55856,7 @@ interface PerformanceTimelineEntryTypeMap {
     "navigation": PerformanceNavigationTiming;
     "paint": PerformancePaintTiming;
     "resource": PerformanceResourceTiming;
+    "visibility-state": VisibilityStateEntry;
 }
 
 /**

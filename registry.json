@@ -1,7 +1,14 @@
 {
   "repo": "https://github.com/w3c/timing-entrytypes-registry.git",
-  "sha": "e7bd634123c5a31f29e2b023dc484f24eedd84a9",
+  "sha": "db5623f7f35e311e927b6c98e51ca20d5ef4eb92",
   "entryTypes": [
+    {
+      "type": "container",
+      "interfaces": [
+        "PerformanceContainerTiming"
+      ],
+      "availableFromTimeline": false
+    },
     {
       "type": "element",
       "interfaces": [
@@ -83,6 +90,13 @@
       "type": "resource",
       "interfaces": [
         "PerformanceResourceTiming"
+      ],
+      "availableFromTimeline": true
+    },
+    {
+      "type": "visibility-state",
+      "interfaces": [
+        "VisibilityStateEntry"
       ],
       "availableFromTimeline": true
     }

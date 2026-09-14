@@ -20,17 +20,18 @@ const config = JSON.parse(fs.readFileSync(registryPath, "utf8"));
 const repoPath = new URL(config.repo).pathname
   .replace(/^\//, "")
   .replace(/\.git$/, "");
-const source = `https://raw.githubusercontent.com/${repoPath}/${config.sha}/index.html`;
+const source = `https://raw.githubusercontent.com/${repoPath}/${config.sha}/index.bs`;
 
 console.log(`Fetching ${source}…`);
 const res = await fetch(source, { headers: { "User-Agent": "modern-web-types" } });
 if (!res.ok) throw new Error(`${source}: HTTP ${res.status}`);
-const html = await res.text();
+const bs = await res.text();
 
-// The registry is a single ReSpec table under <section id='registry'>, one row
-// per entry type. Anything that doesn't parse is thrown on rather than skipped:
-// a silently dropped row would silently drop types from the output.
-const tbody = html.match(/<tbody>([\s\S]*?)<\/tbody>/)?.[1];
+// The registry is a single table in the Bikeshed source under the "Registry"
+// heading, one row per entry type, written as HTML with explicit closing tags.
+// Anything that doesn't parse is thrown on rather than skipped: a silently
+// dropped row would silently drop types from the output.
+const tbody = bs.match(/<tbody>([\s\S]*?)<\/tbody>/)?.[1];
 if (!tbody) throw new Error("No <tbody> in the registry — has its markup changed?");
 
 const codes = (cell: string): string[] =>
@@ -38,12 +39,17 @@ const codes = (cell: string): string[] =>
     m[1].replace(/<[^>]+>/g, "").replace(/&quot;/g, '"').trim(),
   );
 
+// Interfaces are Bikeshed IDL autolinks: `{{Name}}`, optionally `{{Name/member}}`
+// or `{{Name|text}}`, where only `Name` is the interface.
+const idlLinks = (cell: string): string[] =>
+  [...cell.matchAll(/\{\{([^}]+)\}\}/g)].map((m) => m[1].split(/[/|]/)[0].trim());
+
 const entryTypes = [...tbody.matchAll(/<tr>([\s\S]*?)<\/tr>/g)].map(([, row]) => {
   const cells = [...row.matchAll(/<td>([\s\S]*?)<\/td>/g)].map((m) => m[1]);
   if (cells.length < 3) throw new Error(`Registry row has ${cells.length} cells:\n${row}`);
 
   const type = codes(cells[0])[0]?.replace(/^"(.*)"$/, "$1");
-  const interfaces = codes(cells[1]);
+  const interfaces = idlLinks(cells[1]);
   const available = codes(cells[2])[0];
   if (!type) throw new Error(`No entryType identifier in row:\n${row}`);
   if (!interfaces.length) throw new Error(`No interface for "${type}"`);
