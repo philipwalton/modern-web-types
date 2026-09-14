@@ -39,11 +39,13 @@ jobs:
         run: npm test
 
       # report.md embeds a generation timestamp, so it differs on every run.
-      # Reverting it when nothing else in it changed lets create-pull-request
-      # see a clean tree and skip opening a PR.
+      # Reverting it when nothing but the timestamp changed lets
+      # create-pull-request see a clean tree and skip opening a PR. The rest
+      # of the "Generated" line, including the generator SHA, is compared.
       - name: Drop timestamp-only report changes
         run: |
-          if git diff --quiet -I '^Generated ' -- report.md; then
+          strip() { sed -E 's/^Generated [^ ]+ /Generated /'; }
+          if diff -q <(git show HEAD:report.md | strip) <(strip < report.md) > /dev/null; then
             git checkout -- report.md
           fi
 
