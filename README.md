@@ -2,7 +2,7 @@
 
 TypeScript types for all web platform APIs that have shipped in at least one stable browser, but aren't yet included in TypeScript's built-in type definitions.
 
-These types are generated using the exact same pipeline as TypeScript's official types, so the quality and correctness is identical. The only difference is the number of APIs that are included.
+These types are generated using the exact same pipeline as TypeScript's official types, so the quality and correctness are identical. The only difference is the number of APIs that are included.
 
 ## Why this exists
 
@@ -12,18 +12,36 @@ Anyone who wants to use those APIs has to write the types by hand or go hunting 
 
 ## Install & use
 
-The generated libs in this package are stand-in replacements for TypeScript's built-in libs. To use them, first install the package and then update your `tsconfig` to reference `modern-web-types`.
+The generated libs in this package are stand-in replacements for TypeScript's built-in libs.
+
+The recommended way to use `modern-web-types` on most web projects is to install it under the `@typescript/lib-dom` alias, which is the name TypeScript looks for when it resolves its DOM library:
 
 ```sh
-npm install --save-dev modern-web-types
+npm install --save-dev @typescript/lib-dom@npm:modern-web-types
 ```
+
+If you're using TypeScript 6 or newer, you'll also need to turn on [`libReplacement`](https://www.typescriptlang.org/tsconfig/#libReplacement) in your `tsconfig.json`.
+
+```diff
+{
+  "compilerOptions": {
++   "libReplacement": true
+  }
+}
+```
+
+For older TypeScript versions (4.5–5.x), library replacement was the default behavior, so no `libReplacement` value is needed.
+
+### Workers and other libs
+
+The recommended lib replacement option covers the DOM library only. For any other environment, remove the corresponding lib from `lib` and reference this package's entry point from `types` instead:
 
 ```jsonc
 {
   "compilerOptions": {
-    // 1) Reference `modern-web-types` here.
-    "types": ["modern-web-types/dom"],
-    // 2) Don't list "DOM" since it's included above
+    // 1) Reference the entry point here.
+    "types": ["modern-web-types/webworker"],
+    // 2) Don't list "WebWorker" since it's included above
     "lib": ["ESNext"],
   }
 }
@@ -40,21 +58,10 @@ The `types` option can take any of the following libs from `modern-web-types`:
 | `modern-web-types/sharedworker` | `@types/sharedworker` |
 | `modern-web-types/audioworklet` | `@types/audioworklet` |
 
-Alternatively, if you only need DOM types, you can use TypeScript's lib-override alias. This lets you leave `lib` and `types` alone.
+Note that this installation option works for DOM as well, if you'd rather not use the alias or you already set `types`.
 
-```sh
-npm install --save-dev @typescript/lib-dom@npm:modern-web-types
-```
-
-Important: with this option, you must set `libReplacement` to `true` (TypeScript 6+):
-
-```jsonc
-{
-  "compilerOptions": {
-    "libReplacement": true
-  }
-}
-```
+> [!IMPORTANT]
+> If your project doesn't already set `types`, be aware that adding it changes more than the lib you're replacing. Once `types` is present, TypeScript stops automatically including every `@types/*` package it finds in `node_modules` and uses only the ones you list.
 
 ## How it works
 
