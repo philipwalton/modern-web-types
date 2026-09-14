@@ -38,6 +38,15 @@ jobs:
       - name: Test
         run: npm test
 
+      # report.md embeds a generation timestamp, so it differs on every run.
+      # Reverting it when nothing else in it changed lets create-pull-request
+      # see a clean tree and skip opening a PR.
+      - name: Drop timestamp-only report changes
+        run: |
+          if git diff --quiet -I '^Generated ' -- report.md; then
+            git checkout -- report.md
+          fi
+
       - name: Open PR
         uses: peter-evans/create-pull-request@v8
         with:
