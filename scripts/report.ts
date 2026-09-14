@@ -72,6 +72,21 @@ for (const scope of deltaScopes) {
   lines.push("");
   lines.push("</details>");
   lines.push("");
+
+  const memberAdditions = delta.memberAdditions
+    .map((m: any) => `${m.parent}.${m.member}`)
+    .sort();
+  const parentCount = new Set(delta.memberAdditions.map((m: any) => m.parent))
+    .size;
+  lines.push(
+    `<details><summary>${memberAdditions.length} members added to ` +
+      `${parentCount} existing interfaces</summary>`,
+  );
+  lines.push("");
+  lines.push(memberAdditions.map((n: string) => `- \`${n}\``).join("\n"));
+  lines.push("");
+  lines.push("</details>");
+  lines.push("");
 }
 
 lines.push("## Performance entry types");
