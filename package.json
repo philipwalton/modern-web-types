@@ -15,7 +15,7 @@
     "emit-test": "node scripts/emit-test.ts",
     "report": "node scripts/report.ts",
     "update": "npm run fetch-upstream && npm run fetch-registry && npm run build && npm run diff && npm run emit-lib && npm run emit-test && npm run emit-readme && npm run report",
-    "test": "node scripts/typecheck.ts && node scripts/check-libs.ts && node scripts/check-delta.ts",
+    "test": "node --test test/parse-registry.test.ts && node scripts/typecheck.ts && node scripts/check-libs.ts && node scripts/check-delta.ts",
     "publish-pkg": "node scripts/publish.ts",
     "emit-readme": "node scripts/emit-readme.ts",
     "typecheck": "node scripts/typecheck.ts"
