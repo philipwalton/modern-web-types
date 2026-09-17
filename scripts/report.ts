@@ -58,13 +58,9 @@ for (const scope of deltaScopes) {
   );
   lines.push("");
 
-  lines.push(
-    `<details><summary>${newInterfaces.length} new interfaces</summary>`,
-  );
+  lines.push(`### ${newInterfaces.length} new interfaces`);
   lines.push("");
   lines.push(newInterfaces.map((n: string) => `- \`${n}\``).join("\n"));
-  lines.push("");
-  lines.push("</details>");
   lines.push("");
 
   const memberAdditions = delta.memberAdditions
@@ -73,13 +69,11 @@ for (const scope of deltaScopes) {
   const parentCount = new Set(delta.memberAdditions.map((m: any) => m.parent))
     .size;
   lines.push(
-    `<details><summary>${memberAdditions.length} members added to ` +
-      `${parentCount} existing interfaces</summary>`,
+    `### ${memberAdditions.length} members added to ` +
+      `${parentCount} existing interfaces`,
   );
   lines.push("");
   lines.push(memberAdditions.map((n: string) => `- \`${n}\``).join("\n"));
-  lines.push("");
-  lines.push("</details>");
   lines.push("");
 }
 

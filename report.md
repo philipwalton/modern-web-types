@@ -1,6 +1,6 @@
 # Gap report
 
-Generated 2026-09-14T18:51:27.291Z from TypeScript-DOM-lib-generator `245655f1e887`.
+Generated 2026-09-14T19:54:19.374Z from TypeScript-DOM-lib-generator `245655f1e887`.
 
 These are declarations present when the two-engine rule is relaxed to **one** stable engine, but absent from the stock baseline.
 
@@ -16,7 +16,7 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 | New global functions | 9 |
 | Members added to existing interfaces | 311 |
 
-<details><summary>433 new interfaces</summary>
+### 433 new interfaces
 
 - `AbsoluteOrientationSensor`
 - `Accelerometer`
@@ -452,9 +452,7 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `XRWebGLLayerInit`
 - `XRWebGLSubImage`
 
-</details>
-
-<details><summary>311 members added to 80 existing interfaces</summary>
+### 311 members added to 80 existing interfaces
 
 - `AnimationEvent.animation`
 - `AudioContext.createMediaStreamTrackSource`
@@ -768,8 +766,6 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `WindowEventMap."beforeinstallprompt"`
 - `XMLHttpRequest.setPrivateToken`
 
-</details>
-
 ## webworker scope (lib `WebWorker`)
 
 | Category | Count |
@@ -780,7 +776,7 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 | New global functions | 1 |
 | Members added to existing interfaces | 64 |
 
-<details><summary>144 new interfaces</summary>
+### 144 new interfaces
 
 - `AddressErrors`
 - `AddressInit`
@@ -927,9 +923,7 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `WebTransportDatagramsWritable`
 - `WebTransportSendGroup`
 
-</details>
-
-<details><summary>64 members added to 24 existing interfaces</summary>
+### 64 members added to 24 existing interfaces
 
 - `EventTarget.when`
 - `FileSystemHandle.queryPermission`
@@ -995,8 +989,6 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `WorkerNavigator.hid`
 - `WorkerNavigator.usb`
 - `XMLHttpRequest.setPrivateToken`
-
-</details>
 
 ## Unknown-type fallbacks
 
