@@ -1,6 +1,6 @@
 {
   "repo": "https://github.com/w3c/timing-entrytypes-registry.git",
-  "sha": "db5623f7f35e311e927b6c98e51ca20d5ef4eb92",
+  "sha": "b84c8a835ed3c532b8c088434da1fab204e67ef3",
   "entryTypes": [
     {
       "type": "container",
@@ -29,6 +29,13 @@
         "PerformanceEventTiming"
       ],
       "availableFromTimeline": true
+    },
+    {
+      "type": "interaction-contentful-paint",
+      "interfaces": [
+        "InteractionContentfulPaint"
+      ],
+      "availableFromTimeline": false
     },
     {
       "type": "largest-contentful-paint",
@@ -90,6 +97,13 @@
       "type": "resource",
       "interfaces": [
         "PerformanceResourceTiming"
+      ],
+      "availableFromTimeline": true
+    },
+    {
+      "type": "soft-navigation",
+      "interfaces": [
+        "PerformanceSoftNavigation"
       ],
       "availableFromTimeline": true
     },
