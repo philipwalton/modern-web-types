@@ -93,8 +93,6 @@ Smoke tests are generated from the current delta rather than hand-written, so an
 
 Releases are driven by `version` in [`pkg/package.json`](pkg/package.json): a merge to `main` that changes it triggers the [publish workflow](.github/workflows/publish.yml), which publishes `pkg/` to npm and tags the commit. Merges that leave the version alone publish nothing.
 
-The update workflow defaults to a minor version bump whenever generated declaration files change. Metadata-only updates do not bump the version. Reviewers can adjust the version in the update PR case by case; subsequent runs preserve that choice while it is newer than the version on `main`.
-
 ## Related
 
 - [`lib.dom.d.ts` / `@types/web`][gen]: the official types, from the generator this project reuses. This project is strictly additive and never redefines what they already cover.
