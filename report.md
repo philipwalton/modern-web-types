@@ -1,6 +1,6 @@
 # Gap report
 
-Generated 2026-09-14T19:54:19.374Z from TypeScript-DOM-lib-generator `245655f1e887`.
+Generated 2026-09-21T11:31:33.893Z from TypeScript-DOM-lib-generator `0082b1ba1ba2`.
 
 These are declarations present when the two-engine rule is relaxed to **one** stable engine, but absent from the stock baseline.
 

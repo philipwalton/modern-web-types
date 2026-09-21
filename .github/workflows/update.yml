@@ -38,6 +38,19 @@ jobs:
       - name: Test
         run: npm test
 
+      - name: Bump package version for declaration changes
+        run: |
+          # Reuse the open PR's version, including any reviewer adjustment.
+          # Always compare against main so reruns don't increment it again.
+          branch=automated/update-types
+          existing=$(git ls-remote --heads origin "refs/heads/$branch")
+          if [ -n "$existing" ]; then
+            git fetch origin "refs/heads/$branch:refs/remotes/origin/$branch"
+            node scripts/bump-version.ts "refs/remotes/origin/$branch"
+          else
+            node scripts/bump-version.ts
+          fi
+
       # report.md embeds a generation timestamp, so it differs on every run.
       # Reverting it when nothing but the timestamp changed lets
       # create-pull-request see a clean tree and skip opening a PR. The rest
@@ -63,4 +76,6 @@ jobs:
           body: |
             Automated regeneration from the pinned upstream generator.
             See `report.md` for the current gap.
+            Declaration changes default to a minor version bump; adjust
+            `pkg/package.json` in this PR if a different version is appropriate.
           labels: automated
