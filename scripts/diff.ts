@@ -15,23 +15,14 @@
 import fs from "node:fs";
 import path from "node:path";
 import ts from "typescript";
-import { buildDir, rootDir, deltaScopes, type Scope } from "./util.ts";
-
-interface DeltaItem {
-  kind: "interface" | "alias" | "var" | "function";
-  name: string;
-  // A generic interface can't be named without type arguments, so the smoke
-  // tests reach it a different way.
-  generic?: boolean;
-}
-interface MemberAddition {
-  parent: string;
-  member: string;
-}
-interface NamespaceAddition {
-  parent: string;
-  members: string[];
-}
+import {
+  buildDir,
+  rootDir,
+  deltaScopes,
+  type Scope,
+  type Delta,
+  type DeltaSymbol,
+} from "./util.ts";
 
 interface InterfaceInfo {
   // An interface name can be declared more than once (the emitter splits the
@@ -49,7 +40,7 @@ interface FileIndex {
 }
 
 function memberKey(member: ts.TypeElement): string {
-  if (member.name) return member.name.getText();
+  if (member.name) return member.name.getText().replace(/^["'](.*)["']$/, "$1");
   if (ts.isConstructSignatureDeclaration(member)) return "new()";
   if (ts.isCallSignatureDeclaration(member)) return "()";
   if (ts.isIndexSignatureDeclaration(member)) return "[index]";
@@ -113,63 +104,63 @@ function computeDelta(scope: Scope) {
   const baseline = indexFile(path.join(buildDir, config.baseline));
   const full = indexFile(path.join(buildDir, scope.full));
 
-  const items: DeltaItem[] = [];
-  const memberAdditions: MemberAddition[] = [];
-  const namespaceAdditions: NamespaceAddition[] = [];
+  const symbols: DeltaSymbol[] = [];
 
   for (const [name, iface] of full.interfaces) {
     const base = baseline.interfaces.get(name);
     if (!base) {
-      items.push({ kind: "interface", name, generic: iface.generic });
+      symbols.push({ kind: "interface", name, generic: iface.generic });
       continue;
     }
     for (const member of iface.members) {
       if (!base.members.has(member)) {
-        memberAdditions.push({ parent: name, member });
+        symbols.push({ kind: "member", parent: name, member });
       }
     }
   }
 
   for (const name of full.aliases) {
-    if (!baseline.aliases.has(name)) items.push({ kind: "alias", name });
+    if (!baseline.aliases.has(name)) symbols.push({ kind: "alias", name });
   }
   for (const name of full.vars) {
-    if (!baseline.vars.has(name)) items.push({ kind: "var", name });
+    if (!baseline.vars.has(name)) symbols.push({ kind: "var", name });
   }
   for (const name of full.functions) {
-    if (!baseline.functions.has(name)) items.push({ kind: "function", name });
+    if (!baseline.functions.has(name)) symbols.push({ kind: "function", name });
   }
 
   for (const [name, members] of full.namespaces) {
     const base = baseline.namespaces.get(name);
-    const added = [...members].filter((m) => !base?.has(m));
-    if (added.length) namespaceAdditions.push({ parent: name, members: added });
+    for (const member of members) {
+      if (!base?.has(member)) {
+        symbols.push({ kind: "namespace-member", parent: name, member });
+      }
+    }
   }
 
-  const delta = {
+  const delta: Delta = {
     meta: {
       scope: scope.name,
       upstreamSha,
       generatedAt: new Date().toISOString(),
     },
-    items,
-    memberAdditions,
-    namespaceAdditions,
+    symbols,
   };
   fs.writeFileSync(
     path.join(buildDir, config.delta),
     JSON.stringify(delta, null, 2),
   );
 
-  const count = (kind: string) => items.filter((i) => i.kind === kind).length;
+  const count = (kind: DeltaSymbol["kind"]) =>
+    symbols.filter((s) => s.kind === kind).length;
   console.log(
     `[${scope.name}] ` +
       `${count("interface")} interfaces, ` +
       `${count("alias")} aliases, ` +
       `${count("var")} vars, ` +
       `${count("function")} functions, ` +
-      `${memberAdditions.length} members on existing interfaces, ` +
-      `${namespaceAdditions.length} namespace additions`,
+      `${count("member")} members on existing interfaces, ` +
+      `${count("namespace-member")} namespace additions`,
   );
 }
 

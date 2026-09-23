@@ -3,7 +3,7 @@
 // the filter and the .patch no longer applies to the right code).
 import fs from "node:fs";
 import path from "node:path";
-import { buildDir, deltaScopes } from "./util.ts";
+import { buildDir, deltaScopes, type Delta } from "./util.ts";
 
 // Rough floors well below current counts (dom ~431, webworker ~141).
 const MIN_INTERFACES: Record<string, number> = { dom: 200, webworker: 60 };
@@ -16,9 +16,9 @@ for (const scope of deltaScopes) {
     failed = true;
     continue;
   }
-  const delta = JSON.parse(fs.readFileSync(deltaPath, "utf8"));
-  const interfaces = delta.items.filter(
-    (i: any) => i.kind === "interface",
+  const delta: Delta = JSON.parse(fs.readFileSync(deltaPath, "utf8"));
+  const interfaces = delta.symbols.filter(
+    (i) => i.kind === "interface",
   ).length;
   const floor = MIN_INTERFACES[scope.name] ?? 1;
   if (interfaces < floor) {

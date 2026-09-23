@@ -30,6 +30,19 @@ export interface DeltaConfig {
   baseline: string; // build/ filename of the two-engine build
   delta: string; // build/ filename of the computed delta
 }
+export type DeltaSymbol =
+  | { kind: "interface"; name: string; generic?: boolean }
+  | { kind: "alias" | "var" | "function"; name: string }
+  | { kind: "member" | "namespace-member"; parent: string; member: string };
+
+export interface Delta {
+  meta: {
+    scope: string;
+    upstreamSha: string;
+    generatedAt: string;
+  };
+  symbols: DeltaSymbol[];
+}
 export interface Scope {
   name: string;
   generated: string; // filename under upstream/generated/

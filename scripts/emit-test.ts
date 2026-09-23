@@ -22,7 +22,14 @@
 // `Performance`.
 import fs from "node:fs";
 import path from "node:path";
-import { buildDir, rootDir, deltaScopes, libFile, type Scope } from "./util.ts";
+import {
+  buildDir,
+  rootDir,
+  deltaScopes,
+  libFile,
+  type Scope,
+  type Delta,
+} from "./util.ts";
 import {
   TIMELINE_MAP,
   declaredInterfaces,
@@ -35,7 +42,7 @@ const genDir = path.join(rootDir, "test", "generated");
 const ident = (s: string) => s.replace(/[^A-Za-z0-9_$]/g, "_");
 
 function assertions(scope: Scope): string[] {
-  const delta = JSON.parse(
+  const delta: Delta = JSON.parse(
     fs.readFileSync(path.join(buildDir, scope.delta!.delta), "utf8"),
   );
   const lines: string[] = [];
@@ -48,33 +55,24 @@ function assertions(scope: Scope): string[] {
     lines.push(`type ${name} = ${rhs};`);
   };
 
-  for (const item of delta.items) {
-    const a = ident(item.name);
-    if (item.kind === "interface") {
-      if (!item.generic) emit(`_mwt_i_${a}`, item.name);
-    } else if (item.kind === "alias") {
-      emit(`_mwt_a_${a}`, item.name);
-    } else if (item.kind === "var") {
-      emit(`_mwt_v_${a}`, `typeof ${item.name}`);
-    } else if (item.kind === "function") {
-      emit(`_mwt_f_${a}`, `typeof ${item.name}`);
-    }
-  }
-  for (const add of delta.memberAdditions) {
-    // Event-map members are stored already-quoted ("freeze"); plain members
-    // are bare (controller). Normalize to the raw name, then re-quote as an
-    // index key so both become P["name"].
-    const member = add.member.replace(/^"(.*)"$/, "$1");
-    emit(
-      `_mwt_m_${ident(add.parent)}__${ident(member)}`,
-      `${add.parent}[${JSON.stringify(member)}]`,
-    );
-  }
-  for (const add of delta.namespaceAdditions) {
-    for (const member of add.members) {
+  for (const s of delta.symbols) {
+    if (s.kind === "interface") {
+      if (!s.generic) emit(`_mwt_i_${ident(s.name)}`, s.name);
+    } else if (s.kind === "alias") {
+      emit(`_mwt_a_${ident(s.name)}`, s.name);
+    } else if (s.kind === "var") {
+      emit(`_mwt_v_${ident(s.name)}`, `typeof ${s.name}`);
+    } else if (s.kind === "function") {
+      emit(`_mwt_f_${ident(s.name)}`, `typeof ${s.name}`);
+    } else if (s.kind === "member") {
       emit(
-        `_mwt_n_${ident(add.parent)}__${ident(member)}`,
-        `typeof ${add.parent}.${member}`,
+        `_mwt_m_${ident(s.parent)}__${ident(s.member)}`,
+        `${s.parent}[${JSON.stringify(s.member)}]`,
+      );
+    } else if (s.kind === "namespace-member") {
+      emit(
+        `_mwt_n_${ident(s.parent)}__${ident(s.member)}`,
+        `typeof ${s.parent}.${s.member}`,
       );
     }
   }
