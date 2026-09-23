@@ -1,6 +1,6 @@
 # Gap report
 
-Generated 2026-09-21T11:31:33.893Z from TypeScript-DOM-lib-generator `0082b1ba1ba2`.
+Generated 2026-09-23T19:00:28.328Z from TypeScript-DOM-lib-generator `0082b1ba1ba2`.
 
 These are declarations present when the two-engine rule is relaxed to **one** stable engine, but absent from the stock baseline.
 
@@ -15,6 +15,7 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 | New global vars | 214 |
 | New global functions | 9 |
 | Members added to existing interfaces | 311 |
+| Members added to existing namespaces | 1 |
 
 ### 433 new interfaces
 
@@ -766,6 +767,10 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `WindowEventMap."beforeinstallprompt"`
 - `XMLHttpRequest.setPrivateToken`
 
+### 1 members added to 1 existing namespaces
+
+- `CSS.paintWorklet`
+
 ## webworker scope (lib `WebWorker`)
 
 | Category | Count |
@@ -775,6 +780,7 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 | New global vars | 55 |
 | New global functions | 1 |
 | Members added to existing interfaces | 64 |
+| Members added to existing namespaces | 0 |
 
 ### 144 new interfaces
 
