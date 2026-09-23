@@ -40,7 +40,7 @@ interface FileIndex {
 }
 
 function memberKey(member: ts.TypeElement): string {
-  if (member.name) return member.name.getText();
+  if (member.name) return member.name.getText().replace(/^["'](.*)["']$/, "$1");
   if (ts.isConstructSignatureDeclaration(member)) return "new()";
   if (ts.isCallSignatureDeclaration(member)) return "()";
   if (ts.isIndexSignatureDeclaration(member)) return "[index]";

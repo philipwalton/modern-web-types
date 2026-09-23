@@ -65,10 +65,9 @@ function assertions(scope: Scope): string[] {
     } else if (s.kind === "function") {
       emit(`_mwt_f_${ident(s.name)}`, `typeof ${s.name}`);
     } else if (s.kind === "member") {
-      const member = s.member.replace(/^"(.*)"$/, "$1");
       emit(
-        `_mwt_m_${ident(s.parent)}__${ident(member)}`,
-        `${s.parent}[${JSON.stringify(member)}]`,
+        `_mwt_m_${ident(s.parent)}__${ident(s.member)}`,
+        `${s.parent}[${JSON.stringify(s.member)}]`,
       );
     } else if (s.kind === "namespace-member") {
       emit(

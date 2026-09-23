@@ -1,6 +1,6 @@
 # Gap report
 
-Generated 2026-09-23T19:00:28.328Z from TypeScript-DOM-lib-generator `0082b1ba1ba2`.
+Generated 2026-09-23T19:05:45.380Z from TypeScript-DOM-lib-generator `0082b1ba1ba2`.
 
 These are declarations present when the two-engine rule is relaxed to **one** stable engine, but absent from the stock baseline.
 
@@ -463,17 +463,17 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `AudioContext.setSinkId`
 - `AudioContext.sinkId`
 - `AudioWorklet.port`
-- `CSSFontFaceDescriptors."ascent-override"`
-- `CSSFontFaceDescriptors."descent-override"`
-- `CSSFontFaceDescriptors."font-language-override"`
-- `CSSFontFaceDescriptors."font-variation-settings"`
-- `CSSFontFaceDescriptors."font-width"`
-- `CSSFontFaceDescriptors."line-gap-override"`
+- `CSSFontFaceDescriptors.ascent-override`
 - `CSSFontFaceDescriptors.ascentOverride`
+- `CSSFontFaceDescriptors.descent-override`
 - `CSSFontFaceDescriptors.descentOverride`
+- `CSSFontFaceDescriptors.font-language-override`
+- `CSSFontFaceDescriptors.font-variation-settings`
+- `CSSFontFaceDescriptors.font-width`
 - `CSSFontFaceDescriptors.fontLanguageOverride`
 - `CSSFontFaceDescriptors.fontVariationSettings`
 - `CSSFontFaceDescriptors.fontWidth`
+- `CSSFontFaceDescriptors.line-gap-override`
 - `CSSFontFaceDescriptors.lineGapOverride`
 - `CSSFontFeatureValuesRule.annotation`
 - `CSSFontFeatureValuesRule.characterVariant`
@@ -481,7 +481,7 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `CSSFontFeatureValuesRule.styleset`
 - `CSSFontFeatureValuesRule.stylistic`
 - `CSSFontFeatureValuesRule.swash`
-- `CSSPageDescriptors."page-orientation"`
+- `CSSPageDescriptors.page-orientation`
 - `CSSPageDescriptors.pageOrientation`
 - `CSSStyleProperties.animationTrigger`
 - `CSSStyleProperties.borderShape`
@@ -602,9 +602,9 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `Document.onresume`
 - `Document.prerendering`
 - `Document.wasDiscarded`
-- `DocumentEventMap."freeze"`
-- `DocumentEventMap."prerenderingchange"`
-- `DocumentEventMap."resume"`
+- `DocumentEventMap.freeze`
+- `DocumentEventMap.prerenderingchange`
+- `DocumentEventMap.resume`
 - `Element.activeViewTransition`
 - `Element.elementTiming`
 - `Element.pseudo`
@@ -621,12 +621,12 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `GamepadHapticActuator.effects`
 - `GamepadHapticActuator.pulse`
 - `GlobalEventHandlers.onbeforexrselect`
-- `GlobalEventHandlersEventMap."beforexrselect"`
+- `GlobalEventHandlersEventMap.beforexrselect`
 - `HTMLAnchorElement.attributionSourceId`
 - `HTMLElement.editContext`
-- `HTMLElementTagNameMap."fencedframe"`
-- `HTMLElementTagNameMap."geolocation"`
-- `HTMLElementTagNameMap."selectedcontent"`
+- `HTMLElementTagNameMap.fencedframe`
+- `HTMLElementTagNameMap.geolocation`
+- `HTMLElementTagNameMap.selectedcontent`
 - `HTMLIFrameElement.credentialless`
 - `HTMLIFrameElement.csp`
 - `HTMLIFrameElement.privateToken`
@@ -651,7 +651,7 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `MediaSession.setScreenshareActive`
 - `MediaStreamTrack.getCaptureHandle`
 - `MediaStreamTrack.oncapturehandlechange`
-- `MediaStreamTrackEventMap."capturehandlechange"`
+- `MediaStreamTrackEventMap.capturehandlechange`
 - `NavigationTransition.to`
 - `Navigator.adAuctionComponents`
 - `Navigator.audioSession`
@@ -763,8 +763,8 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `Window.showOpenFilePicker`
 - `Window.showSaveFilePicker`
 - `Window.viewport`
-- `WindowEventMap."appinstalled"`
-- `WindowEventMap."beforeinstallprompt"`
+- `WindowEventMap.appinstalled`
+- `WindowEventMap.beforeinstallprompt`
 - `XMLHttpRequest.setPrivateToken`
 
 ### 1 members added to 1 existing namespaces
@@ -964,15 +964,15 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `ServiceWorkerGlobalScope.onpaymentrequest`
 - `ServiceWorkerGlobalScope.onperiodicsync`
 - `ServiceWorkerGlobalScope.onsync`
-- `ServiceWorkerGlobalScopeEventMap."backgroundfetchabort"`
-- `ServiceWorkerGlobalScopeEventMap."backgroundfetchclick"`
-- `ServiceWorkerGlobalScopeEventMap."backgroundfetchfail"`
-- `ServiceWorkerGlobalScopeEventMap."backgroundfetchsuccess"`
-- `ServiceWorkerGlobalScopeEventMap."canmakepayment"`
-- `ServiceWorkerGlobalScopeEventMap."contentdelete"`
-- `ServiceWorkerGlobalScopeEventMap."paymentrequest"`
-- `ServiceWorkerGlobalScopeEventMap."periodicsync"`
-- `ServiceWorkerGlobalScopeEventMap."sync"`
+- `ServiceWorkerGlobalScopeEventMap.backgroundfetchabort`
+- `ServiceWorkerGlobalScopeEventMap.backgroundfetchclick`
+- `ServiceWorkerGlobalScopeEventMap.backgroundfetchfail`
+- `ServiceWorkerGlobalScopeEventMap.backgroundfetchsuccess`
+- `ServiceWorkerGlobalScopeEventMap.canmakepayment`
+- `ServiceWorkerGlobalScopeEventMap.contentdelete`
+- `ServiceWorkerGlobalScopeEventMap.paymentrequest`
+- `ServiceWorkerGlobalScopeEventMap.periodicsync`
+- `ServiceWorkerGlobalScopeEventMap.sync`
 - `ServiceWorkerRegistration.backgroundFetch`
 - `ServiceWorkerRegistration.index`
 - `ServiceWorkerRegistration.paymentManager`
