@@ -1,6 +1,6 @@
 {
   "repo": "https://github.com/w3c/timing-entrytypes-registry.git",
-  "sha": "b84c8a835ed3c532b8c088434da1fab204e67ef3",
+  "sha": "a22eeb426d72738bcd006c2fc6326e753a88b504",
   "entryTypes": [
     {
       "type": "container",
