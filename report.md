@@ -1,6 +1,6 @@
 # Gap report
 
-Generated 2026-11-14T05:55:57.005Z from TypeScript-DOM-lib-generator `aea354f537e0`.
+Generated 2026-10-26T11:55:41.200Z from TypeScript-DOM-lib-generator `6843e1fa9903`.
 
 These are declarations present when the two-engine rule is relaxed to **one** stable engine, but absent from the stock baseline.
 
@@ -10,14 +10,14 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 
 | Category | Count |
 | --- | ---: |
-| New interfaces | 436 |
-| New type aliases | 95 |
-| New global vars | 215 |
-| New global functions | 10 |
-| Members added to existing interfaces | 338 |
+| New interfaces | 433 |
+| New type aliases | 96 |
+| New global vars | 214 |
+| New global functions | 9 |
+| Members added to existing interfaces | 311 |
 | Members added to existing namespaces | 1 |
 
-### 436 new interfaces
+### 433 new interfaces
 
 - `AbsoluteOrientationSensor`
 - `Accelerometer`
@@ -112,8 +112,6 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `EditContext`
 - `EditContextEventMap`
 - `EditContextInit`
-- `EncapsulatedBits`
-- `EncapsulatedKey`
 - `EyeDropper`
 - `FederatedCredential`
 - `FederatedCredentialInit`
@@ -144,17 +142,12 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `HIDInputReportEventInit`
 - `HIDReportInfo`
 - `HIDReportItem`
-- `HTMLCameraElement`
-- `HTMLCameraElementEventMap`
 - `HTMLFencedFrameElement`
 - `HTMLGeolocationElement`
 - `HTMLGeolocationElementEventMap`
-- `HTMLMediaStreamConstraints`
-- `HTMLMicrophoneElement`
-- `HTMLMicrophoneElementEventMap`
-- `HTMLModelElement`
-- `HTMLUserMediaElement`
-- `HTMLUserMediaElementEventMap`
+- `HTMLSelectedContentElement`
+- `IDBGetAllOptions`
+- `IDBRecord`
 - `IdentityCredential`
 - `IdentityCredentialDisconnectOptions`
 - `IdentityCredentialError`
@@ -172,7 +165,6 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `InkTrailStyle`
 - `InputDeviceCapabilities`
 - `InputDeviceCapabilitiesInit`
-- `InteractionContentfulPaint`
 - `IsInputPendingOptions`
 - `Keyboard`
 - `KeyboardLayoutMap`
@@ -191,7 +183,8 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `LanguageModelMessage`
 - `LanguageModelMessageContent`
 - `LanguageModelPromptOptions`
-- `LanguageModelToolDeclaration`
+- `LanguageModelTool`
+- `LanguageModelToolFunction`
 - `LaunchConsumer`
 - `LaunchParams`
 - `LaunchQueue`
@@ -206,8 +199,6 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `MediaEffectInfo`
 - `MediaStreamTrackAudioSourceNode`
 - `MediaStreamTrackAudioSourceOptions`
-- `MediaStreamTrackAudioStats`
-- `MediaStreamTrackVideoStats`
 - `MemoryAttribution`
 - `MemoryAttributionContainer`
 - `MemoryBreakdownEntry`
@@ -223,6 +214,7 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `NDEFRecordInit`
 - `NDEFScanOptions`
 - `NDEFWriteOptions`
+- `NavigatorDeviceMemory`
 - `NavigatorManagedData`
 - `NavigatorManagedDataEventMap`
 - `NavigatorNetworkInformation`
@@ -249,11 +241,10 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `PaymentManager`
 - `PerformanceElementTiming`
 - `PerformanceLongAnimationFrameTiming`
+- `PerformanceLongTaskTiming`
 - `PerformanceScriptTiming`
-- `PerformanceSoftNavigation`
 - `PerformanceTimingConfidence`
 - `PeriodicSyncManager`
-- `PermissionsPolicy`
 - `Point2D`
 - `PowerfulFeatureObserver`
 - `PowerfulFeatureObserverEventMap`
@@ -287,7 +278,6 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `QueryOptions`
 - `QuotaExceededError`
 - `QuotaExceededErrorOptions`
-- `RTCDiagnosticLoggingOptions`
 - `RTCIceParameters`
 - `RTCIdentityAssertion`
 - `RTCIdentityProviderOptions`
@@ -313,6 +303,11 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `SharedWorkerOptions`
 - `SnapEvent`
 - `SnapEventInit`
+- `SpeechGrammarList`
+- `SpeechRecognition`
+- `SpeechRecognitionEventMap`
+- `SpeechRecognitionOptions`
+- `SpeechRecognitionPhrase`
 - `StorageAccessHandle`
 - `StorageBucket`
 - `StorageBucketManager`
@@ -326,6 +321,7 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `SummarizerCreateOptions`
 - `SummarizerSummarizeOptions`
 - `SyncManager`
+- `TaskAttributionTiming`
 - `TextFormat`
 - `TextFormatInit`
 - `TextFormatUpdateEvent`
@@ -337,7 +333,6 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `TranslatorCreateCoreOptions`
 - `TranslatorCreateOptions`
 - `TranslatorTranslateOptions`
-- `TrustedHTMLParserOptions`
 - `UADataValues`
 - `UALowEntropyJSON`
 - `USB`
@@ -369,6 +364,8 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `Visitor`
 - `WebGLObject`
 - `WebGLTimerQueryEXT`
+- `WebTransportDatagramsWritable`
+- `WebTransportSendGroup`
 - `WindowControlsOverlay`
 - `WindowControlsOverlayEventMap`
 - `WindowControlsOverlayGeometryChangeEvent`
@@ -456,8 +453,9 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `XRWebGLLayerInit`
 - `XRWebGLSubImage`
 
-### 338 members added to 85 existing interfaces
+### 311 members added to 80 existing interfaces
 
+- `AnimationEvent.animation`
 - `AudioContext.createMediaStreamTrackSource`
 - `AudioContext.onerror`
 - `AudioContext.onsinkchange`
@@ -465,17 +463,16 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `AudioContext.setSinkId`
 - `AudioContext.sinkId`
 - `AudioWorklet.port`
-- `BaseAudioContext.renderQuantumSize`
-- `Blob.textStream`
-- `Body.textStream`
 - `CSSFontFaceDescriptors.ascent-override`
 - `CSSFontFaceDescriptors.ascentOverride`
 - `CSSFontFaceDescriptors.descent-override`
 - `CSSFontFaceDescriptors.descentOverride`
 - `CSSFontFaceDescriptors.font-language-override`
 - `CSSFontFaceDescriptors.font-variation-settings`
+- `CSSFontFaceDescriptors.font-width`
 - `CSSFontFaceDescriptors.fontLanguageOverride`
 - `CSSFontFaceDescriptors.fontVariationSettings`
+- `CSSFontFaceDescriptors.fontWidth`
 - `CSSFontFaceDescriptors.line-gap-override`
 - `CSSFontFaceDescriptors.lineGapOverride`
 - `CSSFontFeatureValuesRule.annotation`
@@ -522,8 +519,9 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `CSSStyleProperties.cornerTopRightShape`
 - `CSSStyleProperties.cornerTopShape`
 - `CSSStyleProperties.flexLineCount`
+- `CSSStyleProperties.flowTolerance`
 - `CSSStyleProperties.fontSynthesisPosition`
-- `CSSStyleProperties.frameSizing`
+- `CSSStyleProperties.fontWidth`
 - `CSSStyleProperties.glyphOrientationVertical`
 - `CSSStyleProperties.hangingPunctuation`
 - `CSSStyleProperties.initialLetter`
@@ -532,6 +530,7 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `CSSStyleProperties.interestDelayEnd`
 - `CSSStyleProperties.interestDelayStart`
 - `CSSStyleProperties.interpolateSize`
+- `CSSStyleProperties.marginTrim`
 - `CSSStyleProperties.maskBorder`
 - `CSSStyleProperties.maskBorderOutset`
 - `CSSStyleProperties.maskBorderRepeat`
@@ -557,6 +556,7 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `CSSStyleProperties.rowRuleStyle`
 - `CSSStyleProperties.rowRuleVisibilityItems`
 - `CSSStyleProperties.rowRuleWidth`
+- `CSSStyleProperties.rubyOverhang`
 - `CSSStyleProperties.rule`
 - `CSSStyleProperties.ruleBreak`
 - `CSSStyleProperties.ruleColor`
@@ -569,15 +569,14 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `CSSStyleProperties.ruleStyle`
 - `CSSStyleProperties.ruleVisibilityItems`
 - `CSSStyleProperties.ruleWidth`
-- `CSSStyleProperties.scrollAxisLock`
 - `CSSStyleProperties.scrollInitialTarget`
 - `CSSStyleProperties.scrollMarkerGroup`
 - `CSSStyleProperties.scrollTargetGroup`
 - `CSSStyleProperties.speak`
 - `CSSStyleProperties.speakAs`
 - `CSSStyleProperties.strokeColor`
+- `CSSStyleProperties.textDecorationInset`
 - `CSSStyleProperties.textDecorationSkip`
-- `CSSStyleProperties.textDecorationSkipSpaces`
 - `CSSStyleProperties.textFit`
 - `CSSStyleProperties.textSizeAdjust`
 - `CSSStyleProperties.textSpacingTrim`
@@ -593,7 +592,6 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `CSSStyleProperties.triggerScope`
 - `CSSStyleProperties.viewTransitionGroup`
 - `CSSStyleProperties.viewTransitionScope`
-- `CSSStyleProperties.windowDrag`
 - `DataTransferItem.getAsFileSystemHandle`
 - `DisplayMediaStreamOptions.controller`
 - `Document.hasPrivateToken`
@@ -608,11 +606,7 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `DocumentEventMap.prerenderingchange`
 - `DocumentEventMap.resume`
 - `Element.activeViewTransition`
-- `Element.appendHTML`
-- `Element.appendHTMLUnsafe`
 - `Element.elementTiming`
-- `Element.prependHTML`
-- `Element.prependHTMLUnsafe`
 - `Element.pseudo`
 - `Element.startViewTransition`
 - `ElementContentEditable.virtualKeyboardPolicy`
@@ -620,8 +614,6 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `FileSystemHandle.queryPermission`
 - `FileSystemHandle.requestPermission`
 - `FullscreenOptions.screen`
-- `GPUBindingCommandsMixin.setImmediates`
-- `GPUSupportedLimits.maxImmediateSize`
 - `GPUTexture.textureBindingViewDimension`
 - `Gamepad.hand`
 - `Gamepad.hapticActuators`
@@ -632,12 +624,9 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `GlobalEventHandlersEventMap.beforexrselect`
 - `HTMLAnchorElement.attributionSourceId`
 - `HTMLElement.editContext`
-- `HTMLElementDeprecatedTagNameMap.fencedframe`
-- `HTMLElementTagNameMap.camera`
+- `HTMLElementTagNameMap.fencedframe`
 - `HTMLElementTagNameMap.geolocation`
-- `HTMLElementTagNameMap.microphone`
-- `HTMLElementTagNameMap.model`
-- `HTMLElementTagNameMap.usermedia`
+- `HTMLElementTagNameMap.selectedcontent`
 - `HTMLIFrameElement.credentialless`
 - `HTMLIFrameElement.csp`
 - `HTMLIFrameElement.privateToken`
@@ -646,7 +635,9 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `HTMLMediaElement.getStartDate`
 - `HTMLMediaElement.loading`
 - `HTMLMediaElement.videoTracks`
-- `HTMLTemplateElement.htmlFor`
+- `HTMLTemplateElement.shadowRootSlotAssignment`
+- `IDBIndex.getAllRecords`
+- `IDBObjectStore.getAllRecords`
 - `ImageData.pixelFormat`
 - `IntersectionObserver.delay`
 - `IntersectionObserver.trackVisibility`
@@ -660,16 +651,12 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `MediaSession.setScreenshareActive`
 - `MediaStreamTrack.getCaptureHandle`
 - `MediaStreamTrack.oncapturehandlechange`
-- `MediaStreamTrack.onconfigurationchange`
-- `MediaStreamTrack.stats`
 - `MediaStreamTrackEventMap.capturehandlechange`
-- `MediaStreamTrackEventMap.configurationchange`
 - `NavigationTransition.to`
 - `Navigator.adAuctionComponents`
 - `Navigator.audioSession`
 - `Navigator.bluetooth`
 - `Navigator.contacts`
-- `Navigator.cpuPerformance`
 - `Navigator.deprecatedReplaceInURN`
 - `Navigator.devicePosture`
 - `Navigator.getAutoplayPolicy`
@@ -688,34 +675,21 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `NavigatorContentUtils.unregisterProtocolHandler`
 - `NavigatorID.oscpu`
 - `NavigatorID.taintEnabled`
-- `NonDocumentTypeChildNode.afterHTML`
-- `NonDocumentTypeChildNode.afterHTMLUnsafe`
-- `NonDocumentTypeChildNode.beforeHTML`
-- `NonDocumentTypeChildNode.beforeHTMLUnsafe`
-- `NonDocumentTypeChildNode.replaceWithHTML`
-- `NonDocumentTypeChildNode.replaceWithHTMLUnsafe`
 - `Notification.badge`
 - `Notification.image`
+- `Notification.navigate`
 - `Notification.renotify`
 - `Notification.timestamp`
-- `OfflineAudioContext.close`
+- `Notification.vibrate`
 - `Performance.measureUserAgentSpecificMemory`
-- `PerformanceEntry.navigationId`
 - `PerformanceNavigationTiming.activationStart`
 - `PerformanceNavigationTiming.confidence`
 - `PerformanceNavigationTiming.criticalCHRestart`
 - `PerformanceNavigationTiming.notRestoredReasons`
 - `PerformanceResourceTiming.contentEncoding`
 - `PerformanceResourceTiming.renderBlockingStatus`
-- `PerformanceResourceTiming.workerFinalRouterSource`
-- `PerformanceResourceTiming.workerMatchedRouterSource`
-- `ProcessingInstruction.getAttribute`
-- `ProcessingInstruction.getAttributeNames`
-- `ProcessingInstruction.hasAttribute`
-- `ProcessingInstruction.hasAttributes`
-- `ProcessingInstruction.removeAttribute`
-- `ProcessingInstruction.setAttribute`
-- `ProcessingInstruction.toggleAttribute`
+- `PerformanceResourceTiming.workerCacheLookupStart`
+- `PerformanceResourceTiming.workerRouterEvaluationStart`
 - `RTCDataChannel.priority`
 - `RTCError.httpRequestStatusCode`
 - `RTCIceCandidate.relayProtocol`
@@ -740,7 +714,6 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `SVGScriptElement.crossOrigin`
 - `Sanitizer.allowProcessingInstruction`
 - `Sanitizer.removeProcessingInstruction`
-- `Sanitizer.setJavascriptURLs`
 - `Screen.addEventListener`
 - `Screen.isExtended`
 - `Screen.onchange`
@@ -750,22 +723,15 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `ServiceWorkerRegistration.paymentManager`
 - `ServiceWorkerRegistration.periodicSync`
 - `ServiceWorkerRegistration.sync`
-- `ShadowRoot.appendHTML`
-- `ShadowRoot.appendHTMLUnsafe`
-- `ShadowRoot.prependHTML`
-- `ShadowRoot.prependHTMLUnsafe`
+- `ShadowRoot.setHTML`
 - `SourceBuffer.audioTracks`
 - `SourceBuffer.textTracks`
 - `SourceBuffer.videoTracks`
-- `SubtleCrypto.decapsulateBits`
-- `SubtleCrypto.decapsulateKey`
-- `SubtleCrypto.encapsulateBits`
-- `SubtleCrypto.encapsulateKey`
-- `SubtleCrypto.getPublicKey`
 - `TextTrack.sourceBuffer`
 - `Touch.altitudeAngle`
 - `Touch.azimuthAngle`
 - `Touch.touchType`
+- `TransitionEvent.animation`
 - `UIEvent.sourceCapabilities`
 - `VideoFrame.flip`
 - `VideoFrame.metadata`
@@ -775,8 +741,13 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `WebGLRenderingContextBase.drawingBufferFormat`
 - `WebGLRenderingContextBase.drawingBufferStorage`
 - `WebGLRenderingContextBase.makeXRCompatible`
-- `WebTransport.exportKeyingMaterial`
-- `WheelEvent.momentum`
+- `WebTransport.anticipatedConcurrentIncomingBidirectionalStreams`
+- `WebTransport.anticipatedConcurrentIncomingUnidirectionalStreams`
+- `WebTransport.createSendGroup`
+- `WebTransport.draining`
+- `WebTransportDatagramDuplexStream.createWritable`
+- `WebTransportSendOptions.sendGroup`
+- `WebTransportSendStream.sendGroup`
 - `Window.crashReport`
 - `Window.credentialless`
 - `Window.fence`
@@ -787,7 +758,6 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `Window.onappinstalled`
 - `Window.onbeforeinstallprompt`
 - `Window.queryLocalFonts`
-- `Window.requestResize`
 - `Window.setResizable`
 - `Window.showDirectoryPicker`
 - `Window.showOpenFilePicker`
@@ -805,14 +775,14 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 
 | Category | Count |
 | --- | ---: |
-| New interfaces | 139 |
-| New type aliases | 31 |
-| New global vars | 53 |
+| New interfaces | 144 |
+| New type aliases | 35 |
+| New global vars | 55 |
 | New global functions | 1 |
-| Members added to existing interfaces | 66 |
+| Members added to existing interfaces | 64 |
 | Members added to existing namespaces | 0 |
 
-### 139 new interfaces
+### 144 new interfaces
 
 - `AddressErrors`
 - `AddressInit`
@@ -841,8 +811,6 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `DetectedBarcode`
 - `EXT_disjoint_timer_query`
 - `EXT_disjoint_timer_query_webgl2`
-- `EncapsulatedBits`
-- `EncapsulatedKey`
 - `FileSystemHandlePermissionDescriptor`
 - `GlobalPrivacyControl`
 - `HID`
@@ -856,22 +824,24 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `HIDInputReportEventInit`
 - `HIDReportInfo`
 - `HIDReportItem`
+- `IDBGetAllOptions`
+- `IDBRecord`
 - `IdleDetector`
 - `IdleDetectorEventMap`
 - `IdleOptions`
 - `ImageResource`
+- `InstallEvent`
 - `ManagedMediaSource`
 - `ManagedMediaSourceEventMap`
 - `ManagedSourceBuffer`
 - `ManagedSourceBufferEventMap`
 - `Mapper`
 - `MediaEffectInfo`
-- `MediaStreamTrackAudioStats`
-- `MediaStreamTrackVideoStats`
 - `MemoryAttribution`
 - `MemoryAttributionContainer`
 - `MemoryBreakdownEntry`
 - `MemoryMeasurement`
+- `NavigatorDeviceMemory`
 - `NavigatorNetworkInformation`
 - `NavigatorStorageBuckets`
 - `NavigatorUA`
@@ -915,6 +885,9 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `QuotaExceededErrorOptions`
 - `Reducer`
 - `RestrictionTarget`
+- `RouterCondition`
+- `RouterRule`
+- `RouterSourceDict`
 - `Segment`
 - `Sensor`
 - `SensorErrorEvent`
@@ -953,30 +926,29 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `Visitor`
 - `WebGLObject`
 - `WebGLTimerQueryEXT`
+- `WebTransportDatagramsWritable`
+- `WebTransportSendGroup`
 
-### 66 members added to 26 existing interfaces
+### 64 members added to 24 existing interfaces
 
-- `Blob.textStream`
-- `Body.textStream`
 - `EventTarget.when`
 - `FileSystemHandle.queryPermission`
 - `FileSystemHandle.requestPermission`
-- `GPUBindingCommandsMixin.setImmediates`
-- `GPUSupportedLimits.maxImmediateSize`
 - `GPUTexture.textureBindingViewDimension`
+- `IDBIndex.getAllRecords`
+- `IDBObjectStore.getAllRecords`
 - `ImageData.pixelFormat`
-- `MediaStreamTrackProcessor.discardedFrames`
-- `MediaStreamTrackProcessor.totalFrames`
 - `Notification.badge`
 - `Notification.image`
+- `Notification.navigate`
 - `Notification.renotify`
 - `Notification.timestamp`
+- `Notification.vibrate`
 - `Performance.measureUserAgentSpecificMemory`
-- `PerformanceEntry.navigationId`
 - `PerformanceResourceTiming.contentEncoding`
 - `PerformanceResourceTiming.renderBlockingStatus`
-- `PerformanceResourceTiming.workerFinalRouterSource`
-- `PerformanceResourceTiming.workerMatchedRouterSource`
+- `PerformanceResourceTiming.workerCacheLookupStart`
+- `PerformanceResourceTiming.workerRouterEvaluationStart`
 - `PushEvent.notification`
 - `RTCDataChannel.priority`
 - `Request.duplex`
@@ -1006,18 +978,19 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `ServiceWorkerRegistration.paymentManager`
 - `ServiceWorkerRegistration.periodicSync`
 - `ServiceWorkerRegistration.sync`
-- `SubtleCrypto.decapsulateBits`
-- `SubtleCrypto.decapsulateKey`
-- `SubtleCrypto.encapsulateBits`
-- `SubtleCrypto.encapsulateKey`
-- `SubtleCrypto.getPublicKey`
 - `VideoFrame.flip`
 - `VideoFrame.metadata`
 - `VideoFrame.rotation`
 - `WebGLRenderingContextBase.drawingBufferFormat`
 - `WebGLRenderingContextBase.drawingBufferStorage`
 - `WebGLRenderingContextBase.makeXRCompatible`
-- `WebTransport.exportKeyingMaterial`
+- `WebTransport.anticipatedConcurrentIncomingBidirectionalStreams`
+- `WebTransport.anticipatedConcurrentIncomingUnidirectionalStreams`
+- `WebTransport.createSendGroup`
+- `WebTransport.draining`
+- `WebTransportDatagramDuplexStream.createWritable`
+- `WebTransportSendOptions.sendGroup`
+- `WebTransportSendStream.sendGroup`
 - `WindowClient.ancestorOrigins`
 - `WorkerNavigator.hid`
 - `WorkerNavigator.usb`
@@ -1030,6 +1003,7 @@ The relaxed build referenced types the emitter couldn't resolve — usually a re
 ```
 MWT: unknown DOM type ContactAddress, emitting "any"
 MWT: unknown DOM type SVGPathSegment, emitting "any"
+MWT: unknown DOM type SpeechGrammar, emitting "any"
 MWT: unknown DOM type DigitalGoodsService, emitting "any"
 MWT: unknown DOM type TimeRanges, emitting "any"
 MWT: unknown DOM type PaymentManager, emitting "any"

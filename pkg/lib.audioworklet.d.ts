@@ -730,7 +730,7 @@ interface EventListenerObject {
 }
 
 /**
- * The **`EventTarget`** interface is implemented by objects that can receive events and may have listeners for them. In other words, any target of events implements the methods associated with this interface.
+ * The **`EventTarget`** interface is implemented by objects that can receive events and may have listeners for them. In other words, any target of events implements the three methods associated with this interface.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/EventTarget)
  */
@@ -753,11 +753,6 @@ interface EventTarget {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/EventTarget/removeEventListener)
      */
     removeEventListener(type: string, callback: EventListenerOrEventListenerObject | null, options?: EventListenerOptions | boolean): void;
-    /**
-     * The **`when()`** method of the EventTarget interface returns an Observable object representing a stream of events fired on the event target it is called on.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/EventTarget/when)
-     */
     when(type: string, options?: ObservableEventListenerOptions): Observable;
 }
 
@@ -875,136 +870,31 @@ declare var MessagePort: {
     new(): MessagePort;
 };
 
-/**
- * The **`Observable`** interface of the Observable API represents a stream of values that can be subscribed to.
- *
- * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable)
- */
 interface Observable {
-    /**
-     * The **`catch()`** method of the Observable interface returns a new observable that replaces an error from the source observable with values from another observable.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/catch)
-     */
     catch(callback: CatchCallback): Observable;
-    /**
-     * The **`drop()`** method of the Observable interface returns a new observable that skips the given number of values at the start of the source observable.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/drop)
-     */
     drop(amount: number): Observable;
-    /**
-     * The **`every()`** method of the Observable interface returns a promise that fulfills with a boolean indicating whether every value emitted by the source observable satisfies the provided testing function.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/every)
-     */
     every(predicate: Predicate, options?: SubscribeOptions): Promise<boolean>;
-    /**
-     * The **`filter()`** method of the Observable interface returns a new observable that emits only those values of the source observable for which the provided callback function returns a truthy value.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/filter)
-     */
     filter(predicate: Predicate): Observable;
-    /**
-     * The **`finally()`** method of the Observable interface returns a new observable that mirrors the source observable and calls a callback when its subscription ends.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/finally)
-     */
     finally(callback: VoidFunction): Observable;
-    /**
-     * The **`find()`** method of the Observable interface returns a promise that fulfills with the first value emitted by the source observable that satisfies the provided testing function, or undefined if the source completes without a match.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/find)
-     */
     find(predicate: Predicate, options?: SubscribeOptions): Promise<any>;
-    /**
-     * The **`first()`** method of the Observable interface returns a promise that fulfills with the first value emitted by the source observable.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/first)
-     */
     first(options?: SubscribeOptions): Promise<any>;
-    /**
-     * The **`flatMap()`** method of the Observable interface returns a new observable that maps each value of the source observable to an inner observable and emits the inner observables' values sequentially.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/flatMap)
-     */
     flatMap(mapper: Mapper): Observable;
-    /**
-     * The **`forEach()`** method of the Observable interface returns a promise that fulfills with undefined when the source observable completes, after executing a callback for each emitted value.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/forEach)
-     */
     forEach(callback: Visitor, options?: SubscribeOptions): Promise<void>;
-    /**
-     * The **`inspect()`** method of the Observable interface returns a new observable that mirrors the source observable and calls callbacks to inspect its values and subscription lifecycle.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/inspect)
-     */
     inspect(inspectorUnion?: ObservableInspectorUnion): Observable;
-    /**
-     * The **`last()`** method of the Observable interface returns a promise that fulfills with the last value emitted by the source observable.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/last)
-     */
     last(options?: SubscribeOptions): Promise<any>;
-    /**
-     * The **`map()`** method of the Observable interface returns a new observable that emits the values of the source observable, each transformed by a mapping function.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/map)
-     */
     map(mapper: Mapper): Observable;
-    /**
-     * The **`reduce()`** method of the Observable interface returns a promise that fulfills with a single value obtained by combining the source observable's values using a reducer function.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/reduce)
-     */
     reduce(reducer: Reducer, initialValue?: any, options?: SubscribeOptions): Promise<any>;
-    /**
-     * The **`some()`** method of the Observable interface returns a promise that fulfills with a boolean indicating whether any value emitted by the source observable satisfies the provided testing function.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/some)
-     */
     some(predicate: Predicate, options?: SubscribeOptions): Promise<boolean>;
-    /**
-     * The **`subscribe()`** method of the Observable interface subscribes to the observable, receiving its values, errors, and completion through observer callbacks.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/subscribe)
-     */
     subscribe(observer?: ObserverUnion, options?: SubscribeOptions): void;
-    /**
-     * The **`switchMap()`** method of the Observable interface returns a new observable that maps each value of the source observable to an inner observable and emits values from only the latest inner observable.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/switchMap)
-     */
     switchMap(mapper: Mapper): Observable;
-    /**
-     * The **`take()`** method of the Observable interface returns a new observable that emits the given number of values from the start of the source observable and then completes.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/take)
-     */
     take(amount: number): Observable;
-    /**
-     * The **`takeUntil()`** method of the Observable interface returns a new observable that emits values from the source observable until another observable emits a value or errors.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/takeUntil)
-     */
     takeUntil(value: any): Observable;
-    /**
-     * The **`toArray()`** method of the Observable interface returns a promise that fulfills with a new array containing the source observable's values in the order they were emitted.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/toArray)
-     */
     toArray(options?: SubscribeOptions): Promise<any[]>;
 }
 
 declare var Observable: {
     prototype: Observable;
     new(callback: SubscribeCallback): Observable;
-    /**
-     * The **`from()`** static method of the Observable interface returns an observable converted from a promise, iterable, or async iterable; existing observables are returned unchanged.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/from_static)
-     */
     from(value: any): Observable;
 };
 
@@ -1169,7 +1059,7 @@ declare var ReadableStream: {
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/ReadableStream/from_static)
      */
-    from(asyncIterable: AsyncIterable<any> | Iterable<any>): ReadableStream;
+    from(asyncIterable: AsyncIterable<any>): ReadableStream;
 };
 
 /**
@@ -1198,7 +1088,7 @@ declare var ReadableStreamBYOBReader: {
 };
 
 /**
- * The **`ReadableStreamBYOBRequest`** interface of the Streams API represents a "pull request" for data from an underlying source that will be made as a zero-copy transfer to a consumer (bypassing the stream's internal queues).
+ * The **`ReadableStreamBYOBRequest`** interface of the Streams API represents a "pull request" for data from an underlying source that will made as a zero-copy transfer to a consumer (bypassing the stream's internal queues).
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/ReadableStreamBYOBRequest)
  */
@@ -1297,47 +1187,12 @@ interface ReadableStreamGenericReader {
     cancel(reason?: any): Promise<void>;
 }
 
-/**
- * The **`Subscriber`** interface of the Observable API represents a subscription to a stream of observable values, and contains methods to manage the lifecycle of that subscription.
- *
- * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Subscriber)
- */
 interface Subscriber {
-    /**
-     * The **`active`** read-only property of the Subscriber interface indicates whether the subscription can still send values to observers.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Subscriber/active)
-     */
     readonly active: boolean;
-    /**
-     * The **`signal`** read-only property of the Subscriber interface provides an AbortSignal that is aborted when the subscription ends. A producer can pass this signal to APIs such as fetch() to cancel work when it is no longer needed.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Subscriber/signal)
-     */
     readonly signal: AbortSignal;
-    /**
-     * The **`addTeardown()`** method of the Subscriber interface registers a callback to clean up resources when the subscription ends. This happens when either Subscriber.complete() or Subscriber.error() is called, or when all observers unsubscribe.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Subscriber/addTeardown)
-     */
     addTeardown(teardown: VoidFunction): void;
-    /**
-     * The **`complete()`** method of the Subscriber interface closes the subscription and notifies observers that the stream has completed successfully.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Subscriber/complete)
-     */
     complete(): void;
-    /**
-     * The **`error()`** method of the Subscriber interface closes the subscription and notifies observers of an error.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Subscriber/error)
-     */
     error(error: any): void;
-    /**
-     * The **`next()`** method of the Subscriber interface sends a value to each observer of the subscription, invoking its next callback synchronously. These callbacks are supplied to Observable.subscribe().
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Subscriber/next)
-     */
     next(value: any): void;
 }
 
@@ -1596,7 +1451,7 @@ interface URL {
      */
     username: string;
     /**
-     * The **`toJSON()`** method of the URL interface returns a string representing the URL object. This is the same string that URL.toString() returns.
+     * The **`toJSON()`** method of the URL interface returns a string containing a serialized version of the URL, although in practice it seems to have the same effect as URL.toString().
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/URL/toJSON)
      */
@@ -1826,25 +1681,25 @@ declare namespace WebAssembly {
     };
 
     /**
-     * The **`WebAssembly.Exception`** object represents a runtime exception thrown in a Wasm module.
+     * The **`WebAssembly.Exception`** object represents a runtime exception thrown from WebAssembly to JavaScript, or thrown from JavaScript to a WebAssembly exception handler.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/WebAssembly/Reference/JavaScript_interface/Exception)
      */
     interface Exception {
         /**
-         * The **`stack`** read-only property of the WebAssembly.Exception object may contain a stack trace.
+         * The read-only **`stack`** property of an object instance of type WebAssembly.Exception may contain a stack trace.
          *
          * [MDN Reference](https://developer.mozilla.org/docs/WebAssembly/Reference/JavaScript_interface/Exception/stack)
          */
         readonly stack: string | undefined;
         /**
-         * The **`getArg()`** method of the Exception object can be used to get the value of a specified item in the exception's data arguments.
+         * The **`getArg()`** prototype method of the Exception object can be used to get the value of a specified item in the exception's data arguments.
          *
          * [MDN Reference](https://developer.mozilla.org/docs/WebAssembly/Reference/JavaScript_interface/Exception/getArg)
          */
         getArg(exceptionTag: Tag, index: number): any;
         /**
-         * The **`is()`** method of the Exception object can be used to test if the Exception matches a given tag.
+         * The **`is()`** prototype method of the Exception object can be used to test if the Exception matches a given tag.
          *
          * [MDN Reference](https://developer.mozilla.org/docs/WebAssembly/Reference/JavaScript_interface/Exception/is)
          */
@@ -2012,7 +1867,7 @@ declare namespace WebAssembly {
     };
 
     /**
-     * The **`WebAssembly.Tag`** object represents a WebAssembly exception type that can be thrown in a Wasm module.
+     * The **`WebAssembly.Tag`** object defines a type of a WebAssembly exception that can be thrown to/from WebAssembly code.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/WebAssembly/Reference/JavaScript_interface/Tag)
      */
@@ -2211,7 +2066,7 @@ interface Console {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/console/timeLog_static)
      */
     timeLog(label?: string, ...data: any[]): void;
-    /** The **`console.timeStamp()`** static method adds a marker to a performance recording in developer tools that support it, such as the Chrome Performance panel and Firefox Profiler. This lets you correlate a point in your code with recorded events such as layout and painting. */
+    /** The **`console.timeStamp()`** static method adds a single marker to the browser's Performance tool (Firefox bug 1387528, Chrome). This lets you correlate a point in your code with the other events recorded in the timeline, such as layout and paint events. */
     timeStamp(label?: string): void;
     /**
      * The **`console.trace()`** static method outputs a stack trace to the console.
@@ -2344,7 +2199,7 @@ declare var sampleRate: number;
  */
 declare function registerProcessor(name: string, processorCtor: AudioWorkletProcessorConstructor): void;
 type AllowSharedBufferSource = ArrayBufferLike | ArrayBufferView<ArrayBufferLike>;
-type BufferSource = ArrayBuffer | ArrayBufferView<ArrayBuffer>;
+type BufferSource = ArrayBufferView<ArrayBuffer> | ArrayBuffer;
 type DOMHighResTimeStamp = number;
 type EventListenerOrEventListenerObject = EventListener | EventListenerObject;
 type MessageEventSource = MessagePort;

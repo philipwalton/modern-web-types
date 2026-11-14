@@ -1,42 +1,28 @@
-diff --git a/inputfiles/removedTypes.jsonc b/inputfiles/removedTypes.jsonc
-index e9595cc..6d15103 100644
---- a/inputfiles/removedTypes.jsonc
-+++ b/inputfiles/removedTypes.jsonc
-@@ -36,6 +36,32 @@
-                     }
-                 }
-             },
-+            // Inherit the HTMLElement handlers. WebRef currently identifies the
-+            // error and cancel events as DOMException, which is not an Event.
-+            "HTMLCameraElement": {
-+                "properties": {
-+                    "property": {
-+                        "oncancel": null,
-+                        "onerror": null
-+                    }
-+                }
-+            },
-+            "HTMLMicrophoneElement": {
-+                "properties": {
-+                    "property": {
-+                        "oncancel": null,
-+                        "onerror": null
-+                    }
-+                }
-+            },
-+            "HTMLUserMediaElement": {
-+                "properties": {
-+                    "property": {
-+                        "oncancel": null,
-+                        "onerror": null
-+                    }
-+                }
-+            },
-             "IntersectionObserverEntry": {
-                 "constructor": null // WebKit-only as of 2024-07
-             },
+diff --git a/inputfiles/mwt-mediacapture-extensions.kdl b/inputfiles/mwt-mediacapture-extensions.kdl
+new file mode 100644
+index 00000000..432e94e7
+--- /dev/null
++++ b/inputfiles/mwt-mediacapture-extensions.kdl
+@@ -0,0 +1,17 @@
++// These elements redeclare HTMLElement's cancel and error handlers with a
++// narrower receiver. WebRef also identifies both events as DOMException.
++// Inherit the handlers and event-map entries from GlobalEventHandlers.
++removals {
++  interface HTMLCameraElement {
++    property oncancel
++    property onerror
++  }
++  interface HTMLMicrophoneElement {
++    property oncancel
++    property onerror
++  }
++  interface HTMLUserMediaElement {
++    property oncancel
++    property onerror
++  }
++}
 diff --git a/src/build/bcd.ts b/src/build/bcd.ts
-index 1822fd4..c4302cb 100644
+index 1822fd42..c4302cb1 100644
 --- a/src/build/bcd.ts
 +++ b/src/build/bcd.ts
 @@ -25,7 +25,7 @@ function hasMultipleImplementations(support: SupportBlock, prefix?: string) {
@@ -49,7 +35,7 @@ index 1822fd4..c4302cb 100644
  
  function isSuitable(
 diff --git a/src/build/emitter.ts b/src/build/emitter.ts
-index cc48ab4..b6ddc53 100644
+index cc48ab40..b6ddc537 100644
 --- a/src/build/emitter.ts
 +++ b/src/build/emitter.ts
 @@ -514,6 +514,10 @@ export function emitWebIdl(
@@ -63,3 +49,17 @@ index cc48ab4..b6ddc53 100644
      throw new Error("Unknown DOM type: " + objDomType);
    }
  
+diff --git a/src/build/patches.ts b/src/build/patches.ts
+index 021ff345..f1d1b7e6 100644
+--- a/src/build/patches.ts
++++ b/src/build/patches.ts
+@@ -594,6 +594,9 @@ export default async function readPatches(): Promise<{
+ }> {
+   const patchDirectory = new URL("../../inputfiles/patches/", import.meta.url);
+   const fileUrls = await getAllFileURLs(patchDirectory);
++  if (process.env.MWT_LENIENT_TYPES) {
++    fileUrls.push(new URL("../mwt-mediacapture-extensions.kdl", patchDirectory));
++  }
+ 
+   // Stage 1: Parse all file KDLs into Documents
+   const documents = await Promise.all(fileUrls.map(readPatchDocument));

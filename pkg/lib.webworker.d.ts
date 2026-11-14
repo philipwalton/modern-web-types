@@ -92,7 +92,7 @@ interface AudioDataCopyToOptions {
 }
 
 interface AudioDataInit {
-    data: AllowSharedBufferSource;
+    data: BufferSource;
     format: AudioSampleFormat;
     numberOfChannels: number;
     numberOfFrames: number;
@@ -326,16 +326,6 @@ interface EcdhKeyDeriveParams extends Algorithm {
 
 interface EcdsaParams extends Algorithm {
     hash: HashAlgorithmIdentifier;
-}
-
-interface EncapsulatedBits {
-    ciphertext?: ArrayBuffer;
-    sharedKey?: ArrayBuffer;
-}
-
-interface EncapsulatedKey {
-    ciphertext?: ArrayBuffer;
-    sharedKey?: CryptoKey;
 }
 
 interface EncodedAudioChunkInit {
@@ -715,10 +705,8 @@ interface GPURenderPipelineDescriptor extends GPUPipelineDescriptorBase {
 }
 
 interface GPURequestAdapterOptions {
-    featureLevel?: string;
     forceFallbackAdapter?: boolean;
     powerPreference?: GPUPowerPreference;
-    xrCompatible?: boolean;
 }
 
 interface GPUSamplerBindingLayout {
@@ -738,14 +726,8 @@ interface GPUSamplerDescriptor extends GPUObjectDescriptorBase {
     mipmapFilter?: GPUMipmapFilterMode;
 }
 
-interface GPUShaderModuleCompilationHint {
-    entryPoint: string;
-    layout?: GPUPipelineLayout | GPUAutoLayoutMode;
-}
-
 interface GPUShaderModuleDescriptor extends GPUObjectDescriptorBase {
     code: string;
-    compilationHints?: GPUShaderModuleCompilationHint[];
 }
 
 interface GPUStencilFaceState {
@@ -802,7 +784,6 @@ interface GPUTextureViewDescriptor extends GPUObjectDescriptorBase {
     dimension?: GPUTextureViewDimension;
     format?: GPUTextureFormat;
     mipLevelCount?: GPUIntegerCoordinate;
-    swizzle?: string;
     usage?: GPUTextureUsageFlags;
 }
 
@@ -1339,12 +1320,7 @@ interface PushSubscriptionChangeEventInit extends ExtendableEventInit {
 interface PushSubscriptionJSON {
     endpoint?: string;
     expirationTime?: EpochTimeStamp | null;
-    keys?: PushSubscriptionKeys;
-}
-
-interface PushSubscriptionKeys {
-    auth?: string;
-    p256dh?: string;
+    keys?: Record<string, string>;
 }
 
 interface PushSubscriptionOptionsInit {
@@ -1992,7 +1968,7 @@ interface WriteParams {
 }
 
 /**
- * The **`ANGLE_instanced_arrays`** extension is part of the WebGL API and allows you to draw the same object, or groups of similar objects multiple times, if they share the same vertex data, primitive count and type.
+ * The **`ANGLE_instanced_arrays`** extension is part of the WebGL API and allows to draw the same object, or groups of similar objects multiple times, if they share the same vertex data, primitive count and type.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/ANGLE_instanced_arrays)
  */
@@ -2585,7 +2561,7 @@ interface Blob {
      */
     slice(start?: number, end?: number, contentType?: string): Blob;
     /**
-     * The **`stream()`** method of the Blob interface returns a ReadableStream which upon reading returns the data contained within the Blob as chunks of raw bytes.
+     * The **`stream()`** method of the Blob interface returns a ReadableStream which upon reading returns the data contained within the Blob.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Blob/stream)
      */
@@ -2596,12 +2572,6 @@ interface Blob {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Blob/text)
      */
     text(): Promise<string>;
-    /**
-     * The **`textStream()`** method of the Blob interface returns a ReadableStream that can be used to read the contents of the Blob in chunks of UTF-8.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Blob/textStream)
-     */
-    textStream(): ReadableStream;
 }
 
 declare var Blob: {
@@ -2658,12 +2628,6 @@ interface Body {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/text)
      */
     text(): Promise<string>;
-    /**
-     * The **`textStream()`** method of the Request interface returns a ReadableStream that can be used to read the contents of the request body in chunks of UTF-8.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/textStream)
-     */
-    textStream(): ReadableStream;
 }
 
 interface BroadcastChannelEventMap {
@@ -2757,7 +2721,7 @@ declare var ByteLengthQueuingStrategy: {
 };
 
 /**
- * The **`CSSImageValue`** interface of the CSS Typed Object Model API represents values for CSS properties that take an <image> value, such as background-image, list-style-image, or border-image-source.
+ * The **`CSSImageValue`** interface of the CSS Typed Object Model API represents values for properties that take an image, for example background-image, list-style-image, or border-image-source.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSImageValue)
  */
@@ -2770,13 +2734,13 @@ declare var CSSImageValue: {
 };
 
 /**
- * The **`CSSKeywordValue`** interface of the CSS Typed Object Model API represents the value of a CSS keyword or other identifier.
+ * The **`CSSKeywordValue`** interface of the CSS Typed Object Model API creates an object to represent CSS keywords and other identifiers.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSKeywordValue)
  */
 interface CSSKeywordValue extends CSSStyleValue {
     /**
-     * The **`value`** property of the CSSKeywordValue interface represents the keyword as a string.
+     * The **`value`** property of the CSSKeywordValue interface returns or sets the value of the CSSKeywordValue.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSKeywordValue/value)
      */
@@ -2789,25 +2753,25 @@ declare var CSSKeywordValue: {
 };
 
 /**
- * The **`CSSMathClamp`** interface of the CSS Typed Object Model API represents the CSS clamp() function.
+ * The **`CSSMathClamp`** interface of the CSS Typed Object Model API represents the CSS clamp() function. It inherits properties and methods from its parent CSSNumericValue.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSMathClamp)
  */
 interface CSSMathClamp extends CSSMathValue {
     /**
-     * The **`lower`** read-only property of the CSSMathClamp interface returns a CSSNumericValue object representing its minimum value.
+     * The **`lower`** read-only property of the CSSMathClamp interface returns a CSSNumericValue object containing the minimum value of a CSSMathClamp object.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSMathClamp/lower)
      */
     readonly lower: CSSNumericValue;
     /**
-     * The **`upper`** read-only property of the CSSMathClamp interface returns a CSSNumericValue object representing its maximum value.
+     * The **`upper`** read-only property of the CSSMathClamp interface returns a CSSNumericValue object containing the maximum value of a CSSMathClamp object.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSMathClamp/upper)
      */
     readonly upper: CSSNumericValue;
     /**
-     * The **`value`** read-only property of the CSSMathClamp interface returns a CSSNumericValue instance representing its preferred value.
+     * The **`value`** read-only property of the CSSMathClamp interface returns a CSSNumericValue object containing the preferred value of a CSSMathClamp object.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSMathClamp/value)
      */
@@ -2820,13 +2784,13 @@ declare var CSSMathClamp: {
 };
 
 /**
- * The **`CSSMathInvert`** interface of the CSS Typed Object Model API represents the inverse (reciprocal) of a CSSNumericValue.
+ * The **`CSSMathInvert`** interface of the CSS Typed Object Model API represents a CSS calc() used as calc(1 / <value>). It inherits properties and methods from its parent CSSNumericValue.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSMathInvert)
  */
 interface CSSMathInvert extends CSSMathValue {
     /**
-     * The **`value`** read-only property of the CSSMathInvert interface returns the CSSNumericValue that is being inverted.
+     * The **`CSSMathInvert.value`** read-only property of the CSSMathInvert interface returns a CSSNumericValue object.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSMathInvert/value)
      */
@@ -2839,13 +2803,13 @@ declare var CSSMathInvert: {
 };
 
 /**
- * The **`CSSMathMax`** interface of the CSS Typed Object Model API represents the CSS max() function.
+ * The **`CSSMathMax`** interface of the CSS Typed Object Model API represents the CSS max() function. It inherits properties and methods from its parent CSSNumericValue.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSMathMax)
  */
 interface CSSMathMax extends CSSMathValue {
     /**
-     * The **`values`** read-only property of the CSSMathMax interface returns a CSSNumericArray containing the CSSNumericValue objects being compared to find the maximum.
+     * The **`CSSMathMax.values`** read-only property of the CSSMathMax interface returns a CSSNumericArray object which contains one or more CSSNumericValue objects.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSMathMax/values)
      */
@@ -2858,13 +2822,13 @@ declare var CSSMathMax: {
 };
 
 /**
- * The **`CSSMathMin`** interface of the CSS Typed Object Model API represents the CSS min() function.
+ * The **`CSSMathMin`** interface of the CSS Typed Object Model API represents the CSS min() function. It inherits properties and methods from its parent CSSNumericValue.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSMathMin)
  */
 interface CSSMathMin extends CSSMathValue {
     /**
-     * The **`values`** read-only property of the CSSMathMin interface returns a CSSNumericArray containing the CSSNumericValue objects being compared to find the minimum.
+     * The **`CSSMathMin.values`** read-only property of the CSSMathMin interface returns a CSSNumericArray object which contains one or more CSSNumericValue objects.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSMathMin/values)
      */
@@ -2877,13 +2841,13 @@ declare var CSSMathMin: {
 };
 
 /**
- * The **`CSSMathNegate`** interface of the CSS Typed Object Model API represents the negation of a CSSNumericValue.
+ * The **`CSSMathNegate`** interface of the CSS Typed Object Model API negates the value passed into it. It inherits properties and methods from its parent CSSNumericValue.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSMathNegate)
  */
 interface CSSMathNegate extends CSSMathValue {
     /**
-     * The **`value`** read-only property of the CSSMathNegate interface returns the CSSNumericValue that is being negated.
+     * The **`CSSMathNegate.value`** read-only property of the CSSMathNegate interface returns a CSSNumericValue object.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSMathNegate/value)
      */
@@ -2896,13 +2860,13 @@ declare var CSSMathNegate: {
 };
 
 /**
- * The **`CSSMathProduct`** interface of the CSS Typed Object Model API represents the product of two or more CSSNumericValue values — in cases where the result can't be represented as a single value.
+ * The **`CSSMathProduct`** interface of the CSS Typed Object Model API represents the result obtained by calling add(), sub(), or toSum() on CSSNumericValue. It inherits properties and methods from its parent CSSNumericValue.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSMathProduct)
  */
 interface CSSMathProduct extends CSSMathValue {
     /**
-     * The **`values`** read-only property of the CSSMathProduct interface returns a CSSNumericArray containing the CSSNumericValue objects being multiplied together.
+     * The **`CSSMathProduct.values`** read-only property of the CSSMathProduct interface returns a CSSNumericArray object which contains one or more CSSNumericValue objects.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSMathProduct/values)
      */
@@ -2915,13 +2879,13 @@ declare var CSSMathProduct: {
 };
 
 /**
- * The **`CSSMathSum`** interface of the CSS Typed Object Model API represents the sum of two or more CSSNumericValue values — in cases where the result can't be represented as a single value.
+ * The **`CSSMathSum`** interface of the CSS Typed Object Model API represents the result obtained by calling add(), sub(), or toSum() on CSSNumericValue.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSMathSum)
  */
 interface CSSMathSum extends CSSMathValue {
     /**
-     * The **`values`** read-only property of the CSSMathSum interface returns a CSSNumericArray containing the CSSNumericValue objects being summed together.
+     * The **`CSSMathSum.values`** read-only property of the CSSMathSum interface returns a CSSNumericArray object which contains one or more CSSNumericValue objects.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSMathSum/values)
      */
@@ -2934,13 +2898,13 @@ declare var CSSMathSum: {
 };
 
 /**
- * The **`CSSMathValue`** interface of the CSS Typed Object Model API is the base interface for objects representing complex numeric values produced by the CSS calc(), min(), max(), and clamp() functions.
+ * The **`CSSMathValue`** interface of the CSS Typed Object Model API a base class for classes representing complex numeric values.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSMathValue)
  */
 interface CSSMathValue extends CSSNumericValue {
     /**
-     * The **`operator`** read-only property of the CSSMathValue interface returns the operator that the current subtype represents. For example, if the current CSSMathValue subtype is CSSMathSum, this property will return the string "sum".
+     * The **`CSSMathValue.operator`** read-only property of the CSSMathValue interface indicates the operator that the current subtype represents. For example, if the current CSSMathValue subtype is CSSMathSum, this property will return the string "sum".
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSMathValue/operator)
      */
@@ -2953,13 +2917,13 @@ declare var CSSMathValue: {
 };
 
 /**
- * The **`CSSMatrixComponent`** interface of the CSS Typed Object Model API represents the matrix() and matrix3d() values of the individual transform property in CSS.
+ * The **`CSSMatrixComponent`** interface of the CSS Typed Object Model API represents the matrix() and matrix3d() values of the individual transform property in CSS. It inherits properties and methods from its parent CSSTransformValue.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSMatrixComponent)
  */
 interface CSSMatrixComponent extends CSSTransformComponent {
     /**
-     * The **`matrix`** property of the CSSMatrixComponent interface represents a DOMMatrix object containing a 2D or 3D matrix.
+     * The **`matrix`** property of the CSSMatrixComponent interface gets and sets a 2d or 3d matrix.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSMatrixComponent/matrix)
      */
@@ -2972,13 +2936,13 @@ declare var CSSMatrixComponent: {
 };
 
 /**
- * The **`CSSNumericArray`** interface of the CSS Typed Object Model API represents an iterable of CSSNumericValue-based objects.
+ * The **`CSSNumericArray`** interface of the CSS Typed Object Model API contains a list of CSSNumericValue objects.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSNumericArray)
  */
 interface CSSNumericArray {
     /**
-     * The **`length`** read-only property of the CSSNumericArray interface returns the number of items in the object.
+     * The read-only **`length`** property of the CSSNumericArray interface returns the number of CSSNumericValue objects in the list.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSNumericArray/length)
      */
@@ -3011,7 +2975,7 @@ interface CSSNumericValue extends CSSStyleValue {
      */
     div(...values: CSSNumberish[]): CSSNumericValue;
     /**
-     * The **`equals()`** method of the CSSNumericValue interface returns true if every value passed to it is the same as the CSSNumericValue, and false otherwise.
+     * The **`equals()`** method of the CSSNumericValue interface returns a boolean indicating whether the passed value are strictly equal. To return a value of true, all passed values must be of the same type and value and must be in the same order. This allows structural equality to be tested quickly.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSNumericValue/equals)
      */
@@ -3029,7 +2993,7 @@ interface CSSNumericValue extends CSSStyleValue {
      */
     min(...values: CSSNumberish[]): CSSNumericValue;
     /**
-     * The **`mul()`** method of the CSSNumericValue interface multiplies the CSSNumericValue by the supplied values.
+     * The **`mul()`** method of the CSSNumericValue interface multiplies the CSSNumericValue by the supplied value.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSNumericValue/mul)
      */
@@ -3047,7 +3011,7 @@ interface CSSNumericValue extends CSSStyleValue {
      */
     to(unit: string): CSSUnitValue;
     /**
-     * The **`toSum()`** method of the CSSNumericValue interface converts the object's value to a CSSMathSum of CSSUnitValues using only the specified units, if possible. If called with no units, it simplifies the value into a minimal sum of CSSUnitValues instead.
+     * The **`toSum()`** method of the CSSNumericValue interface converts the object's value to a CSSMathSum object to values of the specified unit.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSNumericValue/toSum)
      */
@@ -3066,13 +3030,13 @@ declare var CSSNumericValue: {
 };
 
 /**
- * The **`CSSPerspective`** interface of the CSS Typed Object Model API represents the perspective() value of the individual transform property in CSS.
+ * The **`CSSPerspective`** interface of the CSS Typed Object Model API represents the perspective() value of the individual transform property in CSS. It inherits properties and methods from its parent CSSTransformValue.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSPerspective)
  */
 interface CSSPerspective extends CSSTransformComponent {
     /**
-     * The **`length`** property of the CSSPerspective interface represents the distance from z=0.
+     * The **`length`** property of the CSSPerspective interface sets the distance from z=0.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSPerspective/length)
      */
@@ -3085,31 +3049,31 @@ declare var CSSPerspective: {
 };
 
 /**
- * The **`CSSRotate`** interface of the CSS Typed Object Model API represents the value of a rotation function in the transform property in CSS.
+ * The **`CSSRotate`** interface of the CSS Typed Object Model API represents the rotate value of the individual transform property in CSS. It inherits properties and methods from its parent CSSTransformValue.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSRotate)
  */
 interface CSSRotate extends CSSTransformComponent {
     /**
-     * The **`angle`** property of the CSSRotate interface represents the angle of rotation. A positive angle denotes a clockwise rotation, a negative angle a counter-clockwise one.
+     * The **`angle`** property of the CSSRotate interface gets and sets the angle of rotation. A positive angle denotes a clockwise rotation, a negative angle a counter-clockwise one.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSRotate/angle)
      */
     angle: CSSNumericValue;
     /**
-     * The **`x`** property of the CSSRotate interface represents the x-coordinate of the vector denoting the axis of rotation.
+     * The **`x`** property of the CSSRotate interface gets and sets the abscissa or x-axis of the translating vector.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSRotate/x)
      */
     x: CSSNumberish;
     /**
-     * The **`y`** property of the CSSRotate interface represents the y-coordinate of the vector denoting the axis of rotation.
+     * The **`y`** property of the CSSRotate interface gets and sets the ordinate or y-axis of the translating vector.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSRotate/y)
      */
     y: CSSNumberish;
     /**
-     * The **`z`** property of the CSSRotate interface represents the z-coordinate of the vector denoting the axis of rotation.
+     * The **`z`** property of the CSSRotate interface representing the z-component of the translating vector. A positive value moves the element towards the viewer, and a negative value farther away.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSRotate/z)
      */
@@ -3123,7 +3087,7 @@ declare var CSSRotate: {
 };
 
 /**
- * The **`CSSScale`** interface of the CSS Typed Object Model API represents the scale() and scale3d() values of the individual transform property in CSS.
+ * The **`CSSScale`** interface of the CSS Typed Object Model API represents the scale() and scale3d() values of the individual transform property in CSS. It inherits properties and methods from its parent CSSTransformValue.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSScale)
  */
@@ -3141,7 +3105,7 @@ interface CSSScale extends CSSTransformComponent {
      */
     y: CSSNumberish;
     /**
-     * The **`z`** property of the CSSScale interface represents the z-component of the translating vector. A positive value moves the element towards the viewer, and a negative value farther away.
+     * The **`z`** property of the CSSScale interface representing the z-component of the translating vector. A positive value moves the element towards the viewer, and a negative value farther away.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSScale/z)
      */
@@ -3154,7 +3118,7 @@ declare var CSSScale: {
 };
 
 /**
- * The **`CSSSkew`** interface of the CSS Typed Object Model API represents the skew() value of the individual transform property in CSS.
+ * The **`CSSSkew`** interface of the CSS Typed Object Model API is part of the CSSTransformValue interface. It represents the skew() value of the individual transform property in CSS.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSSkew)
  */
@@ -3179,7 +3143,7 @@ declare var CSSSkew: {
 };
 
 /**
- * The **`CSSSkewX`** interface of the CSS Typed Object Model API represents the skewX() value of the individual transform property in CSS.
+ * The **`CSSSkewX`** interface of the CSS Typed Object Model API represents the skewX() value of the individual transform property in CSS. It inherits properties and methods from its parent CSSTransformValue.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSSkewX)
  */
@@ -3198,7 +3162,7 @@ declare var CSSSkewX: {
 };
 
 /**
- * The **`CSSSkewY`** interface of the CSS Typed Object Model API represents the skewY() value of the individual transform property in CSS.
+ * The **`CSSSkewY`** interface of the CSS Typed Object Model API represents the skewY() value of the individual transform property in CSS. It inherits properties and methods from its parent CSSTransformValue.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSSkewY)
  */
@@ -3231,13 +3195,13 @@ declare var CSSStyleValue: {
 };
 
 /**
- * The **`CSSTransformComponent`** interface of the CSS Typed Object Model API is the base interface for objects that represent individual transform functions, such as rotate() and scale().
+ * The **`CSSTransformComponent`** interface of the CSS Typed Object Model API is part of the CSSTransformValue interface.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSTransformComponent)
  */
 interface CSSTransformComponent {
     /**
-     * The **`is2D`** property of the CSSTransformComponent interface represents whether the transform is 2D or 3D.
+     * The **`is2D`** read-only property of the CSSTransformComponent interface indicates where the transform is 2D or 3D.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSTransformComponent/is2D)
      */
@@ -3257,19 +3221,19 @@ declare var CSSTransformComponent: {
 };
 
 /**
- * The **`CSSTransformValue`** interface of the CSS Typed Object Model API represents transform-list values as used by the CSS transform property. It is an iterable of CSSTransformComponent objects, each representing a single <transform-function>.
+ * The **`CSSTransformValue`** interface of the CSS Typed Object Model API represents transform-list values as used by the CSS transform property.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSTransformValue)
  */
 interface CSSTransformValue extends CSSStyleValue {
     /**
-     * The **`is2D`** read-only property of the CSSTransformValue interface returns whether the transform is 2D or 3D.
+     * The read-only **`is2D`** property of the CSSTransformValue interface returns whether the transform is 2D or 3D.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSTransformValue/is2D)
      */
     readonly is2D: boolean;
     /**
-     * The **`length`** read-only property of the CSSTransformValue interface returns the number of items in the object.
+     * The read-only **`length`** property of the CSSTransformValue interface returns the number of transform components in the list.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSTransformValue/length)
      */
@@ -3290,7 +3254,7 @@ declare var CSSTransformValue: {
 };
 
 /**
- * The **`CSSTranslate`** interface of the CSS Typed Object Model API represents the translate() value of the individual transform property in CSS.
+ * The **`CSSTranslate`** interface of the CSS Typed Object Model API represents the translate() value of the individual transform property in CSS. It inherits properties and methods from its parent CSSTransformValue.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSTranslate)
  */
@@ -3308,7 +3272,7 @@ interface CSSTranslate extends CSSTransformComponent {
      */
     y: CSSNumericValue;
     /**
-     * The **`z`** property of the CSSTranslate interface represents the z-component of the translating vector. A positive value moves the element towards the viewer, and a negative value farther away.
+     * The **`z`** property of the CSSTranslate interface representing the z-component of the translating vector. A positive value moves the element towards the viewer, and a negative value farther away.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSTranslate/z)
      */
@@ -3327,13 +3291,13 @@ declare var CSSTranslate: {
  */
 interface CSSUnitValue extends CSSNumericValue {
     /**
-     * The **`unit`** read-only property of the CSSUnitValue interface returns a string indicating the unit type.
+     * The **`CSSUnitValue.unit`** read-only property of the CSSUnitValue interface returns a string indicating the unit type.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSUnitValue/unit)
      */
     readonly unit: string;
     /**
-     * The **`value`** property of the CSSUnitValue interface represents the number of units.
+     * The **`CSSUnitValue.value`** property of the CSSUnitValue interface returns a double indicating the number of units.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSUnitValue/value)
      */
@@ -3346,7 +3310,7 @@ declare var CSSUnitValue: {
 };
 
 /**
- * The **`CSSUnparsedValue`** interface of the CSS Typed Object Model API represents a property value that can't be parsed into a more specific type — typically the value of a custom property.
+ * The **`CSSUnparsedValue`** interface of the CSS Typed Object Model API represents property values that reference custom properties. It consists of a list of string fragments and variable references.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CSSUnparsedValue)
  */
@@ -3812,7 +3776,7 @@ interface Clients {
      */
     matchAll<T extends ClientQueryOptions>(options?: T): Promise<ReadonlyArray<T["type"] extends "window" ? WindowClient : Client>>;
     /**
-     * The **`openWindow()`** method of the Clients interface creates a new top-level browsing context and loads a given URL. If the calling script doesn't have permission to show popups, openWindow() will throw an InvalidAccessError.
+     * The **`openWindow()`** method of the Clients interface creates a new top level browsing context and loads a given URL. If the calling script doesn't have permission to show popups, openWindow() will throw an InvalidAccessError.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Clients/openWindow)
      */
@@ -4493,7 +4457,7 @@ interface DOMMatrixReadOnly {
      */
     toFloat64Array(): Float64Array<ArrayBuffer>;
     /**
-     * The **`toJSON()`** method of the DOMMatrixReadOnly interface returns a JSON-serializable plain object representing the DOMMatrixReadOnly object.
+     * The **`toJSON()`** method of the DOMMatrixReadOnly interface creates and returns a JSON object. The JSON object includes the 2D matrix elements a through f, the 16 elements of the 4X4 3D matrix, m[1-4][1-4], the boolean is2D property, and the boolean isIdentity property.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/DOMMatrixReadOnly/toJSON)
      */
@@ -4597,7 +4561,7 @@ interface DOMPointReadOnly {
      */
     readonly x: number;
     /**
-     * The DOMPointReadOnly interface's **`y`** property holds the vertical coordinate, y, for a read-only point in space.
+     * The DOMPointReadOnl**`y`** interface's y property holds the vertical coordinate, y, for a read-only point in space.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/DOMPointReadOnly/y)
      */
@@ -4615,7 +4579,7 @@ interface DOMPointReadOnly {
      */
     matrixTransform(matrix?: DOMMatrixInit): DOMPoint;
     /**
-     * The **`toJSON()`** method of the DOMPointReadOnly interface returns a JSON-serializable plain object representing the DOMPointReadOnly object.
+     * The DOMPointReadOnly method **`toJSON()`** returns an object giving the JSON form of the point object.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/DOMPointReadOnly/toJSON)
      */
@@ -4670,7 +4634,7 @@ interface DOMQuad {
      */
     getBounds(): DOMRect;
     /**
-     * The **`toJSON()`** method of the DOMQuad interface returns a JSON-serializable plain object representing the DOMQuad object.
+     * The DOMQuad method **`toJSON()`** returns a JSON representation of the DOMQuad object.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/DOMQuad/toJSON)
      */
@@ -4792,7 +4756,7 @@ interface DOMRectReadOnly {
      */
     readonly y: number;
     /**
-     * The **`toJSON()`** method of the DOMRectReadOnly interface returns a JSON-serializable plain object representing the DOMRectReadOnly object.
+     * The DOMRectReadOnly method **`toJSON()`** returns a JSON representation of the DOMRectReadOnly object.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/DOMRectReadOnly/toJSON)
      */
@@ -4913,16 +4877,6 @@ interface EXT_blend_minmax {
     readonly MAX_EXT: 0x8008;
 }
 
-interface EXT_clip_control {
-    clipControlEXT(origin: GLenum, depth: GLenum): void;
-    readonly LOWER_LEFT_EXT: 0x8CA1;
-    readonly UPPER_LEFT_EXT: 0x8CA2;
-    readonly NEGATIVE_ONE_TO_ONE_EXT: 0x935E;
-    readonly ZERO_TO_ONE_EXT: 0x935F;
-    readonly CLIP_ORIGIN_EXT: 0x935C;
-    readonly CLIP_DEPTH_MODE_EXT: 0x935D;
-}
-
 /**
  * The **`EXT_color_buffer_float`** extension is part of WebGL and adds the ability to render a variety of floating point formats.
  *
@@ -5023,18 +4977,11 @@ interface EXT_float_blend {
 }
 
 /**
- * The **`EXT_frag_depth`** extension is part of the WebGL API and enables you to set a depth value of a fragment from within the fragment shader.
+ * The **`EXT_frag_depth`** extension is part of the WebGL API and enables to set a depth value of a fragment from within the fragment shader.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/EXT_frag_depth)
  */
 interface EXT_frag_depth {
-}
-
-/** The **`EXT_polygon_offset_clamp`** extension is part of the WebGL API and adds a limit to the depth offset set with polygonOffset(). */
-interface EXT_polygon_offset_clamp {
-    /** The **`polygonOffsetClampEXT()`** method of the EXT_polygon_offset_clamp extension of the WebGL API specifies the scale factor and units used to calculate depth offsets, like WebGLRenderingContext.polygonOffset(), and a limit for the resulting offset. */
-    polygonOffsetClampEXT(factor: GLfloat, units: GLfloat, clamp: GLfloat): void;
-    readonly POLYGON_OFFSET_CLAMP_EXT: 0x8E1B;
 }
 
 /**
@@ -5089,10 +5036,6 @@ interface EXT_texture_compression_rgtc {
 interface EXT_texture_filter_anisotropic {
     readonly TEXTURE_MAX_ANISOTROPY_EXT: 0x84FE;
     readonly MAX_TEXTURE_MAX_ANISOTROPY_EXT: 0x84FF;
-}
-
-interface EXT_texture_mirror_clamp_to_edge {
-    readonly MIRROR_CLAMP_TO_EDGE_EXT: 0x8743;
 }
 
 /**
@@ -5443,7 +5386,7 @@ declare var EventSource: {
 };
 
 /**
- * The **`EventTarget`** interface is implemented by objects that can receive events and may have listeners for them. In other words, any target of events implements the methods associated with this interface.
+ * The **`EventTarget`** interface is implemented by objects that can receive events and may have listeners for them. In other words, any target of events implements the three methods associated with this interface.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/EventTarget)
  */
@@ -5466,11 +5409,6 @@ interface EventTarget {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/EventTarget/removeEventListener)
      */
     removeEventListener(type: string, callback: EventListenerOrEventListenerObject | null, options?: EventListenerOptions | boolean): void;
-    /**
-     * The **`when()`** method of the EventTarget interface returns an Observable object representing a stream of events fired on the event target it is called on.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/EventTarget/when)
-     */
     when(type: string, options?: ObservableEventListenerOptions): Observable;
 }
 
@@ -5579,7 +5517,7 @@ interface FetchEvent extends ExtendableEvent {
      */
     readonly clientId: string;
     /**
-     * The **`handled`** read-only property of the FetchEvent interface returns a promise indicating if the event has been handled by the fetch algorithm or not. This property allows executing code after the browser has consumed a response, and is usually used together with the waitUntil() method.
+     * The **`handled`** property of the FetchEvent interface returns a promise indicating if the event has been handled by the fetch algorithm or not. This property allows executing code after the browser has consumed a response, and is usually used together with the waitUntil() method.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/FetchEvent/handled)
      */
@@ -5766,32 +5704,32 @@ declare var FileReader: {
 };
 
 /**
- * The **`FileReaderSync`** interface allows you to read File or Blob objects synchronously. This interface is only available in workers as it enables synchronous I/O that could potentially block.
+ * The **`FileReaderSync`** interface allows to read File or Blob objects synchronously. This interface is only available in workers as it enables synchronous I/O that could potentially block.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/FileReaderSync)
  */
 interface FileReaderSync {
     /**
-     * The **`readAsArrayBuffer()`** method of the FileReaderSync interface allows you to read File or Blob objects in a synchronous way into an ArrayBuffer. This interface is only available in workers as it enables synchronous I/O that could potentially block.
+     * The **`readAsArrayBuffer()`** method of the FileReaderSync interface allows to read File or Blob objects in a synchronous way into an ArrayBuffer. This interface is only available in workers as it enables synchronous I/O that could potentially block.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/FileReaderSync/readAsArrayBuffer)
      */
     readAsArrayBuffer(blob: Blob): ArrayBuffer;
     /**
-     * The **`readAsBinaryString()`** method of the FileReaderSync interface allows you to read File or Blob objects in a synchronous way into a string. This interface is only available in workers as it enables synchronous I/O that could potentially block.
+     * The **`readAsBinaryString()`** method of the FileReaderSync interface allows to read File or Blob objects in a synchronous way into a string. This interface is only available in workers as it enables synchronous I/O that could potentially block.
      * @deprecated
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/FileReaderSync/readAsBinaryString)
      */
     readAsBinaryString(blob: Blob): string;
     /**
-     * The **`readAsDataURL()`** method of the FileReaderSync interface allows you to read File or Blob objects in a synchronous way into a string representing a data URL. This interface is only available in workers as it enables synchronous I/O that could potentially block.
+     * The **`readAsDataURL()`** method of the FileReaderSync interface allows to read File or Blob objects in a synchronous way into a string representing a data URL. This interface is only available in workers as it enables synchronous I/O that could potentially block.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/FileReaderSync/readAsDataURL)
      */
     readAsDataURL(blob: Blob): string;
     /**
-     * The **`readAsText()`** method of the FileReaderSync interface allows you to read File or Blob objects in a synchronous way into a string. This interface is only available in workers as it enables synchronous I/O that could potentially block.
+     * The **`readAsText()`** method of the FileReaderSync interface allows to read File or Blob objects in a synchronous way into a string. This interface is only available in workers as it enables synchronous I/O that could potentially block.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/FileReaderSync/readAsText)
      */
@@ -6388,7 +6326,6 @@ interface GPUBindingCommandsMixin {
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/GPUComputePassEncoder/setBindGroup) */
     setBindGroup(index: GPUIndex32, bindGroup: GPUBindGroup | null, dynamicOffsets?: GPUBufferDynamicOffset[]): void;
     setBindGroup(index: GPUIndex32, bindGroup: GPUBindGroup | null, dynamicOffsetsData: Uint32Array<ArrayBufferLike>, dynamicOffsetsDataStart: GPUSize64, dynamicOffsetsDataLength: GPUSize32): void;
-    setImmediates(rangeOffset: GPUSize32, data: AllowSharedBufferSource, dataOffset?: GPUSize64, dataSize?: GPUSize64): void;
 }
 
 /**
@@ -7286,7 +7223,6 @@ interface GPUSupportedLimits {
     readonly maxDynamicStorageBuffersPerPipelineLayout: number;
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/GPUSupportedLimits#instance_properties) */
     readonly maxDynamicUniformBuffersPerPipelineLayout: number;
-    readonly maxImmediateSize: number;
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/GPUSupportedLimits#instance_properties) */
     readonly maxInterStageShaderVariables: number;
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/GPUSupportedLimits#instance_properties) */
@@ -7817,7 +7753,7 @@ interface IDBDatabase extends EventTarget {
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/IDBDatabase/versionchange_event) */
     onversionchange: ((this: IDBDatabase, ev: IDBVersionChangeEvent) => any) | null;
     /**
-     * The **`version`** read-only property of the IDBDatabase interface is non-negative integer that contains the version of the connected database.
+     * The **`version`** property of the IDBDatabase interface is a 64-bit integer that contains the version of the connected database. When a database is first created, this attribute is an empty string.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/IDBDatabase/version)
      */
@@ -7901,7 +7837,7 @@ declare var IDBFactory: {
  */
 interface IDBIndex {
     /**
-     * The **`keyPath`** read-only property of the IDBIndex interface returns the key path of the current index. If null, this index is not auto-populated.
+     * The **`keyPath`** property of the IDBIndex interface returns the key path of the current index. If null, this index is not auto-populated.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/IDBIndex/keyPath)
      */
@@ -7919,7 +7855,7 @@ interface IDBIndex {
      */
     name: string;
     /**
-     * The **`objectStore`** read-only property of the IDBIndex interface returns the object store referenced by the current index.
+     * The **`objectStore`** property of the IDBIndex interface returns the object store referenced by the current index.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/IDBIndex/objectStore)
      */
@@ -8211,11 +8147,6 @@ declare var IDBOpenDBRequest: {
     new(): IDBOpenDBRequest;
 };
 
-/**
- * The **`IDBRecord`** interface of the IndexedDB API represents a snapshot of a single record in an IDBObjectStore or IDBIndex.
- *
- * [MDN Reference](https://developer.mozilla.org/docs/Web/API/IDBRecord)
- */
 interface IDBRecord {
     readonly key: any;
     readonly primaryKey: any;
@@ -8233,7 +8164,7 @@ interface IDBRequestEventMap {
 }
 
 /**
- * The **`IDBRequest`** interface of the IndexedDB API provides access to results of asynchronous requests to databases and database objects using event handler attributes.
+ * The **`IDBRequest`** interface of the IndexedDB API provides access to results of asynchronous requests to databases and database objects using event handler attributes. Each reading and writing operation on a database is done using a request.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/IDBRequest)
  */
@@ -8308,7 +8239,7 @@ interface IDBTransaction extends EventTarget {
      */
     readonly durability: IDBTransactionDurability;
     /**
-     * The **`error`** read-only property of the IDBTransaction interface returns the type of error when there is an unsuccessful transaction.
+     * The **`IDBTransaction.error`** property of the IDBTransaction interface returns the type of error when there is an unsuccessful transaction.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/IDBTransaction/error)
      */
@@ -8808,7 +8739,7 @@ declare var ManagedSourceBuffer: {
  */
 interface MediaCapabilities {
     /**
-     * The **`decodingInfo()`** method of the MediaCapabilities interface returns a promise that fulfills with information about how well the user agent can decode/display media with a given configuration.
+     * The **`decodingInfo()`** method of the MediaCapabilities interface returns a promise that fulfils with information about how well the user agent can decode/display media with a given configuration.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/MediaCapabilities/decodingInfo)
      */
@@ -8839,20 +8770,6 @@ declare var MediaSourceHandle: {
     new(): MediaSourceHandle;
 };
 
-interface MediaStreamTrackAudioStats {
-    readonly averageLatency: DOMHighResTimeStamp;
-    readonly latency: DOMHighResTimeStamp;
-    readonly maximumLatency: DOMHighResTimeStamp;
-    readonly minimumLatency: DOMHighResTimeStamp;
-    resetLatency(): void;
-    toJSON(): any;
-}
-
-declare var MediaStreamTrackAudioStats: {
-    prototype: MediaStreamTrackAudioStats;
-    new(): MediaStreamTrackAudioStats;
-};
-
 /**
  * The **`MediaStreamTrackProcessor`** interface of the Insertable Streams for MediaStreamTrack API consumes a video MediaStreamTrack object's source and generates a stream of VideoFrame objects.
  *
@@ -8860,40 +8777,16 @@ declare var MediaStreamTrackAudioStats: {
  */
 interface MediaStreamTrackProcessor {
     /**
-     * The **`discardedFrames`** property of the MediaStreamTrackProcessor interface returns a number indicating how many frames have been dropped by the processor.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/MediaStreamTrackProcessor/discardedFrames)
-     */
-    readonly discardedFrames: number;
-    /**
      * The **`readable`** property of the MediaStreamTrackProcessor interface returns a ReadableStream of VideoFrames.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/MediaStreamTrackProcessor/readable)
      */
     readonly readable: ReadableStream;
-    /**
-     * The **`totalFrames`** property of the MediaStreamTrackProcessor interface returns a number indicating how many frames have been received by the processor in total.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/MediaStreamTrackProcessor/totalFrames)
-     */
-    readonly totalFrames: number;
 }
 
 declare var MediaStreamTrackProcessor: {
     prototype: MediaStreamTrackProcessor;
     new(init: MediaStreamTrackProcessorInit): MediaStreamTrackProcessor;
-};
-
-interface MediaStreamTrackVideoStats {
-    readonly deliveredFrames: number;
-    readonly discardedFrames: number;
-    readonly totalFrames: number;
-    toJSON(): any;
-}
-
-declare var MediaStreamTrackVideoStats: {
-    prototype: MediaStreamTrackVideoStats;
-    new(): MediaStreamTrackVideoStats;
 };
 
 /**
@@ -9074,6 +8967,12 @@ interface NavigatorConcurrentHardware {
     readonly hardwareConcurrency: number;
 }
 
+/** Available only in secure contexts. */
+interface NavigatorDeviceMemory {
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Navigator/deviceMemory) */
+    readonly deviceMemory: number;
+}
+
 interface NavigatorGPU {
     /**
      * Available only in secure contexts.
@@ -9172,7 +9071,7 @@ interface NavigatorUAData {
      */
     getHighEntropyValues(hints: string[]): Promise<UADataValues>;
     /**
-     * The **`toJSON()`** method of the NavigatorUAData interface returns a JSON-serializable plain object representing the NavigatorUAData object. Only the low-entropy values are included. To get high-entropy values, use NavigatorUAData.getHighEntropyValues().
+     * The **`toJSON()`** method of the NavigatorUAData interface is a serializer that returns a JSON representation of the low entropy properties of the NavigatorUAData object.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/NavigatorUAData/toJSON)
      */
@@ -9256,13 +9155,13 @@ interface NotificationEventMap {
  */
 interface Notification extends EventTarget {
     /**
-     * The **`actions`** read-only property of the Notification interface provides the actions available for users to select when interacting with the notification.
+     * The **`actions`** read-only property of the Notification interface provides the actions available for users to choose from for interacting with the notification.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Notification/actions)
      */
     readonly actions: ReadonlyArray<NotificationAction>;
     /**
-     * The **`badge`** read-only property of the Notification interface returns a string containing the URL of a small icon representing the web application itself. The badge is used by the platform when there is not enough space to display the full notification — for example, in a status bar. On Android, the badge should accommodate up to 4x display resolution (about 96×96px), and the image will be automatically masked to a monochrome silhouette.
+     * The **`badge`** read-only property of the Notification interface returns a string containing the URL of an image to represent the notification when there is not enough space to display the notification itself such as for example, the Android Notification Bar. On Android devices, the badge should accommodate devices up to 4x resolution, about 96 by 96 px, and the image will be automatically masked.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Notification/badge)
      */
@@ -9286,13 +9185,13 @@ interface Notification extends EventTarget {
      */
     readonly dir: NotificationDirection;
     /**
-     * The **`icon`** read-only property of the Notification interface returns a string containing the URL of a small image that reinforces the notification — for example, an app logo or a photo of the message sender. It is displayed alongside the notification title and body.
+     * The **`icon`** read-only property of the Notification interface contains the URL of an icon to be displayed as part of the notification, as specified in the icon option of the Notification() constructor.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Notification/icon)
      */
     readonly icon: string;
     /**
-     * The **`image`** read-only property of the Notification interface returns a string containing the URL of a large image displayed as part of the notification's content body — for example, a news photo or product thumbnail. It has the highest visual priority of the three image options (image, icon, badge).
+     * The **`image`** read-only property of the Notification interface contains the URL of an image to be displayed as part of the notification, as specified in the image option of the Notification() constructor.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Notification/image)
      */
@@ -9354,6 +9253,12 @@ interface Notification extends EventTarget {
      */
     readonly title: string;
     /**
+     * The **`vibrate`** read-only property of the Notification interface specifies a vibration pattern for the device's vibration hardware to emit when the notification fires. This is specified in the vibrate option of the Notification() constructor.
+     *
+     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Notification/vibrate)
+     */
+    readonly vibrate: ReadonlyArray<number>;
+    /**
      * The **`close()`** method of the Notification interface is used to close/remove a previously displayed notification.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Notification/close)
@@ -9369,7 +9274,7 @@ declare var Notification: {
     prototype: Notification;
     new(title: string, options?: NotificationOptions): Notification;
     /**
-     * The **`maxActions`** read-only static property of the Notification interface returns the maximum number of actions that can be displayed in a notification.
+     * The **`maxActions`** read-only static property of the Notification interface returns the maximum number of actions supported by the device and the User Agent. Effectively, this is the maximum number of elements in Notification.actions array which will be respected by the User Agent.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Notification/maxActions_static)
      */
@@ -9566,136 +9471,31 @@ interface OVR_multiview2 {
     readonly FRAMEBUFFER_INCOMPLETE_VIEW_TARGETS_OVR: 0x9633;
 }
 
-/**
- * The **`Observable`** interface of the Observable API represents a stream of values that can be subscribed to.
- *
- * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable)
- */
 interface Observable {
-    /**
-     * The **`catch()`** method of the Observable interface returns a new observable that replaces an error from the source observable with values from another observable.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/catch)
-     */
     catch(callback: CatchCallback): Observable;
-    /**
-     * The **`drop()`** method of the Observable interface returns a new observable that skips the given number of values at the start of the source observable.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/drop)
-     */
     drop(amount: number): Observable;
-    /**
-     * The **`every()`** method of the Observable interface returns a promise that fulfills with a boolean indicating whether every value emitted by the source observable satisfies the provided testing function.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/every)
-     */
     every(predicate: Predicate, options?: SubscribeOptions): Promise<boolean>;
-    /**
-     * The **`filter()`** method of the Observable interface returns a new observable that emits only those values of the source observable for which the provided callback function returns a truthy value.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/filter)
-     */
     filter(predicate: Predicate): Observable;
-    /**
-     * The **`finally()`** method of the Observable interface returns a new observable that mirrors the source observable and calls a callback when its subscription ends.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/finally)
-     */
     finally(callback: VoidFunction): Observable;
-    /**
-     * The **`find()`** method of the Observable interface returns a promise that fulfills with the first value emitted by the source observable that satisfies the provided testing function, or undefined if the source completes without a match.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/find)
-     */
     find(predicate: Predicate, options?: SubscribeOptions): Promise<any>;
-    /**
-     * The **`first()`** method of the Observable interface returns a promise that fulfills with the first value emitted by the source observable.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/first)
-     */
     first(options?: SubscribeOptions): Promise<any>;
-    /**
-     * The **`flatMap()`** method of the Observable interface returns a new observable that maps each value of the source observable to an inner observable and emits the inner observables' values sequentially.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/flatMap)
-     */
     flatMap(mapper: Mapper): Observable;
-    /**
-     * The **`forEach()`** method of the Observable interface returns a promise that fulfills with undefined when the source observable completes, after executing a callback for each emitted value.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/forEach)
-     */
     forEach(callback: Visitor, options?: SubscribeOptions): Promise<void>;
-    /**
-     * The **`inspect()`** method of the Observable interface returns a new observable that mirrors the source observable and calls callbacks to inspect its values and subscription lifecycle.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/inspect)
-     */
     inspect(inspectorUnion?: ObservableInspectorUnion): Observable;
-    /**
-     * The **`last()`** method of the Observable interface returns a promise that fulfills with the last value emitted by the source observable.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/last)
-     */
     last(options?: SubscribeOptions): Promise<any>;
-    /**
-     * The **`map()`** method of the Observable interface returns a new observable that emits the values of the source observable, each transformed by a mapping function.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/map)
-     */
     map(mapper: Mapper): Observable;
-    /**
-     * The **`reduce()`** method of the Observable interface returns a promise that fulfills with a single value obtained by combining the source observable's values using a reducer function.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/reduce)
-     */
     reduce(reducer: Reducer, initialValue?: any, options?: SubscribeOptions): Promise<any>;
-    /**
-     * The **`some()`** method of the Observable interface returns a promise that fulfills with a boolean indicating whether any value emitted by the source observable satisfies the provided testing function.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/some)
-     */
     some(predicate: Predicate, options?: SubscribeOptions): Promise<boolean>;
-    /**
-     * The **`subscribe()`** method of the Observable interface subscribes to the observable, receiving its values, errors, and completion through observer callbacks.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/subscribe)
-     */
     subscribe(observer?: ObserverUnion, options?: SubscribeOptions): void;
-    /**
-     * The **`switchMap()`** method of the Observable interface returns a new observable that maps each value of the source observable to an inner observable and emits values from only the latest inner observable.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/switchMap)
-     */
     switchMap(mapper: Mapper): Observable;
-    /**
-     * The **`take()`** method of the Observable interface returns a new observable that emits the given number of values from the start of the source observable and then completes.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/take)
-     */
     take(amount: number): Observable;
-    /**
-     * The **`takeUntil()`** method of the Observable interface returns a new observable that emits values from the source observable until another observable emits a value or errors.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/takeUntil)
-     */
     takeUntil(value: any): Observable;
-    /**
-     * The **`toArray()`** method of the Observable interface returns a promise that fulfills with a new array containing the source observable's values in the order they were emitted.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/toArray)
-     */
     toArray(options?: SubscribeOptions): Promise<any[]>;
 }
 
 declare var Observable: {
     prototype: Observable;
     new(callback: SubscribeCallback): Observable;
-    /**
-     * The **`from()`** static method of the Observable interface returns an observable converted from a promise, iterable, or async iterable; existing observables are returned unchanged.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Observable/from_static)
-     */
     from(value: any): Observable;
 };
 
@@ -9924,18 +9724,12 @@ interface Performance extends EventTarget {
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Performance/getEntriesByName)
      */
-    getEntriesByName(name: string, type: "mark"): PerformanceMark[];
-    getEntriesByName(name: string, type: "measure"): PerformanceMeasure[];
-    getEntriesByName(name: string, type: "resource"): PerformanceResourceTiming[];
     getEntriesByName(name: string, type?: string): PerformanceEntryList;
     /**
      * The **`getEntriesByType()`** method returns an array of PerformanceEntry objects currently present in the performance timeline for a given type.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Performance/getEntriesByType)
      */
-    getEntriesByType(type: "mark"): PerformanceMark[];
-    getEntriesByType(type: "measure"): PerformanceMeasure[];
-    getEntriesByType(type: "resource"): PerformanceResourceTiming[];
     getEntriesByType(type: string): PerformanceEntryList;
     /**
      * The **`mark()`** method creates a named PerformanceMark object representing a high resolution timestamp marker in the browser's performance timeline.
@@ -9968,7 +9762,7 @@ interface Performance extends EventTarget {
      */
     setResourceTimingBufferSize(maxSize: number): void;
     /**
-     * The **`toJSON()`** method of the Performance interface returns a JSON-serializable plain object representing the Performance object.
+     * The **`toJSON()`** method of the Performance interface is a serializer; it returns a JSON representation of the Performance object.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Performance/toJSON)
      */
@@ -10009,19 +9803,13 @@ interface PerformanceEntry {
      */
     readonly name: string;
     /**
-     * The **`navigationId`** read-only property of the PerformanceEntry interface returns the ID of the navigation that this paint happened under.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/PerformanceEntry/navigationId)
-     */
-    readonly navigationId: number;
-    /**
      * The read-only **`startTime`** property returns the first timestamp recorded for this PerformanceEntry. The meaning of this property depends on the value of this entry's entryType.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/PerformanceEntry/startTime)
      */
     readonly startTime: DOMHighResTimeStamp;
     /**
-     * The **`toJSON()`** method of the PerformanceEntry interface returns a JSON-serializable plain object representing the PerformanceEntry object.
+     * The **`toJSON()`** method is a serializer; it returns a JSON representation of the PerformanceEntry object.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/PerformanceEntry/toJSON)
      */
@@ -10059,7 +9847,7 @@ declare var PerformanceMark: {
  */
 interface PerformanceMeasure extends PerformanceEntry {
     /**
-     * The read-only **`detail`** property returns arbitrary metadata that was included in the measure upon construction (when using performance.measure()).
+     * The read-only **`detail`** property returns arbitrary metadata that was included in the mark upon construction (when using performance.measure().
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/PerformanceMeasure/detail)
      */
@@ -10125,18 +9913,12 @@ interface PerformanceObserverEntryList {
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/PerformanceObserverEntryList/getEntriesByName)
      */
-    getEntriesByName(name: string, type: "mark"): PerformanceMark[];
-    getEntriesByName(name: string, type: "measure"): PerformanceMeasure[];
-    getEntriesByName(name: string, type: "resource"): PerformanceResourceTiming[];
     getEntriesByName(name: string, type?: string): PerformanceEntryList;
     /**
      * The **`getEntriesByType()`** method of the PerformanceObserverEntryList returns a list of explicitly observed performance entry objects for a given performance entry type. The list's members are determined by the set of entry types specified in the call to the observe() method. The list is available in the observer's callback function (as the first parameter in the callback).
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/PerformanceObserverEntryList/getEntriesByType)
      */
-    getEntriesByType(type: "mark"): PerformanceMark[];
-    getEntriesByType(type: "measure"): PerformanceMeasure[];
-    getEntriesByType(type: "resource"): PerformanceResourceTiming[];
     getEntriesByType(type: string): PerformanceEntryList;
 }
 
@@ -10163,11 +9945,6 @@ interface PerformanceResourceTiming extends PerformanceEntry {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/PerformanceResourceTiming/connectStart)
      */
     readonly connectStart: DOMHighResTimeStamp;
-    /**
-     * The **`contentEncoding`** read-only property of the PerformanceResourceTiming interface is a string indicating the content encoding of the fetched resource.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/PerformanceResourceTiming/contentEncoding)
-     */
     readonly contentEncoding: string;
     /**
      * The **`contentType`** read-only property of the PerformanceResourceTiming interface is a string indicating the content type of the fetched resource, formatted as a MIME type and subtype separated by a forward slash.
@@ -10176,7 +9953,7 @@ interface PerformanceResourceTiming extends PerformanceEntry {
      */
     readonly contentType: string;
     /**
-     * The **`decodedBodySize`** read-only property returns the size (in octets) received from the fetch (HTTP or cache) of the message body after removing any applied content encoding (like gzip or Brotli).
+     * The **`decodedBodySize`** read-only property returns the size (in octets) received from the fetch (HTTP or cache) of the message body after removing any applied content encoding (like gzip or Brotli). If the resource is retrieved from an application cache or local resources, it returns the size of the payload after removing any applied content encoding.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/PerformanceResourceTiming/decodedBodySize)
      */
@@ -10200,7 +9977,7 @@ interface PerformanceResourceTiming extends PerformanceEntry {
      */
     readonly domainLookupStart: DOMHighResTimeStamp;
     /**
-     * The **`encodedBodySize`** read-only property represents the size (in octets) received from the fetch (HTTP or cache) of the payload body before removing any applied content encodings (like gzip or Brotli).
+     * The **`encodedBodySize`** read-only property represents the size (in octets) received from the fetch (HTTP or cache) of the payload body before removing any applied content encodings (like gzip or Brotli). If the resource is retrieved from an application cache or a local resource, it must return the size of the payload body before removing any applied content encoding.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/PerformanceResourceTiming/encodedBodySize)
      */
@@ -10290,14 +10067,12 @@ interface PerformanceResourceTiming extends PerformanceEntry {
      */
     readonly serverTiming: ReadonlyArray<PerformanceServerTiming>;
     /**
-     * The **`transferSize`** read-only property represents the size (in octets) of the fetched resource. This is the size of the response body plus a fixed value that stands in for the size of the response headers.
+     * The **`transferSize`** read-only property represents the size (in octets) of the fetched resource. The size includes the response header fields plus the response payload body (as defined by RFC7230).
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/PerformanceResourceTiming/transferSize)
      */
     readonly transferSize: number;
     readonly workerCacheLookupStart: DOMHighResTimeStamp;
-    readonly workerFinalRouterSource: string;
-    readonly workerMatchedRouterSource: string;
     readonly workerRouterEvaluationStart: DOMHighResTimeStamp;
     /**
      * The **`workerStart`** read-only property of the PerformanceResourceTiming interface returns a DOMHighResTimeStamp immediately before dispatching the FetchEvent if a Service Worker thread is already running, or immediately before starting the Service Worker thread if it is not already running. If the resource is not intercepted by a Service Worker the property will always return 0.
@@ -10306,7 +10081,7 @@ interface PerformanceResourceTiming extends PerformanceEntry {
      */
     readonly workerStart: DOMHighResTimeStamp;
     /**
-     * The **`toJSON()`** method of the PerformanceResourceTiming interface returns a JSON-serializable plain object representing the PerformanceResourceTiming object.
+     * The **`toJSON()`** method of the PerformanceResourceTiming interface is a serializer; it returns a JSON representation of the PerformanceResourceTiming object.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/PerformanceResourceTiming/toJSON)
      */
@@ -10343,7 +10118,7 @@ interface PerformanceServerTiming {
      */
     readonly name: string;
     /**
-     * The **`toJSON()`** method of the PerformanceServerTiming interface returns a JSON-serializable plain object representing the PerformanceServerTiming object.
+     * The **`toJSON()`** method of the PerformanceServerTiming interface is a serializer; it returns a JSON representation of the PerformanceServerTiming object.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/PerformanceServerTiming/toJSON)
      */
@@ -10529,7 +10304,7 @@ interface PressureRecord {
      */
     readonly time: DOMHighResTimeStamp;
     /**
-     * The **`toJSON()`** method of the PressureRecord interface returns a JSON-serializable plain object representing the PressureRecord object.
+     * The **`toJSON()`** method is a serializer; it returns a JSON representation of the PressureRecord object.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/PressureRecord/toJSON)
      */
@@ -10760,7 +10535,7 @@ interface PushSubscription {
      */
     getKey(name: PushEncryptionKeyName): ArrayBuffer | null;
     /**
-     * The **`toJSON()`** method of the PushSubscription interface returns a JSON-serializable plain object representing the PushSubscription object.
+     * The **`toJSON()`** method of the PushSubscription interface is a standard serializer: it returns a JSON representation of the subscription properties, providing a useful shortcut.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/PushSubscription/toJSON)
      */
@@ -11194,7 +10969,7 @@ declare var ReadableStream: {
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/ReadableStream/from_static)
      */
-    from(asyncIterable: AsyncIterable<any> | Iterable<any>): ReadableStream;
+    from(asyncIterable: AsyncIterable<any>): ReadableStream;
 };
 
 /**
@@ -11223,7 +10998,7 @@ declare var ReadableStreamBYOBReader: {
 };
 
 /**
- * The **`ReadableStreamBYOBRequest`** interface of the Streams API represents a "pull request" for data from an underlying source that will be made as a zero-copy transfer to a consumer (bypassing the stream's internal queues).
+ * The **`ReadableStreamBYOBRequest`** interface of the Streams API represents a "pull request" for data from an underlying source that will made as a zero-copy transfer to a consumer (bypassing the stream's internal queues).
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/ReadableStreamBYOBRequest)
  */
@@ -11401,11 +11176,6 @@ interface Request extends Body {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/isHistoryNavigation)
      */
     readonly isHistoryNavigation: boolean;
-    /**
-     * The **`isReloadNavigation`** read-only property of the Request interface is a boolean indicating whether the request is a user-triggered reload.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/isReloadNavigation)
-     */
     readonly isReloadNavigation: boolean;
     /**
      * The **`keepalive`** read-only property of the Request interface contains the request's keepalive setting (true or false), which indicates whether the browser will keep the associated request alive if the page that initiated it is unloaded before the request is complete.
@@ -11449,11 +11219,7 @@ interface Request extends Body {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/signal)
      */
     readonly signal: AbortSignal;
-    /**
-     * The **`targetAddressSpace`** read-only property of the Request interface returns the request's target address space, which indicates whether it is intended to be a loopback, local, or public request.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/targetAddressSpace)
-     */
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/targetAddressSpace) */
     readonly targetAddressSpace: IPAddressSpace;
     /**
      * The **`url`** read-only property of the Request interface contains the URL of the request.
@@ -11499,7 +11265,7 @@ interface Response extends Body {
      */
     readonly redirected: boolean;
     /**
-     * The **`status`** read-only property of the Response interface contains the HTTP status code of the response.
+     * The **`status`** read-only property of the Response interface contains the HTTP status codes of the response.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Response/status)
      */
@@ -11577,7 +11343,7 @@ interface Scheduler {
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Scheduler/postTask)
      */
-    postTask<T = any>(callback: SchedulerPostTaskCallback<T>, options?: SchedulerPostTaskOptions): Promise<T>;
+    postTask(callback: SchedulerPostTaskCallback, options?: SchedulerPostTaskOptions): Promise<any>;
     /**
      * The **`yield()`** method of the Scheduler interface is used for yielding to the main thread during a task and continuing execution later, with the continuation scheduled as a prioritized task (see the Prioritized Task Scheduling API for more information). This allows long-running work to be broken up so the browser stays responsive.
      *
@@ -11764,7 +11530,7 @@ declare var SensorErrorEvent: {
  */
 interface Serial extends EventTarget {
     /**
-     * The **`getPorts()`** method of the Serial interface returns a Promise that resolves with an array of SerialPort objects representing serial ports connected to the host that the origin has permission to access.
+     * The **`getPorts()`** method of the Serial interface returns a Promise that resolves with an array of SerialPort objects representing serial ports connected to the host which the origin has permission to access.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Serial/getPorts)
      */
@@ -11811,13 +11577,13 @@ interface SerialPort extends EventTarget {
      */
     readonly writable: WritableStream | null;
     /**
-     * The **`close()`** method of the SerialPort interface returns a Promise that resolves when the port closes.
+     * The **`SerialPort.close()`** method of the SerialPort interface returns a Promise that resolves when the port closes.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/SerialPort/close)
      */
     close(): Promise<void>;
     /**
-     * The **`forget()`** method of the SerialPort interface returns a Promise that resolves when access to the serial port is revoked.
+     * The **`SerialPort.forget()`** method of the SerialPort interface returns a Promise that resolves when access to the serial port is revoked.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/SerialPort/forget)
      */
@@ -11829,7 +11595,7 @@ interface SerialPort extends EventTarget {
      */
     getInfo(): SerialPortInfo;
     /**
-     * The **`getSignals()`** method of the SerialPort interface returns a Promise that resolves with an object containing the current state of the port's control signals.
+     * The **`SerialPort.getSignals()`** method of the SerialPort interface returns a Promise that resolves with an object containing the current state of the port's control signals.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/SerialPort/getSignals)
      */
@@ -11871,7 +11637,7 @@ interface ServiceWorker extends EventTarget, AbstractWorker {
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/ServiceWorker/statechange_event) */
     onstatechange: ((this: ServiceWorker, ev: Event) => any) | null;
     /**
-     * The **`scriptURL`** read-only property of the ServiceWorker interface returns the ServiceWorker serialized script URL defined as part of ServiceWorkerRegistration. Must be on the same origin as the document that registers the ServiceWorker.
+     * Returns the ServiceWorker serialized script URL defined as part of ServiceWorkerRegistration. Must be on the same origin as the document that registers the ServiceWorker.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/ServiceWorker/scriptURL)
      */
@@ -12297,13 +12063,13 @@ declare var StorageManager: {
  */
 interface StylePropertyMapReadOnly {
     /**
-     * The **`size`** read-only property of the StylePropertyMapReadOnly interface returns a positive integer containing the size of the StylePropertyMapReadOnly object.
+     * The **`size`** read-only property of the StylePropertyMapReadOnly interface returns an unsigned long integer containing the size of the StylePropertyMapReadOnly object.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/StylePropertyMapReadOnly/size)
      */
     readonly size: number;
     /**
-     * The **`get()`** method of the StylePropertyMapReadOnly interface returns a CSSStyleValue-derived object for the first value of the specified property.
+     * The **`get()`** method of the StylePropertyMapReadOnly interface returns a CSSStyleValue object for the first value of the specified property.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/StylePropertyMapReadOnly/get)
      */
@@ -12328,47 +12094,12 @@ declare var StylePropertyMapReadOnly: {
     new(): StylePropertyMapReadOnly;
 };
 
-/**
- * The **`Subscriber`** interface of the Observable API represents a subscription to a stream of observable values, and contains methods to manage the lifecycle of that subscription.
- *
- * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Subscriber)
- */
 interface Subscriber {
-    /**
-     * The **`active`** read-only property of the Subscriber interface indicates whether the subscription can still send values to observers.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Subscriber/active)
-     */
     readonly active: boolean;
-    /**
-     * The **`signal`** read-only property of the Subscriber interface provides an AbortSignal that is aborted when the subscription ends. A producer can pass this signal to APIs such as fetch() to cancel work when it is no longer needed.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Subscriber/signal)
-     */
     readonly signal: AbortSignal;
-    /**
-     * The **`addTeardown()`** method of the Subscriber interface registers a callback to clean up resources when the subscription ends. This happens when either Subscriber.complete() or Subscriber.error() is called, or when all observers unsubscribe.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Subscriber/addTeardown)
-     */
     addTeardown(teardown: VoidFunction): void;
-    /**
-     * The **`complete()`** method of the Subscriber interface closes the subscription and notifies observers that the stream has completed successfully.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Subscriber/complete)
-     */
     complete(): void;
-    /**
-     * The **`error()`** method of the Subscriber interface closes the subscription and notifies observers of an error.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Subscriber/error)
-     */
     error(error: any): void;
-    /**
-     * The **`next()`** method of the Subscriber interface sends a value to each observer of the subscription, invoking its next callback synchronously. These callbacks are supplied to Observable.subscribe().
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Subscriber/next)
-     */
     next(value: any): void;
 }
 
@@ -12384,8 +12115,6 @@ declare var Subscriber: {
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/SubtleCrypto)
  */
 interface SubtleCrypto {
-    decapsulateBits(decapsulationAlgorithm: AlgorithmIdentifier, decapsulationKey: CryptoKey, ciphertext: BufferSource): Promise<ArrayBuffer>;
-    decapsulateKey(decapsulationAlgorithm: AlgorithmIdentifier, decapsulationKey: CryptoKey, ciphertext: BufferSource, sharedKeyAlgorithm: AlgorithmIdentifier, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey>;
     /**
      * The **`decrypt()`** method of the SubtleCrypto interface decrypts some encrypted data. It takes as arguments a key to decrypt with, some optional extra parameters, and the data to decrypt (also known as "ciphertext"). It returns a Promise which will be fulfilled with the decrypted data (also known as "plaintext").
      *
@@ -12410,8 +12139,6 @@ interface SubtleCrypto {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/SubtleCrypto/digest)
      */
     digest(algorithm: AlgorithmIdentifier, data: BufferSource): Promise<ArrayBuffer>;
-    encapsulateBits(encapsulationAlgorithm: AlgorithmIdentifier, encapsulationKey: CryptoKey): Promise<EncapsulatedBits>;
-    encapsulateKey(encapsulationAlgorithm: AlgorithmIdentifier, encapsulationKey: CryptoKey, sharedKeyAlgorithm: AlgorithmIdentifier, extractable: boolean, keyUsages: KeyUsage[]): Promise<EncapsulatedKey>;
     /**
      * The **`encrypt()`** method of the SubtleCrypto interface encrypts data.
      *
@@ -12436,7 +12163,6 @@ interface SubtleCrypto {
     generateKey(algorithm: RsaHashedKeyGenParams | EcKeyGenParams, extractable: boolean, keyUsages: ReadonlyArray<KeyUsage>): Promise<CryptoKeyPair>;
     generateKey(algorithm: AesKeyGenParams | HmacKeyGenParams | Pbkdf2Params, extractable: boolean, keyUsages: ReadonlyArray<KeyUsage>): Promise<CryptoKey>;
     generateKey(algorithm: AlgorithmIdentifier, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair | CryptoKey>;
-    getPublicKey(key: CryptoKey, keyUsages: KeyUsage[]): Promise<CryptoKey>;
     /**
      * The **`importKey()`** method of the SubtleCrypto interface imports a key: that is, it takes as input a key in an external, portable format and gives you a CryptoKey object that you can use in the Web Crypto API.
      *
@@ -12473,8 +12199,6 @@ interface SubtleCrypto {
 declare var SubtleCrypto: {
     prototype: SubtleCrypto;
     new(): SubtleCrypto;
-    supports(operation: string, algorithm: AlgorithmIdentifier, length?: number | null): boolean;
-    supports(operation: string, algorithm: AlgorithmIdentifier, additionalAlgorithm: AlgorithmIdentifier): boolean;
 };
 
 /**
@@ -12935,7 +12659,7 @@ interface URL {
      */
     username: string;
     /**
-     * The **`toJSON()`** method of the URL interface returns a string representing the URL object. This is the same string that URL.toString() returns.
+     * The **`toJSON()`** method of the URL interface returns a string containing a serialized version of the URL, although in practice it seems to have the same effect as URL.toString().
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/URL/toJSON)
      */
@@ -13227,121 +12951,121 @@ declare var USBConnectionEvent: {
  */
 interface USBDevice {
     /**
-     * The **`configuration`** read-only property of the USBDevice interface returns a USBConfiguration object for the currently selected interface for a paired USB device.
+     * The **`configuration`** read only property of the USBDevice interface returns a USBConfiguration object for the currently selected interface for a paired USB device.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/configuration)
      */
     readonly configuration: USBConfiguration | null;
     /**
-     * The **`configurations`** read-only property of the USBDevice interface an Array of device-specific interfaces for controlling a paired USB device.
+     * The **`configurations`** read only property of the USBDevice interface an array of device-specific interfaces for controlling a paired USB device.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/configurations)
      */
     readonly configurations: ReadonlyArray<USBConfiguration>;
     /**
-     * The **`deviceClass`** read-only property of the USBDevice interface one of three properties that identify USB devices for the purpose of loading a USB driver that will work with that device. The other two properties are USBDevice.deviceSubclass and USBDevice.deviceProtocol.
+     * The **`deviceClass`** read only property of the USBDevice interface one of three properties that identify USB devices for the purpose of loading a USB driver that will work with that device. The other two properties are USBDevice.deviceSubclass and USBDevice.deviceProtocol.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/deviceClass)
      */
     readonly deviceClass: number;
     /**
-     * The **`deviceProtocol`** read-only property of the USBDevice interface one of three properties that identify USB devices for the purpose of loading a USB driver that will work with that device. The other two properties are USBDevice.deviceClass and USBDevice.deviceSubclass.
+     * The **`deviceProtocol`** read only property of the USBDevice interface one of three properties that identify USB devices for the purpose of loading a USB driver that will work with that device. The other two properties are USBDevice.deviceClass and USBDevice.deviceSubclass.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/deviceProtocol)
      */
     readonly deviceProtocol: number;
     /**
-     * The **`deviceSubclass`** read-only property of the USBDevice interface one of three properties that identify USB devices for the purpose of loading a USB driver that will work with that device. The other two properties are USBDevice.deviceClass and USBDevice.deviceProtocol.
+     * The **`deviceSubclass`** read only property of the USBDevice interface one of three properties that identify USB devices for the purpose of loading a USB driver that will work with that device. The other two properties are USBDevice.deviceClass and USBDevice.deviceProtocol.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/deviceSubclass)
      */
     readonly deviceSubclass: number;
     /**
-     * The **`deviceVersionMajor`** read-only property of the USBDevice interface he major version number of the device in a semantic versioning scheme.
+     * The **`deviceVersionMajor`** read only property of the USBDevice interface he major version number of the device in a semantic versioning scheme.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/deviceVersionMajor)
      */
     readonly deviceVersionMajor: number;
     /**
-     * The **`deviceVersionMinor`** read-only property of the USBDevice interface the minor version number of the device in a semantic versioning scheme.
+     * The **`deviceVersionMinor`** read only property of the USBDevice interface the minor version number of the device in a semantic versioning scheme.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/deviceVersionMinor)
      */
     readonly deviceVersionMinor: number;
     /**
-     * The **`deviceVersionSubminor`** read-only property of the USBDevice interface the patch version number of the device in a semantic versioning scheme.
+     * The **`deviceVersionSubminor`** read only property of the USBDevice interface the patch version number of the device in a semantic versioning scheme.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/deviceVersionSubminor)
      */
     readonly deviceVersionSubminor: number;
     /**
-     * The **`manufacturerName`** read-only property of the USBDevice interface the of the organization that manufactured the USB device.
+     * The **`manufacturerName`** read only property of the USBDevice interface the of the organization that manufactured the USB device.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/manufacturerName)
      */
     readonly manufacturerName: string | null;
     /**
-     * The **`opened`** read-only property of the USBDevice interface indicates whether a session has been started with a paired USB device. A device must be opened before it can be controlled by a web page.
+     * The **`opened`** read only property of the USBDevice interface indicates whether a session has been started with a paired USB device. A device must be opened before it can be controlled by a web page.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/opened)
      */
     readonly opened: boolean;
     /**
-     * The **`productId`** read-only property of the USBDevice interface the manufacturer-defined code that identifies a USB device.
+     * The **`productId`** read only property of the USBDevice interface the manufacturer-defined code that identifies a USB device.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/productId)
      */
     readonly productId: number;
     /**
-     * The **`productName`** read-only property of the USBDevice interface the manufacturer-defined name that identifies a USB device.
+     * The **`productName`** read only property of the USBDevice interface the manufacturer-defined name that identifies a USB device.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/productName)
      */
     readonly productName: string | null;
     /**
-     * The **`serialNumber`** read-only property of the USBDevice interface is the manufacturer-defined serial number for the specific USB device.
+     * The **`serialNumber`** read only property of the USBDevice interface is the manufacturer-defined serial number for the specific USB device.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/serialNumber)
      */
     readonly serialNumber: string | null;
     /**
-     * The **`usbVersionMajor`** read-only property of the USBDevice interface is one of three properties that declare the USB protocol version supported by the device. The other two properties are USBDevice.usbVersionMinor and USBDevice.usbVersionSubminor.
+     * The **`usbVersionMajor`** read only property of the USBDevice interface is one of three properties that declare the USB protocol version supported by the device. The other two properties are USBDevice.usbVersionMinor and USBDevice.usbVersionSubminor.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/usbVersionMajor)
      */
     readonly usbVersionMajor: number;
     /**
-     * The **`usbVersionMinor`** read-only property of the USBDevice interface is one of three properties that declare the USB protocol version supported by the device. The other two properties are USBDevice.usbVersionMajor and USBDevice.usbVersionSubminor.
+     * The **`usbVersionMinor`** read only property of the USBDevice interface is one of three properties that declare the USB protocol version supported by the device. The other two properties are USBDevice.usbVersionMajor and USBDevice.usbVersionSubminor.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/usbVersionMinor)
      */
     readonly usbVersionMinor: number;
     /**
-     * The **`usbVersionSubminor`** read-only property of the USBDevice interface is one of three properties that declare the USB protocol version supported by the device. The other two properties are USBDevice.usbVersionMajor and USBDevice.usbVersionMinor.
+     * The **`usbVersionSubminor`** read only property of the USBDevice interface is one of three properties that declare the USB protocol version supported by the device. The other two properties are USBDevice.usbVersionMajor and USBDevice.usbVersionMinor.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/usbVersionSubminor)
      */
     readonly usbVersionSubminor: number;
     /**
-     * The **`vendorId`** read-only property of the USBDevice interface is the official usb.org-assigned vendor ID.
+     * The **`vendorId`** read only property of the USBDevice interface is the official usb.org-assigned vendor ID.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/vendorId)
      */
     readonly vendorId: number;
     /**
-     * The **`claimInterface()`** method of the USBDevice interface returns a Promise that resolves when the requested interface is claimed for exclusive access.
+     * The **`claimInterface()`** method of the USBDevice interface returns a promise that resolves when the requested interface is claimed for exclusive access.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/claimInterface)
      */
     claimInterface(interfaceNumber: number): Promise<void>;
     /**
-     * The **`clearHalt()`** method of the USBDevice interface returns a Promise that resolves when a halt condition is cleared. A halt condition is when a data transfer to or from the device has a status of 'stall', which requires the web page (the host system, in USB terminology) to clear that condition. See the for details.
+     * The **`clearHalt()`** method of the USBDevice interface returns a promise that resolves when a halt condition is cleared. A halt condition is when a data transfer to or from the device has a status of 'stall', which requires the web page (the host system, in USB terminology) to clear that condition. See the for details.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/clearHalt)
      */
     clearHalt(direction: USBDirection, endpointNumber: number): Promise<void>;
     /**
-     * The **`close()`** method of the USBDevice interface returns a Promise that resolves when all open interfaces are released and the device session has ended.
+     * The **`close()`** method of the USBDevice interface returns a promise that resolves when all open interfaces are released and the device session has ended.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/close)
      */
@@ -13377,43 +13101,43 @@ interface USBDevice {
      */
     isochronousTransferOut(endpointNumber: number, data: BufferSource, packetLengths: number[]): Promise<USBIsochronousOutTransferResult>;
     /**
-     * The **`open()`** method of the USBDevice interface returns a Promise that resolves when a device session has started.
+     * The **`open()`** method of the USBDevice interface returns a promise that resolves when a device session has started.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/open)
      */
     open(): Promise<void>;
     /**
-     * The **`releaseInterface()`** method of the USBDevice interface returns a Promise that resolves when a claimed interface is released from exclusive access.
+     * The **`releaseInterface()`** method of the USBDevice interface returns a promise that resolves when a claimed interface is released from exclusive access.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/releaseInterface)
      */
     releaseInterface(interfaceNumber: number): Promise<void>;
     /**
-     * The **`reset()`** method of the USBDevice interface returns a Promise that resolves when the device is reset and all app operations canceled and their promises rejected.
+     * The **`reset()`** method of the USBDevice interface returns a promise that resolves when the device is reset and all app operations canceled and their promises rejected.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/reset)
      */
     reset(): Promise<void>;
     /**
-     * The **`selectAlternateInterface()`** method of the USBDevice interface returns a Promise that resolves when the specified alternative endpoint is selected.
+     * The **`selectAlternateInterface()`** method of the USBDevice interface returns a promise that resolves when the specified alternative endpoint is selected.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/selectAlternateInterface)
      */
     selectAlternateInterface(interfaceNumber: number, alternateSetting: number): Promise<void>;
     /**
-     * The **`selectConfiguration()`** method of the USBDevice interface returns a Promise that resolves when the specified configuration is selected.
+     * The **`selectConfiguration()`** method of the USBDevice interface returns a promise that resolves when the specified configuration is selected.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/selectConfiguration)
      */
     selectConfiguration(configurationValue: number): Promise<void>;
     /**
-     * The **`transferIn()`** method of the USBDevice interface returns a Promise that resolves with a USBInTransferResult when bulk or interrupt data is received from the USB device.
+     * The **`transferIn()`** method of the USBDevice interface returns a promise that resolves with a USBInTransferResult when bulk or interrupt data is received from the USB device.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/transferIn)
      */
     transferIn(endpointNumber: number, length: number): Promise<USBInTransferResult>;
     /**
-     * The **`transferOut()`** method of the USBDevice interface returns a Promise that resolves with a USBOutTransferResult when bulk or interrupt data is sent to the USB device.
+     * The **`transferOut()`** method of the USBDevice interface returns a promise that resolves with a USBOutTransferResult when bulk or interrupt data is sent to the USB device.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/USBDevice/transferOut)
      */
@@ -13587,7 +13311,7 @@ interface VideoColorSpace {
      */
     readonly transfer: VideoTransferCharacteristics | null;
     /**
-     * The **`toJSON()`** method of the VideoColorSpace interface returns a JSON-serializable plain object representing the VideoColorSpace object.
+     * The **`toJSON()`** method of the VideoColorSpace interface is a serializer that returns a JSON representation of the VideoColorSpace object.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/VideoColorSpace/toJSON)
      */
@@ -13619,7 +13343,7 @@ interface VideoDecoder extends EventTarget {
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/VideoDecoder/dequeue_event) */
     ondequeue: ((this: VideoDecoder, ev: Event) => any) | null;
     /**
-     * The **`state`** read-only property of the VideoDecoder interface returns the current state of the underlying codec.
+     * The **`state`** property of the VideoDecoder interface returns the current state of the underlying codec.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/VideoDecoder/state)
      */
@@ -13845,11 +13569,7 @@ interface VideoFrame {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/VideoFrame/copyTo)
      */
     copyTo(destination: AllowSharedBufferSource, options?: VideoFrameCopyToOptions): Promise<PlaneLayout[]>;
-    /**
-     * The **`metadata()`** method of the VideoFrame interface returns the metadata associated with the frame.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/VideoFrame/metadata)
-     */
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/VideoFrame/metadata) */
     metadata(): VideoFrameMetadata;
 }
 
@@ -14108,7 +13828,7 @@ interface WEBGL_lose_context {
 }
 
 /**
- * The **`WEBGL_multi_draw`** extension is part of the WebGL API and allows you to render more than one primitive with a single function call. This can improve a WebGL application's performance as it reduces binding costs in the renderer and speeds up GPU thread time with uniform data.
+ * The **`WEBGL_multi_draw`** extension is part of the WebGL API and allows to render more than one primitive with a single function call. This can improve a WebGL application's performance as it reduces binding costs in the renderer and speeds up GPU thread time with uniform data.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WEBGL_multi_draw)
  */
@@ -16377,7 +16097,7 @@ interface WebGLTimerQueryEXT extends WebGLObject {
 }
 
 /**
- * The **`WebGLTransformFeedback`** interface is part of the WebGL 2 API and enables transform feedback, which is the process of capturing primitives generated by vertex processing. It allows you to preserve the post-transform rendering state of an object and resubmit this data multiple times.
+ * The **`WebGLTransformFeedback`** interface is part of the WebGL 2 API and enables transform feedback, which is the process of capturing primitives generated by vertex processing. It allows to preserve the post-transform rendering state of an object and resubmit this data multiple times.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebGLTransformFeedback)
  */
@@ -16534,11 +16254,6 @@ interface WebTransport {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransport/datagrams)
      */
     readonly datagrams: WebTransportDatagramDuplexStream;
-    /**
-     * The **`draining`** read-only property of the WebTransport interface returns a Promise that fulfills when the server indicates that it would like the transport session to start draining, prior to closing it.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransport/draining)
-     */
     readonly draining: Promise<void>;
     /**
      * The **`incomingBidirectionalStreams`** read-only property of the WebTransport interface represents one or more bidirectional streams opened by the server. Returns a ReadableStream of WebTransportBidirectionalStream objects. Each one can be used to reliably read data from the server and write data back to it.
@@ -16552,11 +16267,6 @@ interface WebTransport {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransport/incomingUnidirectionalStreams)
      */
     readonly incomingUnidirectionalStreams: ReadableStream;
-    /**
-     * The **`protocol`** read-only property of the WebTransport interface returns the application-specific protocol selected by the server.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransport/protocol)
-     */
     readonly protocol: string;
     /**
      * The **`ready`** read-only property of the WebTransport interface returns a promise that resolves when the transport is ready to use.
@@ -16570,7 +16280,6 @@ interface WebTransport {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransport/reliability)
      */
     readonly reliability: WebTransportReliabilityMode;
-    readonly responseHeaders: Headers | null;
     /**
      * The **`close()`** method of the WebTransport interface closes an ongoing WebTransport session.
      *
@@ -16583,11 +16292,7 @@ interface WebTransport {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransport/createBidirectionalStream)
      */
     createBidirectionalStream(options?: WebTransportSendStreamOptions): Promise<WebTransportBidirectionalStream>;
-    /**
-     * The **`createSendGroup()`** method of the WebTransport interface creates and returns a WebTransportSendGroup.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransport/createSendGroup)
-     */
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransport/createSendGroup) */
     createSendGroup(): WebTransportSendGroup;
     /**
      * The **`createUnidirectionalStream()`** method of the WebTransport interface asynchronously opens a unidirectional stream.
@@ -16595,12 +16300,6 @@ interface WebTransport {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransport/createUnidirectionalStream)
      */
     createUnidirectionalStream(options?: WebTransportSendStreamOptions): Promise<WritableStream>;
-    /**
-     * The **`exportKeyingMaterial()`** method of the WebTransport interface returns a Promise that fulfills with keying material derived from the TLS session underlying the transport's connection.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransport/exportKeyingMaterial)
-     */
-    exportKeyingMaterial(label: BufferSource, context: BufferSource, outputLength: number): Promise<Uint8Array<ArrayBuffer>>;
     /**
      * The **`getStats()`** method of the WebTransport interface asynchronously returns an object containing HTTP/3 connection statistics.
      *
@@ -16612,11 +16311,6 @@ interface WebTransport {
 declare var WebTransport: {
     prototype: WebTransport;
     new(url: string | URL, options?: WebTransportOptions): WebTransport;
-    /**
-     * The **`supportsReliableOnly`** static read-only property of the WebTransport interface returns a boolean value that indicates whether the browser supports WebTransport sessions over exclusively reliable transports, such as HTTP/2. Such sessions can't send unreliable datagrams, which need HTTP/3 over QUIC.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransport/supportsReliableOnly_static)
-     */
     readonly supportsReliableOnly: boolean;
 };
 
@@ -16665,7 +16359,6 @@ interface WebTransportDatagramDuplexStream {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportDatagramDuplexStream/incomingMaxAge)
      */
     incomingMaxAge: number | null;
-    incomingMaxBufferedDatagrams: number;
     /**
      * The **`maxDatagramSize`** read-only property of the WebTransportDatagramDuplexStream interface returns the maximum allowable size of outgoing datagrams, in bytes, that can be written to writable.
      *
@@ -16684,7 +16377,6 @@ interface WebTransportDatagramDuplexStream {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportDatagramDuplexStream/outgoingMaxAge)
      */
     outgoingMaxAge: number | null;
-    outgoingMaxBufferedDatagrams: number;
     /**
      * The **`readable`** read-only property of the WebTransportDatagramDuplexStream interface returns a ReadableStream instance that can be used to unreliably read incoming datagrams from the stream.
      *
@@ -16697,11 +16389,7 @@ interface WebTransportDatagramDuplexStream {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportDatagramDuplexStream/writable)
      */
     readonly writable: WritableStream;
-    /**
-     * The **`createWritable()`** method of the WebTransportDatagramDuplexStream interface returns a WebTransportDatagramsWritable instance that can be used to write outgoing datagrams to the transport.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportDatagramDuplexStream/createWritable)
-     */
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportDatagramDuplexStream/createWritable) */
     createWritable(options?: WebTransportSendOptions): WebTransportDatagramsWritable;
 }
 
@@ -16711,23 +16399,14 @@ declare var WebTransportDatagramDuplexStream: {
 };
 
 /**
- * The **`WebTransportDatagramsWritable`** interface of the WebTransport API is a specialized WritableStream that can be used to write outgoing datagrams to a WebTransport connection.
  * Available only in secure contexts.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportDatagramsWritable)
  */
 interface WebTransportDatagramsWritable extends WritableStream {
-    /**
-     * The **`sendGroup`** property of the WebTransportDatagramsWritable interface represents the WebTransportSendGroup that this WebTransportDatagramsWritable is grouped under for the purposes of sendOrder prioritization.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportDatagramsWritable/sendGroup)
-     */
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportDatagramsWritable/sendGroup) */
     sendGroup: WebTransportSendGroup | null;
-    /**
-     * The **`sendOrder`** property of the WebTransportDatagramsWritable interface represents the priority of this stream's datagrams relative to other streams and datagrams in the same sendGroup, as an integer.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportDatagramsWritable/sendOrder)
-     */
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportDatagramsWritable/sendOrder) */
     sendOrder: number;
 }
 
@@ -16783,17 +16462,12 @@ declare var WebTransportReceiveStream: {
 };
 
 /**
- * The **`WebTransportSendGroup`** interface of the WebTransport API represents a group of streams and datagrams, within which relative send priority is determined by the sendOrder value of each member.
  * Available only in secure contexts.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportSendGroup)
  */
 interface WebTransportSendGroup {
-    /**
-     * The **`getStats()`** method of the WebTransportSendGroup interface returns a Promise that resolves to an object containing statistics aggregated across all of the WebTransportSendStream objects currently associated with this group. That is, every stream whose sendGroup is set to this WebTransportSendGroup.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportSendGroup/getStats)
-     */
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportSendGroup/getStats) */
     getStats(): Promise<WebTransportSendStreamStats>;
 }
 
@@ -16809,11 +16483,6 @@ declare var WebTransportSendGroup: {
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportSendStream)
  */
 interface WebTransportSendStream extends WritableStream {
-    /**
-     * The **`sendGroup`** property of the WebTransportSendStream interface represents the WebTransportSendGroup that this stream is grouped under for the purposes of sendOrder prioritization.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WebTransportSendStream/sendGroup)
-     */
     sendGroup: WebTransportSendGroup | null;
     /**
      * The **`sendOrder`** property of the WebTransportSendStream interface indicates the send priority of this stream relative to other streams for which the value has been set.
@@ -17091,7 +16760,7 @@ declare var WorkerLocation: {
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WorkerNavigator)
  */
-interface WorkerNavigator extends GlobalPrivacyControl, NavigatorBadge, NavigatorConcurrentHardware, NavigatorGPU, NavigatorID, NavigatorLanguage, NavigatorLocks, NavigatorNetworkInformation, NavigatorOnLine, NavigatorStorage, NavigatorStorageBuckets, NavigatorUA {
+interface WorkerNavigator extends GlobalPrivacyControl, NavigatorBadge, NavigatorConcurrentHardware, NavigatorDeviceMemory, NavigatorGPU, NavigatorID, NavigatorLanguage, NavigatorLocks, NavigatorNetworkInformation, NavigatorOnLine, NavigatorStorage, NavigatorStorageBuckets, NavigatorUA {
     /**
      * The **`WorkerNavigator.hid`** read-only property returns an HID object providing methods for accessing HID device connections and events that fire when the user agent connects to or disconnects from a device.
      *
@@ -17111,7 +16780,7 @@ interface WorkerNavigator extends GlobalPrivacyControl, NavigatorBadge, Navigato
      */
     readonly permissions: Permissions;
     /**
-     * The **`serial`** read-only property of the WorkerNavigator interface returns a Serial object which represents the worker entry point into the Web Serial API.
+     * The **`serial`** read-only property of the WorkerNavigator interface returns a Serial object which represents the entry point into the Web Serial API.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WorkerNavigator/serial)
      */
@@ -17266,13 +16935,13 @@ interface XMLHttpRequest extends XMLHttpRequestEventTarget {
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/XMLHttpRequest/readystatechange_event) */
     onreadystatechange: ((this: XMLHttpRequest, ev: Event) => any) | null;
     /**
-     * The **`readyState`** read-only property of the XMLHttpRequest interface returns the state an XMLHttpRequest client is in. An XHR client exists in one of the following states:
+     * The **`XMLHttpRequest.readyState`** property returns the state an XMLHttpRequest client is in. An XHR client exists in one of the following states:
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/XMLHttpRequest/readyState)
      */
     readonly readyState: number;
     /**
-     * The **`response`** read-only property of the XMLHttpRequest interface returns the response's body content as an ArrayBuffer, a Blob, a Document, a JavaScript Object, or a string, depending on the value of the request's responseType property.
+     * The XMLHttpRequest **`response`** property returns the response's body content as an ArrayBuffer, a Blob, a Document, a JavaScript Object, or a string, depending on the value of the request's responseType property.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/XMLHttpRequest/response)
      */
@@ -17314,7 +16983,7 @@ interface XMLHttpRequest extends XMLHttpRequestEventTarget {
      */
     timeout: number;
     /**
-     * The **`upload`** read-only property of the XMLHttpRequest interface returns an XMLHttpRequestUpload object that can be observed to monitor an upload's progress.
+     * The XMLHttpRequest **`upload`** property returns an XMLHttpRequestUpload object that can be observed to monitor an upload's progress.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/XMLHttpRequest/upload)
      */
@@ -17499,25 +17168,25 @@ declare namespace WebAssembly {
     };
 
     /**
-     * The **`WebAssembly.Exception`** object represents a runtime exception thrown in a Wasm module.
+     * The **`WebAssembly.Exception`** object represents a runtime exception thrown from WebAssembly to JavaScript, or thrown from JavaScript to a WebAssembly exception handler.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/WebAssembly/Reference/JavaScript_interface/Exception)
      */
     interface Exception {
         /**
-         * The **`stack`** read-only property of the WebAssembly.Exception object may contain a stack trace.
+         * The read-only **`stack`** property of an object instance of type WebAssembly.Exception may contain a stack trace.
          *
          * [MDN Reference](https://developer.mozilla.org/docs/WebAssembly/Reference/JavaScript_interface/Exception/stack)
          */
         readonly stack: string | undefined;
         /**
-         * The **`getArg()`** method of the Exception object can be used to get the value of a specified item in the exception's data arguments.
+         * The **`getArg()`** prototype method of the Exception object can be used to get the value of a specified item in the exception's data arguments.
          *
          * [MDN Reference](https://developer.mozilla.org/docs/WebAssembly/Reference/JavaScript_interface/Exception/getArg)
          */
         getArg(exceptionTag: Tag, index: number): any;
         /**
-         * The **`is()`** method of the Exception object can be used to test if the Exception matches a given tag.
+         * The **`is()`** prototype method of the Exception object can be used to test if the Exception matches a given tag.
          *
          * [MDN Reference](https://developer.mozilla.org/docs/WebAssembly/Reference/JavaScript_interface/Exception/is)
          */
@@ -17685,7 +17354,7 @@ declare namespace WebAssembly {
     };
 
     /**
-     * The **`WebAssembly.Tag`** object represents a WebAssembly exception type that can be thrown in a Wasm module.
+     * The **`WebAssembly.Tag`** object defines a type of a WebAssembly exception that can be thrown to/from WebAssembly code.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/WebAssembly/Reference/JavaScript_interface/Tag)
      */
@@ -17888,7 +17557,7 @@ interface Console {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/console/timeLog_static)
      */
     timeLog(label?: string, ...data: any[]): void;
-    /** The **`console.timeStamp()`** static method adds a marker to a performance recording in developer tools that support it, such as the Chrome Performance panel and Firefox Profiler. This lets you correlate a point in your code with recorded events such as layout and painting. */
+    /** The **`console.timeStamp()`** static method adds a single marker to the browser's Performance tool (Firefox bug 1387528, Chrome). This lets you correlate a point in your code with the other events recorded in the timeline, such as layout and paint events. */
     timeStamp(label?: string): void;
     /**
      * The **`console.trace()`** static method outputs a stack trace to the console.
@@ -17970,8 +17639,8 @@ interface ReportingObserverCallback {
     (reports: Report[], observer: ReportingObserver): void;
 }
 
-interface SchedulerPostTaskCallback<T = any> {
-    (): T | PromiseLike<T>;
+interface SchedulerPostTaskCallback {
+    (): any;
 }
 
 interface SubscribeCallback {
@@ -18061,11 +17730,6 @@ declare function postMessage(message: any, options?: StructuredSerializeOptions)
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/EventTarget/dispatchEvent)
  */
 declare function dispatchEvent(event: Event): boolean;
-/**
- * The **`when()`** method of the EventTarget interface returns an Observable object representing a stream of events fired on the event target it is called on.
- *
- * [MDN Reference](https://developer.mozilla.org/docs/Web/API/EventTarget/when)
- */
 declare function when(type: string, options?: ObservableEventListenerOptions): Observable;
 /**
  * The read-only **`location`** property of the WorkerGlobalScope interface returns the WorkerLocation associated with the worker. It is a specific location object, mostly a subset of the Location for browsing scopes, but adapted to workers.
@@ -18109,11 +17773,6 @@ declare function importScripts(...urls: (string | URL)[]): void;
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/EventTarget/dispatchEvent)
  */
 declare function dispatchEvent(event: Event): boolean;
-/**
- * The **`when()`** method of the EventTarget interface returns an Observable object representing a stream of events fired on the event target it is called on.
- *
- * [MDN Reference](https://developer.mozilla.org/docs/Web/API/EventTarget/when)
- */
 declare function when(type: string, options?: ObservableEventListenerOptions): Observable;
 /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/fonts) */
 declare var fonts: FontFaceSet;
@@ -18178,7 +17837,7 @@ type BigInteger = Uint8Array<ArrayBuffer>;
 type BlobPart = BufferSource | Blob | string;
 type BluetoothServiceUUID = string | number;
 type BodyInit = ReadableStream | XMLHttpRequestBodyInit;
-type BufferSource = ArrayBuffer | ArrayBufferView<ArrayBuffer>;
+type BufferSource = ArrayBufferView<ArrayBuffer> | ArrayBuffer;
 type CSSKeywordish = string | CSSKeywordValue;
 type CSSNumberish = number | CSSNumericValue;
 type CSSPerspectiveValue = CSSNumericValue | CSSKeywordish;
@@ -18302,7 +17961,7 @@ type FontFaceSetLoadStatus = "loaded" | "loading";
 type FrameType = "auxiliary" | "nested" | "none" | "top-level";
 type GPUAddressMode = "clamp-to-edge" | "mirror-repeat" | "repeat";
 type GPUAutoLayoutMode = "auto";
-type GPUBlendFactor = "constant" | "dst" | "dst-alpha" | "one" | "one-minus-constant" | "one-minus-dst" | "one-minus-dst-alpha" | "one-minus-src" | "one-minus-src-alpha" | "one-minus-src1" | "one-minus-src1-alpha" | "src" | "src-alpha" | "src-alpha-saturated" | "src1" | "src1-alpha" | "zero";
+type GPUBlendFactor = "constant" | "dst" | "dst-alpha" | "one" | "one-minus-constant" | "one-minus-dst" | "one-minus-dst-alpha" | "one-minus-src" | "one-minus-src-alpha" | "src" | "src-alpha" | "src-alpha-saturated" | "zero";
 type GPUBlendOperation = "add" | "max" | "min" | "reverse-subtract" | "subtract";
 type GPUBufferBindingType = "read-only-storage" | "storage" | "uniform";
 type GPUBufferMapState = "mapped" | "pending" | "unmapped";
@@ -18313,7 +17972,7 @@ type GPUCompilationMessageType = "error" | "info" | "warning";
 type GPUCullMode = "back" | "front" | "none";
 type GPUDeviceLostReason = "destroyed" | "unknown";
 type GPUErrorFilter = "internal" | "out-of-memory" | "validation";
-type GPUFeatureName = "bgra8unorm-storage" | "clip-distances" | "core-features-and-limits" | "depth-clip-control" | "depth32float-stencil8" | "dual-source-blending" | "float32-blendable" | "float32-filterable" | "indirect-first-instance" | "primitive-index" | "rg11b10ufloat-renderable" | "shader-f16" | "subgroups" | "texture-component-swizzle" | "texture-compression-astc" | "texture-compression-astc-sliced-3d" | "texture-compression-bc" | "texture-compression-bc-sliced-3d" | "texture-compression-etc2" | "texture-formats-tier1" | "texture-formats-tier2" | "timestamp-query";
+type GPUFeatureName = "bgra8unorm-storage" | "clip-distances" | "core-features-and-limits" | "depth-clip-control" | "depth32float-stencil8" | "dual-source-blending" | "float32-blendable" | "float32-filterable" | "indirect-first-instance" | "primitive-index" | "rg11b10ufloat-renderable" | "shader-f16" | "subgroups" | "texture-compression-astc" | "texture-compression-astc-sliced-3d" | "texture-compression-bc" | "texture-compression-bc-sliced-3d" | "texture-compression-etc2" | "texture-formats-tier1" | "timestamp-query";
 type GPUFilterMode = "linear" | "nearest";
 type GPUFrontFace = "ccw" | "cw";
 type GPUIndexFormat = "uint16" | "uint32";
@@ -18643,14 +18302,12 @@ interface StylePropertyMapReadOnly {
 }
 
 interface SubtleCrypto {
-    decapsulateKey(decapsulationAlgorithm: AlgorithmIdentifier, decapsulationKey: CryptoKey, ciphertext: BufferSource, sharedKeyAlgorithm: AlgorithmIdentifier, extractable: boolean, keyUsages: Iterable<KeyUsage>): Promise<CryptoKey>;
     /**
      * The **`deriveKey()`** method of the SubtleCrypto interface can be used to derive a secret key from a master key.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/SubtleCrypto/deriveKey)
      */
     deriveKey(algorithm: AlgorithmIdentifier | EcdhKeyDeriveParams | HkdfParams | Pbkdf2Params, baseKey: CryptoKey, derivedKeyType: AlgorithmIdentifier | AesDerivedKeyParams | HmacImportParams | HkdfParams | Pbkdf2Params, extractable: boolean, keyUsages: Iterable<KeyUsage>): Promise<CryptoKey>;
-    encapsulateKey(encapsulationAlgorithm: AlgorithmIdentifier, encapsulationKey: CryptoKey, sharedKeyAlgorithm: AlgorithmIdentifier, extractable: boolean, keyUsages: Iterable<KeyUsage>): Promise<EncapsulatedKey>;
     /**
      * The **`generateKey()`** method of the SubtleCrypto interface is used to generate a new key (for symmetric algorithms) or key pair (for public-key algorithms).
      *
@@ -18661,7 +18318,6 @@ interface SubtleCrypto {
     generateKey(algorithm: RsaHashedKeyGenParams | EcKeyGenParams, extractable: boolean, keyUsages: ReadonlyArray<KeyUsage>): Promise<CryptoKeyPair>;
     generateKey(algorithm: AesKeyGenParams | HmacKeyGenParams | Pbkdf2Params, extractable: boolean, keyUsages: ReadonlyArray<KeyUsage>): Promise<CryptoKey>;
     generateKey(algorithm: AlgorithmIdentifier, extractable: boolean, keyUsages: Iterable<KeyUsage>): Promise<CryptoKeyPair | CryptoKey>;
-    getPublicKey(key: CryptoKey, keyUsages: Iterable<KeyUsage>): Promise<CryptoKey>;
     /**
      * The **`importKey()`** method of the SubtleCrypto interface imports a key: that is, it takes as input a key in an external, portable format and gives you a CryptoKey object that you can use in the Web Crypto API.
      *
