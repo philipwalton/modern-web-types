@@ -17,12 +17,7 @@ function build(variant: "baseline" | "full") {
   if (variant === "full") {
     env.MWT_MIN_ENGINES = "1";
     env.MWT_FULL_BUILD = "1";
-    // WebRef 3.86.0 omitted two shipped specs during their move to WICG.
-    const manifest = path.join(upstreamDir, "node_modules/@webref/idl/package.json");
-    const { version } = JSON.parse(fs.readFileSync(manifest, "utf8"));
-    if (version === "3.86.0") {
-      env.MWT_FALLBACK_IDL_DIR = path.join(rootDir, "patches/webref-3.86.0");
-    }
+    env.MWT_FALLBACK_IDL_DIR = path.join(rootDir, "patches/fallback-idl");
   }
   const output = run("node", ["./src/build.ts"], { cwd: upstreamDir, env });
   for (const scope of scopes) {

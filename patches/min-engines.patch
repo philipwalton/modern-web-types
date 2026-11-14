@@ -21,6 +21,22 @@ index 0000000..432e94e
 +    property onerror
 +  }
 +}
+diff --git a/src/build.ts b/src/build.ts
+index 1669716..1c05968 100644
+--- a/src/build.ts
++++ b/src/build.ts
+@@ -203,6 +203,11 @@ async function emitDom() {
+   webidl = merge(webidl, getDeprecationData(webidl));
+   webidl = merge(webidl, getRemovalData(webidl));
+   webidl = merge(webidl, getDocsData(webidl));
++  // BCD's IDL mapping can omit this mixin when WebRef omits the spec.
++  const deviceMemory = webidl.mixins?.mixin.NavigatorDeviceMemory?.properties?.property.deviceMemory;
++  if (process.env.MWT_FULL_BUILD && deviceMemory) {
++    deviceMemory.mdnUrl ??= "https://developer.mozilla.org/docs/Web/API/Navigator/deviceMemory";
++  }
+   webidl = prune(webidl, removedItems);
+   webidl = prune(webidl, removalPatches);
+   webidl = merge(webidl, addedItems);
 diff --git a/src/build/bcd.ts b/src/build/bcd.ts
 index 1822fd4..c4302cb 100644
 --- a/src/build/bcd.ts
