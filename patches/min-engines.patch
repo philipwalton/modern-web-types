@@ -1,3 +1,42 @@
+diff --git a/inputfiles/mwt-mediacapture-extensions.kdl b/inputfiles/mwt-mediacapture-extensions.kdl
+new file mode 100644
+index 0000000..432e94e
+--- /dev/null
++++ b/inputfiles/mwt-mediacapture-extensions.kdl
+@@ -0,0 +1,17 @@
++// These elements redeclare HTMLElement's cancel and error handlers with a
++// narrower receiver. WebRef also identifies both events as DOMException.
++// Inherit the handlers and event-map entries from GlobalEventHandlers.
++removals {
++  interface HTMLCameraElement {
++    property oncancel
++    property onerror
++  }
++  interface HTMLMicrophoneElement {
++    property oncancel
++    property onerror
++  }
++  interface HTMLUserMediaElement {
++    property oncancel
++    property onerror
++  }
++}
+diff --git a/src/build.ts b/src/build.ts
+index 1669716..1c05968 100644
+--- a/src/build.ts
++++ b/src/build.ts
+@@ -203,6 +203,11 @@ async function emitDom() {
+   webidl = merge(webidl, getDeprecationData(webidl));
+   webidl = merge(webidl, getRemovalData(webidl));
+   webidl = merge(webidl, getDocsData(webidl));
++  // BCD's IDL mapping can omit this mixin when WebRef omits the spec.
++  const deviceMemory = webidl.mixins?.mixin.NavigatorDeviceMemory?.properties?.property.deviceMemory;
++  if (process.env.MWT_FULL_BUILD && deviceMemory) {
++    deviceMemory.mdnUrl ??= "https://developer.mozilla.org/docs/Web/API/Navigator/deviceMemory";
++  }
+   webidl = prune(webidl, removedItems);
+   webidl = prune(webidl, removalPatches);
+   webidl = merge(webidl, addedItems);
 diff --git a/src/build/bcd.ts b/src/build/bcd.ts
 index 1822fd4..c4302cb 100644
 --- a/src/build/bcd.ts
@@ -12,40 +51,56 @@ index 1822fd4..c4302cb 100644
  
  function isSuitable(
 diff --git a/src/build/emitter.ts b/src/build/emitter.ts
-index 31e4374..01cf7da 100644
+index cc48ab4..ef5c59f 100644
 --- a/src/build/emitter.ts
 +++ b/src/build/emitter.ts
-@@ -407,16 +407,13 @@ export function emitWebIdl(
-     forReturn: boolean,
-   ): string {
-     function convertBaseType() {
--      // Support async_sequence (see https://github.com/whatwg/streams/pull/1372)
-+      // Support async_sequence (see https://github.com/whatwg/streams/pull/1372).
-+      // The element type rides along as a subtype, which the caller appends as a
-+      // type argument, so returning the bare constructor yields AsyncIterable<T>.
-+      // AsyncIterable is declared by lib.es2018.asynciterable, which every scope
-+      // this project emits is typechecked against.
-       if (obj.type === "async_sequence") {
--        // AsyncIterable<T> requires separate asynciterable.d.ts until TS 6.0.
--        // To make it correct, we need to defer any functions using async_sequence to the asynciterable variant.
--        // For now, skip generation and warn.
--        console.warn(
--          "Skipping generation for a function or property with async_sequence type: " +
--            JSON.stringify(obj),
--        );
--        return "never"; // Use 'never' to signal omission in type generation
-+        return "AsyncIterable";
-       }
-       if (obj.type === "sequence" && !forReturn && iterator !== "") {
-         return "Iterable";
-@@ -517,6 +514,10 @@ export function emitWebIdl(
+@@ -514,6 +514,10 @@ export function emitWebIdl(
        return objDomType;
      }
  
-+    if (process.env.MWT_LENIENT_TYPES) {
++    if (process.env.MWT_FULL_BUILD) {
 +      console.warn(`MWT: unknown DOM type ${objDomType}, emitting "any"`);
 +      return "any";
 +    }
      throw new Error("Unknown DOM type: " + objDomType);
    }
  
+diff --git a/src/build/patches.ts b/src/build/patches.ts
+index 021ff34..7afcbca 100644
+--- a/src/build/patches.ts
++++ b/src/build/patches.ts
+@@ -594,6 +594,9 @@ export default async function readPatches(): Promise<{
+ }> {
+   const patchDirectory = new URL("../../inputfiles/patches/", import.meta.url);
+   const fileUrls = await getAllFileURLs(patchDirectory);
++  if (process.env.MWT_FULL_BUILD) {
++    fileUrls.push(new URL("../mwt-mediacapture-extensions.kdl", patchDirectory));
++  }
+ 
+   // Stage 1: Parse all file KDLs into Documents
+   const documents = await Promise.all(fileUrls.map(readPatchDocument));
+diff --git a/src/build/webref/idl.ts b/src/build/webref/idl.ts
+index 5896705..8f09f54 100644
+--- a/src/build/webref/idl.ts
++++ b/src/build/webref/idl.ts
+@@ -1,3 +1,5 @@
++import { readFile } from "node:fs/promises";
++import path from "node:path";
+ import { listAll as listAllIdl } from "@webref/idl";
+ import { listAll as listAllCss } from "@webref/css";
+ import { generateWebIdlFromCssProperties } from "./css.ts";
+@@ -11,6 +13,14 @@ export async function getWebidls(): Promise<Map<string, string>> {
+     const text = await file.text();
+     map.set(key, text);
+   }
++  const fallbackDir = process.env.MWT_FALLBACK_IDL_DIR;
++  if (fallbackDir) {
++    for (const key of ["device-memory", "longtasks"]) {
++      if (!map.has(key)) {
++        map.set(key, await readFile(path.join(fallbackDir, key + ".idl"), "utf8"));
++      }
++    }
++  }
+   const properties = css.properties.map((p) => p.name);
+   if (properties.length) {
+     map.set("css", generateWebIdlFromCssProperties(properties));

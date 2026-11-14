@@ -6,17 +6,19 @@
 // environments TypeScript ships a lib for, whose delta is full − baseline.
 import fs from "node:fs";
 import path from "node:path";
-import { buildDir, upstreamDir, run, scopes } from "./util.ts";
+import { buildDir, rootDir, upstreamDir, run, scopes } from "./util.ts";
 
 const generatedDir = path.join(upstreamDir, "generated");
 fs.mkdirSync(buildDir, { recursive: true });
 
 function build(variant: "baseline" | "full") {
   console.log(`Building ${variant}…`);
-  const env =
-    variant === "full"
-      ? { MWT_MIN_ENGINES: "1", MWT_LENIENT_TYPES: "1" }
-      : {};
+  const env: Record<string, string> = {};
+  if (variant === "full") {
+    env.MWT_MIN_ENGINES = "1";
+    env.MWT_FULL_BUILD = "1";
+    env.MWT_FALLBACK_IDL_DIR = path.join(rootDir, "patches/fallback-idl");
+  }
   const output = run("node", ["./src/build.ts"], { cwd: upstreamDir, env });
   for (const scope of scopes) {
     const dest = variant === "full" ? scope.full : scope.delta?.baseline;
