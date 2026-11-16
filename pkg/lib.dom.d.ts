@@ -1008,6 +1008,7 @@ interface FontFaceDescriptors {
     unicodeRange?: string;
     variationSettings?: string;
     weight?: string;
+    width?: string;
 }
 
 interface FontFaceSetLoadEventInit extends EventInit {
@@ -2564,6 +2565,7 @@ interface ProfilerInitOptions {
 }
 
 interface ProfilerSample {
+    marker?: ProfilerMarker | null;
     stackId?: number;
     timestamp: DOMHighResTimeStamp;
 }
@@ -2736,6 +2738,7 @@ interface RTCCertificateExpiration {
 }
 
 interface RTCConfiguration {
+    alwaysNegotiateDataChannels?: boolean;
     bundlePolicy?: RTCBundlePolicy;
     certificates?: RTCCertificate[];
     iceCandidatePoolSize?: number;
@@ -2790,6 +2793,10 @@ interface RTCEncodedVideoFrameMetadata extends RTCEncodedFrameMetadata {
     temporalIndex?: number;
     timestamp?: number;
     width?: number;
+}
+
+interface RTCEncodingOptions {
+    keyFrame?: boolean;
 }
 
 interface RTCErrorEventInit extends EventInit {
@@ -3068,6 +3075,7 @@ interface RTCSessionDescriptionInit {
 }
 
 interface RTCSetParameterOptions {
+    encodingOptions?: RTCEncodingOptions[];
 }
 
 interface RTCStats {
@@ -4113,6 +4121,10 @@ interface XREquirectLayerInit extends XRLayerInit {
     upperVerticalAngle?: number;
 }
 
+interface XRHandTrackingStateInit {
+    frequencyHint?: XRHandTrackingFrequencyHint;
+}
+
 interface XRHitTestOptionsInit {
     entityTypes?: XRHitTestTrackableType[];
     offsetRay?: XRRay;
@@ -4193,6 +4205,7 @@ interface XRSessionEventInit extends EventInit {
 interface XRSessionInit {
     depthSensing?: XRDepthStateInit;
     domOverlay?: XRDOMOverlayInit | null;
+    handTracking?: XRHandTrackingStateInit;
     optionalFeatures?: string[];
     requiredFeatures?: string[];
 }
@@ -19104,6 +19117,12 @@ interface FontFace {
      */
     unicodeRange: string;
     /**
+     * The **`variant`** property of the FontFace interface programmatically retrieves or sets font variant values.
+     *
+     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/FontFace/variant)
+     */
+    variant: string;
+    /**
      * The **`variationSettings`** property of the FontFace interface retrieves or sets low-level OpenType or TrueType font variations.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/FontFace/variationSettings)
@@ -20561,18 +20580,6 @@ interface Gamepad {
      */
     readonly connected: boolean;
     /**
-     * The **`hand`** read-only property of the Gamepad interface returns an enum defining what hand the controller is being held in, or is most likely to be held in.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Gamepad/hand)
-     */
-    readonly hand: GamepadHand;
-    /**
-     * The **`hapticActuators`** read-only property of the Gamepad interface returns an array containing GamepadHapticActuator objects, each of which represents haptic feedback hardware available on the controller.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Gamepad/hapticActuators)
-     */
-    readonly hapticActuators: ReadonlyArray<GamepadHapticActuator>;
-    /**
      * The **`id`** read-only property of the Gamepad interface returns a string containing some information about the controller.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Gamepad/id)
@@ -20590,12 +20597,6 @@ interface Gamepad {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Gamepad/mapping)
      */
     readonly mapping: GamepadMappingType;
-    /**
-     * The **`pose`** read-only property of the Gamepad interface returns a GamepadPose object representing the pose information associated with a WebVR controller (e.g., its position and orientation in 3D space).
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Gamepad/pose)
-     */
-    readonly pose: GamepadPose | null;
     /**
      * The **`timestamp`** read-only property of the Gamepad interface returns a DOMHighResTimeStamp representing the last time the data for this gamepad was updated.
      *
@@ -20684,12 +20685,6 @@ interface GamepadHapticActuator {
      */
     playEffect(type: GamepadHapticEffectType, params?: GamepadEffectParameters): Promise<GamepadHapticsResult>;
     /**
-     * The **`pulse()`** method of the GamepadHapticActuator interface makes the hardware pulse at a certain intensity for a specified duration.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/GamepadHapticActuator/pulse)
-     */
-    pulse(value: number, duration: number): Promise<boolean>;
-    /**
      * The **`reset()`** method of the GamepadHapticActuator interface stops the hardware from playing an active vibration effect.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/GamepadHapticActuator/reset)
@@ -20700,67 +20695,6 @@ interface GamepadHapticActuator {
 declare var GamepadHapticActuator: {
     prototype: GamepadHapticActuator;
     new(): GamepadHapticActuator;
-};
-
-/**
- * The **`GamepadPose`** interface of the Gamepad API represents the pose of a WebVR controller at a given timestamp (which includes orientation, position, velocity, and acceleration information).
- *
- * [MDN Reference](https://developer.mozilla.org/docs/Web/API/GamepadPose)
- */
-interface GamepadPose {
-    /**
-     * The **`angularAcceleration`** read-only property of the GamepadPose interface returns an array representing the angular acceleration vector of the Gamepad, in meters per second per second.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/GamepadPose/angularAcceleration)
-     */
-    readonly angularAcceleration: Float32Array<ArrayBuffer> | null;
-    /**
-     * The **`angularVelocity`** read-only property of the GamepadPose interface returns an array representing the angular velocity vector of the Gamepad, in radians per second.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/GamepadPose/angularVelocity)
-     */
-    readonly angularVelocity: Float32Array<ArrayBuffer> | null;
-    /**
-     * The **`hasOrientation`** read-only property of the GamepadPose interface returns a boolean value stating whether the Gamepad can track and return orientation information.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/GamepadPose/hasOrientation)
-     */
-    readonly hasOrientation: boolean;
-    /**
-     * The **`hasPosition`** read-only property of the GamepadPose interface returns a boolean value stating whether the Gamepad can track and return position information.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/GamepadPose/hasPosition)
-     */
-    readonly hasPosition: boolean;
-    /**
-     * The **`linearAcceleration`** read-only property of the GamepadPose interface returns an array representing the linear acceleration vector of the Gamepad, in meters per second per second.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/GamepadPose/linearAcceleration)
-     */
-    readonly linearAcceleration: Float32Array<ArrayBuffer> | null;
-    /**
-     * The **`linearVelocity`** read-only property of the GamepadPose interface returns an array representing the linear velocity vector of the Gamepad, in meters per second.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/GamepadPose/linearVelocity)
-     */
-    readonly linearVelocity: Float32Array<ArrayBuffer> | null;
-    /**
-     * The **`orientation`** read-only property of the GamepadPose interface returns the orientation of the Gamepad, as a quaternion value.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/GamepadPose/orientation)
-     */
-    readonly orientation: Float32Array<ArrayBuffer> | null;
-    /**
-     * The **`position`** read-only property of the GamepadPose interface returns the position of the Gamepad as a 3D vector.
-     *
-     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/GamepadPose/position)
-     */
-    readonly position: Float32Array<ArrayBuffer> | null;
-}
-
-declare var GamepadPose: {
-    prototype: GamepadPose;
-    new(): GamepadPose;
 };
 
 interface GenericTransformStream {
@@ -37191,12 +37125,15 @@ interface RTCRtpTransceiver {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/RTCRtpTransceiver/sender)
      */
     readonly sender: RTCRtpSender;
+    getHeaderExtensionsToNegotiate(): RTCRtpHeaderExtensionCapability[];
+    getNegotiatedHeaderExtensions(): RTCRtpHeaderExtensionCapability[];
     /**
      * The **`setCodecPreferences()`** method of the RTCRtpTransceiver interface is used to set the codecs that the transceiver allows for decoding received data, in order of decreasing preference.
      *
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/RTCRtpTransceiver/setCodecPreferences)
      */
     setCodecPreferences(codecs: RTCRtpCodec[]): void;
+    setHeaderExtensionsToNegotiate(extensions: RTCRtpHeaderExtensionCapability[]): void;
     /**
      * The **`stop()`** method in the RTCRtpTransceiver interface permanently stops the transceiver by stopping both the associated RTCRtpSender and RTCRtpReceiver.
      *
@@ -56006,7 +55943,6 @@ type GPUTextureSampleType = "depth" | "float" | "sint" | "uint" | "unfilterable-
 type GPUTextureViewDimension = "1d" | "2d" | "2d-array" | "3d" | "cube" | "cube-array";
 type GPUVertexFormat = "float16" | "float16x2" | "float16x4" | "float32" | "float32x2" | "float32x3" | "float32x4" | "sint16" | "sint16x2" | "sint16x4" | "sint32" | "sint32x2" | "sint32x3" | "sint32x4" | "sint8" | "sint8x2" | "sint8x4" | "snorm10-10-10-2" | "snorm16" | "snorm16x2" | "snorm16x4" | "snorm8" | "snorm8x2" | "snorm8x4" | "uint16" | "uint16x2" | "uint16x4" | "uint32" | "uint32x2" | "uint32x3" | "uint32x4" | "uint8" | "uint8x2" | "uint8x4" | "unorm10-10-10-2" | "unorm16" | "unorm16x2" | "unorm16x4" | "unorm8" | "unorm8x2" | "unorm8x4" | "unorm8x4-bgra";
 type GPUVertexStepMode = "instance" | "vertex";
-type GamepadHand = "" | "left" | "right";
 type GamepadHapticEffectType = "dual-rumble" | "trigger-rumble";
 type GamepadHapticsResult = "complete" | "preempted";
 type GamepadMappingType = "" | "standard" | "xr-standard";
@@ -56083,6 +56019,7 @@ type PresentationConnectionState = "closed" | "connected" | "connecting" | "term
 type PresentationStyle = "attachment" | "inline" | "unspecified";
 type PressureSource = "cpu";
 type PressureState = "critical" | "fair" | "nominal" | "serious";
+type ProfilerMarker = "gc" | "layout" | "other" | "paint" | "script" | "style";
 type PublicKeyCredentialType = "public-key";
 type PushEncryptionKeyName = "auth" | "p256dh";
 type RTCBundlePolicy = "balanced" | "max-bundle" | "max-compat";
@@ -56194,6 +56131,7 @@ type XRDepthUsage = "cpu-optimized" | "gpu-optimized";
 type XREnvironmentBlendMode = "additive" | "alpha-blend" | "opaque";
 type XREye = "left" | "none" | "right";
 type XRHandJoint = "index-finger-metacarpal" | "index-finger-phalanx-distal" | "index-finger-phalanx-intermediate" | "index-finger-phalanx-proximal" | "index-finger-tip" | "middle-finger-metacarpal" | "middle-finger-phalanx-distal" | "middle-finger-phalanx-intermediate" | "middle-finger-phalanx-proximal" | "middle-finger-tip" | "pinky-finger-metacarpal" | "pinky-finger-phalanx-distal" | "pinky-finger-phalanx-intermediate" | "pinky-finger-phalanx-proximal" | "pinky-finger-tip" | "ring-finger-metacarpal" | "ring-finger-phalanx-distal" | "ring-finger-phalanx-intermediate" | "ring-finger-phalanx-proximal" | "ring-finger-tip" | "thumb-metacarpal" | "thumb-phalanx-distal" | "thumb-phalanx-proximal" | "thumb-tip" | "wrist";
+type XRHandTrackingFrequencyHint = "default" | "high";
 type XRHandedness = "left" | "none" | "right";
 type XRHitTestTrackableType = "mesh" | "plane" | "point";
 type XRInteractionMode = "screen-space" | "world-space";
@@ -56667,6 +56605,7 @@ interface RTCRtpTransceiver {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/RTCRtpTransceiver/setCodecPreferences)
      */
     setCodecPreferences(codecs: Iterable<RTCRtpCodec>): void;
+    setHeaderExtensionsToNegotiate(extensions: Iterable<RTCRtpHeaderExtensionCapability>): void;
 }
 
 interface RTCStatsReport extends ReadonlyMap<string, any> {
