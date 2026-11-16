@@ -1,6 +1,6 @@
 # Gap report
 
-Generated 2026-11-14T16:01:32.625Z from TypeScript-DOM-lib-generator `aea354f537e0`.
+Generated 2026-11-16T14:21:20.379Z from TypeScript-DOM-lib-generator `8859ea03105d`.
 
 These are declarations present when the two-engine rule is relaxed to **one** stable engine, but absent from the stock baseline.
 
@@ -11,10 +11,10 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 | Category | Count |
 | --- | ---: |
 | New interfaces | 439 |
-| New type aliases | 95 |
-| New global vars | 217 |
+| New type aliases | 96 |
+| New global vars | 216 |
 | New global functions | 10 |
-| Members added to existing interfaces | 338 |
+| Members added to existing interfaces | 337 |
 | Members added to existing namespaces | 1 |
 
 ### 439 new interfaces
@@ -126,7 +126,6 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `FileSystemHandlePermissionDescriptor`
 - `FontData`
 - `FunctionParameter`
-- `GamepadPose`
 - `GlobalPrivacyControl`
 - `GravitySensor`
 - `Gyroscope`
@@ -399,6 +398,7 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `XRFrameRequestCallback`
 - `XRHand`
 - `XRHandIterator`
+- `XRHandTrackingStateInit`
 - `XRHitTestOptionsInit`
 - `XRHitTestResult`
 - `XRHitTestSource`
@@ -459,7 +459,7 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `XRWebGLLayerInit`
 - `XRWebGLSubImage`
 
-### 338 members added to 85 existing interfaces
+### 337 members added to 85 existing interfaces
 
 - `AudioContext.createMediaStreamTrackSource`
 - `AudioContext.onerror`
@@ -626,11 +626,7 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `GPUBindingCommandsMixin.setImmediates`
 - `GPUSupportedLimits.maxImmediateSize`
 - `GPUTexture.textureBindingViewDimension`
-- `Gamepad.hand`
-- `Gamepad.hapticActuators`
-- `Gamepad.pose`
 - `GamepadHapticActuator.effects`
-- `GamepadHapticActuator.pulse`
 - `GlobalEventHandlers.onbeforexrselect`
 - `GlobalEventHandlersEventMap.beforexrselect`
 - `HTMLAnchorElement.attributionSourceId`
@@ -732,6 +728,9 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 - `RTCPeerConnection.peerIdentity`
 - `RTCPeerConnection.setIdentityProvider`
 - `RTCPeerConnectionIceEvent.url`
+- `RTCRtpTransceiver.getHeaderExtensionsToNegotiate`
+- `RTCRtpTransceiver.getNegotiatedHeaderExtensions`
+- `RTCRtpTransceiver.setHeaderExtensionsToNegotiate`
 - `Request.duplex`
 - `Request.isHistoryNavigation`
 - `Request.isReloadNavigation`
@@ -809,7 +808,7 @@ The per-scope counts below are that gap, measured for the two environments TypeS
 | Category | Count |
 | --- | ---: |
 | New interfaces | 140 |
-| New type aliases | 31 |
+| New type aliases | 32 |
 | New global vars | 53 |
 | New global functions | 1 |
 | Members added to existing interfaces | 66 |

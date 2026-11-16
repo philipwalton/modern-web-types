@@ -447,6 +447,7 @@ interface FontFaceDescriptors {
     unicodeRange?: string;
     variationSettings?: string;
     weight?: string;
+    width?: string;
 }
 
 interface FontFaceSetLoadEventInit extends EventInit {
@@ -1300,6 +1301,7 @@ interface ProfilerInitOptions {
 }
 
 interface ProfilerSample {
+    marker?: ProfilerMarker | null;
     stackId?: number;
     timestamp: DOMHighResTimeStamp;
 }
@@ -6073,6 +6075,12 @@ interface FontFace {
      * [MDN Reference](https://developer.mozilla.org/docs/Web/API/FontFace/unicodeRange)
      */
     unicodeRange: string;
+    /**
+     * The **`variant`** property of the FontFace interface programmatically retrieves or sets font variant values.
+     *
+     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/FontFace/variant)
+     */
+    variant: string;
     /**
      * The **`variationSettings`** property of the FontFace interface retrieves or sets low-level OpenType or TrueType font variations.
      *
@@ -18373,6 +18381,7 @@ type PredefinedColorSpace = "display-p3" | "srgb";
 type PremultiplyAlpha = "default" | "none" | "premultiply";
 type PressureSource = "cpu";
 type PressureState = "critical" | "fair" | "nominal" | "serious";
+type ProfilerMarker = "gc" | "layout" | "other" | "paint" | "script" | "style";
 type PushEncryptionKeyName = "auth" | "p256dh";
 type RTCDataChannelState = "closed" | "closing" | "connecting" | "open";
 type RTCPriorityType = "high" | "low" | "medium" | "very-low";
